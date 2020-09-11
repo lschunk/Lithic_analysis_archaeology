@@ -1,5 +1,5 @@
 ---
-title: 'analysis techno-typological data - Balver Höhle '
+title: 'Plots - Lithic analysis Balver Höhle '
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
 output:
@@ -32,13 +32,13 @@ This script reads the xlsx file (database techno-typological analysis) generated
 The script will:
 
 1. Reads in the original xlsx file 
-2. Changes the data (step #4) in order to do stats 
-3. Plots the data and saves the plots as png files 
+2. Changes and sort the data  in order to do stats 
+3. Saves the data as a new xlsx file and R object
 
 
 ```{r}
-dir_in <- "E:/EXPERIMENTS/tool-function_experiment/DATA/Inotec/R/raw_data/data_txt"
-dir_out <- "analysis/derived_data/"
+dir_in <-  "analysis/Balve/derived_data/"
+dir_out <- "analysis/Balve/plots/"
 ```
 
 Raw data must be located in "`r dir_in`".  
@@ -51,16 +51,11 @@ The knit directory for this script is the project directory.
 # Load packages
 ```{r}
 library(openxlsx)
-library(readxl)
+#library(readxl)
 library(R.utils)
 library(tools)
-library(data.table)
-#library(plyr)
-#library(reshape2)
-#library(ggpubr)
-#library(magrittr)
-library(tidyverse)
-library(wesanderson)
+#library(data.table)
+library(chron)
 ```
 
 
@@ -79,216 +74,7 @@ The checksum (MD5 hashes) of the imported files are:
 info_in
 ```
 
-
-# Read in original xlsx-file
-```{r}
-imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1, colNames = TRUE, rowNames = FALSE, skipEmptyRows = FALSE) 
-#select the colums to keep 
-keep_col <- c(1:2, 9:19, 21:35, 37:38, 40:43)
-data_keep <- imp_data[,keep_col]
-
-data_keep$length <- as.numeric(data_keep$length)
-data_keep$width <- as.numeric(data_keep$width)
-data_keep$thickness <- as.numeric(data_keep$thickness)
-data_keep$weight <- as.numeric(data_keep$weight)
-data_keep$perimeter.basis.back <- as.numeric(data_keep$perimeter.basis.back)
-data_keep$perimeter.arch <- as.numeric(data_keep$perimeter.arch)
-data_keep$perimeter.active.edge <- as.numeric(data_keep$perimeter.active.edge)
-data_keep$perimeter.total <- as.numeric(data_keep$perimeter.total)
-data_keep$thickness.back <- as.numeric(data_keep$thickness.back)
-
-str(data_keep)
-
-```
-
-# Data analsysis - sorting  
-## Dimension
-```{r}
-# keeps only colums relevant for dimensions and sorts them based on their technological class
-keep_col <- c(2, 4:5,19:21)
-dimensions <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_dimensions <- dimensions[1:191, ] %>% arrange(artefact.state)
-KM.point_dimensions <- KM_dimensions[159:179,]
-KM.only_dimensions <- KM_dimensions[1:158,]
-KM.complete_dimensions <- KM_dimensions[1:179,]
-PS_dimensions <- dimensions[309:335,] %>% arrange(artefact.state)
-LSS_dimensions <- dimensions[192:308,] %>% arrange(artefact.state)
-S_dimensions <- dimensions[336:347,] %>% arrange(artefact.state)
-
-
-```
-
-## Perimeter
-```{r}
-# keeps only colums relevant for perimeter measurements and sorts them based on their technological class
-keep_col <- c(2, 4:5,7,23:26)
-perimeter <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_perimeter <- perimeter[1:191, ] %>% arrange(artefact.state)
-PS_perimeter <- perimeter[309:335,] %>% arrange(artefact.state)
-
-```
-
-## Weight
-```{r}
-# keeps only colums relevant for weight measurements and sorts them based on their technological class
-keep_col <- c(2, 4:5, 22)
-weight <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_weight <- weight[1:191, ] %>% arrange(artefact.state)
-PS_weight <- weight[309:335,] %>% arrange(artefact.state)
-LSS_weight <- weight[192:308,] %>% arrange(artefact.state)
-S_weight <- weight[336:347,] %>% arrange(artefact.state)
-
-
-```
-
-## Raw material
-```{r}
-# keeps only colums relevant for raw material clasification and sorts them based on their technological class
-keep_col <- c(2, 4:5, 3)
-raw_material <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_raw_material <- raw_material[1:191, ] %>% arrange(artefact.state)
-PS_raw_material <- raw_material[309:335,] %>% arrange(artefact.state)
-LSS_raw_material <- raw_material[192:308,] %>% arrange(artefact.state)
-S_raw_material <- raw_material[336:347,] %>% arrange(artefact.state)
-
-
-```
-
-## Cortex + blanks 
-```{r}
-# keeps only colums relevant for cortex and blank clasification and sorts them based on their technological class
-keep_col <- c(2, 4:5, 6, 8:10)
-cortex_blanks <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_cortex_blanks <- cortex_blanks[1:191, ] %>% arrange(artefact.state)
-PS_cortex_blanks <- cortex_blanks[309:335,] %>% arrange(artefact.state)
-
-
-```
-
-## Back 
-```{r}
-# keeps only colums relevant for back modifications and sorts them based on their technological class
-keep_col <- c(2, 4:5, 11)
-back <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_back <- back[1:191, ] %>% arrange(artefact.state)
-PS_back <- back[309:335,] %>% arrange(artefact.state)
-
-
-```
-
-## Edge retouch
-```{r}
-# keeps only colums relevant for edge retouch clasification and sorts them based on their technological class
-keep_col <- c(2, 4:5, 12:13, 29)
-edge_retouch <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_edge_retouch <- edge_retouch[1:191, ] %>% arrange(artefact.state)
-PS_edge_retouch <- edge_retouch[309:335,] %>% arrange(artefact.state)
-LSS_edge_retouch <- edge_retouch[192:308,] %>% arrange(artefact.state)
-S_edge_retouch <- edge_retouch[336:347,] %>% arrange(artefact.state)
-
-
-```
-
-## Morpho type  
-```{r}
-# keeps only colums relevant for morpho type clasification and sorts them based on their technological class
-keep_col <- c(2, 4:5, 7, 19:21)
-morpho.type <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_morpho.type <- morpho.type[1:191, ] %>% arrange(artefact.state)
-PS_morpho.type <- morpho.type[309:335,] %>% arrange(artefact.state)
-
-
-```
-
-## Application 'Pradnick method'  
-```{r}
-# keeps only colums relevant for 'morpho type'Pradnick method' clasification and sorts them based on their technological class
-keep_col <- c(2, 4:5, 15:16)
-Pradnick.method <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_Pradnick.method <- Pradnick.method[1:191, ] %>% arrange(artefact.state)
-PS_Pradnick.method <- Pradnick.method[309:335,] %>% arrange(artefact.state)
-
-
-```
-
-## Lateralisation
-```{r}
-# keeps only colums relevant for lateralisation and sorts them based on their technological class
-keep_col <- c(2, 4:5, 18)
-lateralisation <- data_keep[, keep_col] %>% arrange(technological.class)
-
-KM_lateralisation <- lateralisation[1:191, ] %>% arrange(artefact.state)
-PS_lateralisation <- lateralisation[309:335,] %>% arrange(artefact.state)
-
-
-```
-
-## Type lateral sharpening spall 
-```{r}
-# keeps only colums relevant for lateral sharpening spall clasification and sorts them based on their technological class
-keep_col <- c(2, 4:5, 17:18)
-lss_type <- data_keep[, keep_col] %>% arrange(technological.class)
-
-LSS_lss_type <- lss_type[192:308, ] %>% arrange(artefact.state)
-
-
-```
-
-# Data analsysis - stats  
-## Dimension
-```{r}
-# descriptive statistics 
-# Keilmesser (including semi-finished products, and Km-points)
-length(KM_dimensions[["technological.class"]])
-summary(KM_dimensions[["length"]])
-summary(KM_dimensions[["width"]])
-summary(KM_dimensions[["thickness"]])
-
-# Keilmesser (complete)
-length(KM.only_dimensions[["technological.class"]])
-summary(KM.only_dimensions[["length"]])
-summary(KM.only_dimensions[["width"]])
-summary(KM.only_dimensions[["thickness"]])
-
-# Keilmesser-points
-length(KM.point_dimensions[["technological.class"]])
-summary(KM.point_dimensions[["length"]])
-summary(KM.point_dimensions[["width"]])
-summary(KM.point_dimensions[["thickness"]])
-
-# Pradnick scraper
-length(PS_dimensions[["technological.class"]])
-summary(PS_dimensions[["length"]])
-summary(PS_dimensions[["width"]])
-summary(PS_dimensions[["thickness"]])
-
-# Later sharpening spall
-length(LSS_dimensions[["technological.class"]])
-summary(LSS_dimensions[["length"]])
-summary(LSS_dimensions[["width"]])
-summary(LSS_dimensions[["thickness"]])
-
-# scraper 
-length(S_dimensions[["technological.class"]])
-summary(S_dimensions[["length"]])
-summary(S_dimensions[["width"]])
-summary(S_dimensions[["thickness"]]) 
-
-
-```
-
-
 # Data analsysis - plots  
-
 ## Dimension  
 ### Dimesnion length
 ```{r}
@@ -544,47 +330,3 @@ ggsave("PS.morpho.length_width.png")
 
 
 ```
-
-
-
-
-# Save data
-## Define output file name
-```{r}
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "_IE_plot", ".pdf")
-ggsave(filename = file_out, plot = data_plot, path = dir_out, device = "pdf")
-
-```
-The files will be saved as "`r paste0("~/", dir_out, ".[ext]")`".
-
----
-
-
-# Show plot files information
-```{r}
-info_out <- list.files(path = dir_out, pattern = "\\.pdf$", 
-                       full.names = TRUE) %>% 
-            md5sum()
-```
-
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
-```
-
----
-
-# sessionInfo() and RStudio version
-```{r}
-sessionInfo()
-```
-
----
-
-RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
-
-
---- 
-
-END OF SCRIPT
