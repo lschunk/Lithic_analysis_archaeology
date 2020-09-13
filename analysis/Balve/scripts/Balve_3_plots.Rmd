@@ -28,12 +28,12 @@ knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
 ---
 
 # Goal of the script
-This script reads the xlsx file (database techno-typological analysis) generated with E4 and formats the data for a statistical analysis.  
+This script reads the xlsx file (derived data) containing all the information gained through a lithic analysis.   
 The script will:
 
-1. Reads in the original xlsx file 
-2. Changes and sort the data  in order to do stats 
-3. Saves the data as a new xlsx file and R object
+1. Reads the xlsx file 
+2. Plots all relevant variables in various combinations 
+3. Saves the plot as PDFs
 
 
 ```{r}
@@ -51,11 +51,10 @@ The knit directory for this script is the project directory.
 # Load packages
 ```{r}
 library(openxlsx)
-#library(readxl)
 library(R.utils)
 library(tools)
-#library(data.table)
 library(chron)
+library(ggplot2)
 ```
 
 
@@ -74,9 +73,46 @@ The checksum (MD5 hashes) of the imported files are:
 info_in
 ```
 
+
+# Load data into R object
+```{r}
+imp_data <- loadObject(paste0(dir_in, "Balve_lithic_analysis.Rbin"))
+```
+
+
+# Compute summary statistics
+## Create function to compute the statistics at once
+```{r}
+nminmaxmeanmedsd <- function(x){
+	y <- x[!is.na(x)]
+	n_test <- length(y)
+	min_test <- min(y)
+	max_test <- max(y)
+	mean_test <- mean(y)
+ 	med_test <- median(y)
+ 	sd_test <- sd(y)
+ 	out <- c(n_test, min_test, max_test, mean_test, med_test, sd_test)
+ 	names(out) <- c("n", "min", "max", "mean", "median", "sd")
+ 	return(out)
+}
+```
+
 # Data analsysis - plots  
 ## Dimension  
 ### Dimesnion length
+
+```{r}
+# Define grouping variable and compute the summary statistics 
+KM_length <- summaryBy(.~ ID+artefact.state+length, 
+                  data=imp_data, 
+                  FUN=nminmaxmeanmedsd)
+str(KM_length)
+```
+
+
+
+
+
 ```{r}
 # histogram Keilmesser length
 KM.length <- ggplot(KM_dimensions, aes(x = length, fill = artefact.state)) + 

@@ -124,12 +124,22 @@ nminmaxmeanmedsd <- function(x){
 ```
 
 ##  Compute the summary statistics in groups
-### Spots
+### Dimensions
 ```{r}
-KM <- summaryBy(.~ID+Artefact.state, 
-                  data=imp_data[c("ID","Artefact.state" ,names(imp_data)[num.var])], 
-                  FUN=nminmaxmeanmedsd)
-str(KM)
+# length Keilmesser 
+KM_length <- summaryBy(.~ ID+artefact.state+length, 
+                  data=imp_data, FUN=nminmaxmeanmedsd)
+str(KM_length)
+
+# width Keilmesser 
+KM_width <- summaryBy(.~ ID+artefact.state+width, 
+                  data=imp_data, FUN=nminmaxmeanmedsd)
+str(KM_width)
+
+# thickness Keilmesser 
+KM_thickness <- summaryBy(.~ ID+artefact.state+thickness, 
+                  data=imp_data, FUN=nminmaxmeanmedsd)
+str(KM_thickness)
 ```
 
 # Data analsysis - stats  
