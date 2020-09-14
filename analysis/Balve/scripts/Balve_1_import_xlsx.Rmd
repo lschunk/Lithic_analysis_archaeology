@@ -57,6 +57,7 @@ library(R.utils)
 library(tools)
 library(data.table)
 library(chron)
+library(dplyr)
 ```
 
 
@@ -262,7 +263,7 @@ The files will be saved as "`r paste0("~/", file_out, ".[ext]")`".
 
 ## Write to XLSX
 ```{r}
-write.xlsx(list(data = data_final, KM_dimensions = KM_dimensions, KM.point_dimensions =
+write.xlsx(list(data = data_final, dimensions = dimensions, KM_dimensions = KM_dimensions, KM.point_dimensions =
                   KM.point_dimensions, KM.only_dimensions = KM.only_dimensions,
                   KM.complete_dimensions = KM.complete_dimensions, PS_dimensions =
                   PS_dimensions, LSS_dimensions = LSS_dimensions, S_dimensions =
@@ -288,10 +289,10 @@ saveObject(data_final, file = paste0(dir_out, file_out, ".Rbin"))
 ```
 
 
-## Show files information
+## Show file information
 ```{r}
 file_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
-md5_out <- md5sum(files_out)
+md5_out <- md5sum(file_out)
 info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, 
                        row.names = NULL)
 ```

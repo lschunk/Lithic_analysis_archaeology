@@ -51,10 +51,12 @@ The knit directory for this script is the project directory.
 # Load packages
 ```{r}
 library(openxlsx)
+library(readxl)
 library(R.utils)
 library(tools)
 library(chron)
 library(ggplot2)
+library(wesanderson)
 ```
 
 
@@ -76,232 +78,268 @@ info_in
 
 # Load data into R object
 ```{r}
-imp_data <- loadObject(paste0(dir_in, "Balve_lithic_analysis.Rbin"))
+imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1, colNames = TRUE,
+                      rowNames = FALSE, skipEmptyRows = FALSE) 
 ```
 
 
-# Compute summary statistics
-## Create function to compute the statistics at once
-```{r}
-nminmaxmeanmedsd <- function(x){
-	y <- x[!is.na(x)]
-	n_test <- length(y)
-	min_test <- min(y)
-	max_test <- max(y)
-	mean_test <- mean(y)
- 	med_test <- median(y)
- 	sd_test <- sd(y)
- 	out <- c(n_test, min_test, max_test, mean_test, med_test, sd_test)
- 	names(out) <- c("n", "min", "max", "mean", "median", "sd")
- 	return(out)
-}
-```
 
 # Data analsysis - plots  
-## Dimension  
-### Dimesnion length
-
+## Histogram
+### Histogram dimensions - Keilmesser 
 ```{r}
-# Define grouping variable and compute the summary statistics 
-KM_length <- summaryBy(.~ ID+artefact.state+length, 
-                  data=imp_data, 
-                  FUN=nminmaxmeanmedsd)
-str(KM_length)
-```
+# Load data sheet Keilmesser 
+KM_dim <- read.xlsx(xlsxFile = data_file, sheet = 3) 
 
 
+# Histogram Keilmesser length
+KM.length <- ggplot(KM_dim, aes(x = length, fill = artefact.state)) + 
+             geom_histogram(binwidth = 1) + xlim(20, 160) +
+             labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+             theme_classic() +
+             geom_vline(aes(xintercept=mean(length)), linetype="dashed", size=1) +
+             scale_fill_manual(values = wes_palette(n =3,name = "Zissou1"), labels = c("complete", "Keilmesser point", "semifinished product")) 
 
-
-
-```{r}
-# histogram Keilmesser length
-KM.length <- ggplot(KM_dimensions, aes(x = length, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + xlim(20, 160) +
-  labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_vline(aes(xintercept=mean(length)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =3,name = "Zissou1"), labels = c("complete", "Keilmesser point", "semifinished product")) 
- 
+print(KM.length)
 ggsave("KM.length.png") 
-  
-# histogram scraper length
-S.length <- ggplot(S_dimensions, aes(x = length, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + xlim(40, 100) +
-  labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_vline(aes(xintercept=mean(length)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =1,name = "Zissou1"))
-
-ggsave("S.length.png")
-
-# histogram Pradnick scraper length
-PS.length <- ggplot(PS_dimensions, aes(x = length, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + xlim(30, 80) +
-  labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_vline(aes(xintercept=mean(length)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =1,name = "FantasticFox1")) 
-
-ggsave("PS.length.png")
-
-# histogram lateral sharpening spall length
-LSS.length <- ggplot(LSS_dimensions, aes(x = length, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + xlim(5, 50) +
-  labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_vline(aes(xintercept=mean(length)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =3,name = "Darjeeling2"), labels = c("complete", "distal fragment", "medial fragment")) 
-
-ggsave("LSS.length.png")
+ggsave("KM.length.pdf") 
 
 
+# Histogram Keilmesser width
+KM.width <- ggplot(KM_dim, aes(x = width, fill = artefact.state)) + 
+            geom_histogram(binwidth = 1) + xlim(20, 90) +
+            labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+            theme_classic() +
+            geom_vline(aes(xintercept=mean(width)), linetype="dashed", size=1) +
+            scale_fill_manual(values = wes_palette(n =3,name = "Zissou1"), labels = c("complete", "Keilmesser point", "semifinished product")) 
 
-
-```
-
-### Dimension width 
-```{r}
-# histogram Keilmesser width
-KM.width <- ggplot(KM_dimensions, aes(x = width, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + xlim(20, 90) +
-  labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_vline(aes(xintercept=mean(width)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =3,name = "Zissou1"), labels = c("complete", "Keilmesser point", "semifinished product")) 
 print(KM.width) 
 ggsave("KM.width.png") 
-  
-# histogram scraper width
-S.width <- ggplot(S_dimensions, aes(x = width, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + xlim(25, 50) +
-  labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_vline(aes(xintercept=mean(width)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =1,name = "Zissou1"))
-
-ggsave("S.width.png")
-
-# histogram Pradnick scraper width
-PS.width <- ggplot(PS_dimensions, aes(x = width, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + xlim(20, 50) +
-  labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_vline(aes(xintercept=mean(width)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =1,name = "FantasticFox1")) 
-
-ggsave("PS.width.png")
-
-# histogram lateral sharpening spall width
-LSS.width <- ggplot(LSS_dimensions, aes(x = width, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + xlim(10, 30) +
-  labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_vline(aes(xintercept=mean(width)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =3,name = "Darjeeling2"), labels = c("complete", "distal fragment", "medial fragment")) 
-
-ggsave("LSS.width.png")
+ggsave("KM.width.pdf") 
 
 
-```
+# Histogram Keilmesser thickness 
+KM.thickness  <- ggplot(KM_dim, aes(y = thickness, fill = artefact.state)) + 
+                 geom_histogram(binwidth = 1) + ylim(5, 30) +
+                 labs(y = "thickness [mm]", x = "N", title = "", fill = "artefact state", size = 12) +
+                 theme_classic() +
+                 geom_hline(aes(yintercept=mean(thickness)), linetype="dashed", size=1) +
+                 scale_fill_manual(values = wes_palette(n =3,name = "Zissou1"), labels = c("complete", "Keilmesser point", "semifinished product")) 
 
-
-### Dimension thickness 
-```{r}
-# histogram Keilmesser thickness 
-KM.thickness  <- ggplot(KM_dimensions, aes(y = thickness, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + ylim(5, 30) +
-  labs(y = "thickness [mm]", x = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_hline(aes(yintercept=mean(thickness)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =3,name = "Zissou1"), labels = c("complete", "Keilmesser point", "semifinished product")) 
-
+print(KM.thickness) 
 ggsave("KM.thickness.png") 
-  
-# histogram scraper thickness 
-S.thickness <- ggplot(S_dimensions, aes(y = thickness, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + ylim(5, 25) +
-  labs(y = "thickness [mm]", x = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_hline(aes(yintercept=mean(thickness)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =1,name = "Zissou1"))
-
-ggsave("S.thickness.png")
-
-# histogram Pradnick scraper thickness 
-PS.thickness <- ggplot(PS_dimensions, aes(y = thickness, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + ylim(0, 25) +
-  labs(y = "thickness [mm]", x = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() +
-  geom_hline(aes(yintercept=mean(thickness)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =1 ,name = "FantasticFox1")) 
-
-ggsave("PS.thickness.png")
-
-# histogram lateral sharpening spall thickness 
-LSS.thickness <- ggplot(LSS_dimensions, aes(y = thickness, fill = artefact.state)) + 
-  geom_histogram(binwidth = 1) + ylim(0, 15) +
-  labs(y = "thickness[mm]", x = "N", title = "", fill = "artefact state", size = 12) +
-  theme_classic() + 
-  geom_hline(aes(yintercept=mean(thickness)), linetype="dashed", size=1) +
-  scale_fill_manual(values = wes_palette(n =3,name = "Darjeeling2"), labels = c("complete", "distal fragment", "medial fragment")) 
-
-ggsave("LSS.thickness.png")
-
+ggsave("KM.thickness.pdf") 
 
 ```
 
 
+### Histogram dimensions - Pradnick scraper 
+```{r}
+# Load data sheet Pradnick scraper  
+PS_dim <- read.xlsx(xlsxFile = data_file, sheet = 7) 
 
+
+# Histogram Pradnick scraper length
+PS.length <- ggplot(PS_dim, aes(x = length, fill = artefact.state)) + 
+             geom_histogram(binwidth = 1) + xlim(30, 80) +
+             labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+             theme_classic() +
+             geom_vline(aes(xintercept=mean(length)), linetype="dashed", size=1) +
+             scale_fill_manual(values = wes_palette(n =1,name = "FantasticFox1")) 
+
+print(PS.length)
+ggsave("PS.length.png")
+ggsave("PS.length.pdf")
+
+
+# Histogram Pradnick scraper width
+PS.width <- ggplot(PS_dim, aes(x = width, fill = artefact.state)) + 
+            geom_histogram(binwidth = 1) + xlim(20, 50) +
+            labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+            theme_classic() +
+            geom_vline(aes(xintercept=mean(width)), linetype="dashed", size=1) +
+            scale_fill_manual(values = wes_palette(n =1,name = "FantasticFox1")) 
+ 
+print(PS.width)
+ggsave("PS.width.png")
+ggsave("PS.width.pdf")
+
+
+# Histogram Pradnick scraper thickness 
+PS.thickness <- ggplot(PS_dim, aes(y = thickness, fill = artefact.state)) + 
+                geom_histogram(binwidth = 1) + ylim(0, 25) +
+                labs(y = "thickness [mm]", x = "N", title = "", fill = "artefact state", size = 12) +
+                theme_classic() +
+                geom_hline(aes(yintercept=mean(thickness)), linetype="dashed", size=1) +
+                scale_fill_manual(values = wes_palette(n =1 ,name = "FantasticFox1")) 
+
+print(PS.thickness)
+ggsave("PS.thickness.png")
+ggsave("PS.thickness.pdf")
+
+```
+
+
+### Histogram dimensions - Scraper 
+```{r}
+# Load data sheet Pradnick scraper  
+S_dim <- read.xlsx(xlsxFile = data_file, sheet = 9) 
+
+
+# Histogram scraper length
+S.length <- ggplot(S_dim, aes(x = length, fill = artefact.state)) + 
+            geom_histogram(binwidth = 1) + xlim(40, 100) +
+            labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+            theme_classic() +
+            geom_vline(aes(xintercept=mean(length)), linetype="dashed", size=1) +
+            scale_fill_manual(values = wes_palette(n =1,name = "Zissou1"))
+
+print(S.length)
+ggsave("S.length.png")
+ggsave("S.length.pdf")
+
+
+# Histogram scraper width
+S.width <- ggplot(S_dim, aes(x = width, fill = artefact.state)) + 
+           geom_histogram(binwidth = 1) + xlim(25, 50) +
+           labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+           theme_classic() +
+           geom_vline(aes(xintercept=mean(width)), linetype="dashed", size=1) +
+           scale_fill_manual(values = wes_palette(n =1,name = "Zissou1"))
+
+print(S.width)
+ggsave("S.width.png")
+ggsave("S.width.pdf")
+
+
+# Histogram scraper thickness 
+S.thickness <- ggplot(S_dim, aes(y = thickness, fill = artefact.state)) + 
+               geom_histogram(binwidth = 1) + ylim(8, 25) +
+               labs(y = "thickness [mm]", x = "N", title = "", fill = "artefact state", size = 12) +
+               theme_classic() +
+               geom_hline(aes(yintercept=mean(thickness)), linetype="dashed", size=1) +
+               scale_fill_manual(values = wes_palette(n =1,name = "Zissou1"))
+
+print(S.thickness)
+ggsave("S.thickness.png")
+ggsave("S.thickness.pdf")
+
+```
+
+
+### Histogram dimension - Lateral sharpening spall
+```{r}
+# Load data sheet lateral sharpening spall  
+LSS_dim <- read.xlsx(xlsxFile = data_file, sheet = 8) 
+
+  
+# Histogram lateral sharpening spall length
+LSS.length <- ggplot(LSS_dim, aes(x = length, fill = artefact.state)) + 
+              geom_histogram(binwidth = 1) + xlim(5, 50) +
+              labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+              theme_classic() +
+              geom_vline(aes(xintercept=mean(length)), linetype="dashed", size=1) +
+              scale_fill_manual(values = wes_palette(n =3,name = "Darjeeling2"), labels = c("complete", "distal fragment", "medial fragment")) 
+
+print(LSS.length)
+ggsave("LSS.length.png")
+ggsave("LSS.length.pdf")
+
+
+# Histogram lateral sharpening spall width
+LSS.width <- ggplot(LSS_dim, aes(x = width, fill = artefact.state)) + 
+             geom_histogram(binwidth = 1) + xlim(10, 30) +
+             labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+             theme_classic() +
+             geom_vline(aes(xintercept=mean(width)), linetype="dashed", size=1) +
+             scale_fill_manual(values = wes_palette(n =3,name = "Darjeeling2"), labels = c("complete", "distal fragment", "medial fragment")) 
+
+
+print(LSS.width)
+ggsave("LSS.width.png")
+ggsave("LSS.width.pdf")
+
+
+# Histogram lateral sharpening spall thickness 
+LSS.thickness <- ggplot(LSS_dim, aes(y = thickness, fill = artefact.state)) + 
+                 geom_histogram(binwidth = 1) + ylim(2, 12) +
+                 labs(y = "thickness[mm]", x = "N", title = "", fill = "artefact state", size = 12) +
+                 theme_classic() + 
+                 geom_hline(aes(yintercept=mean(thickness)), linetype="dashed", size=1) +
+                 scale_fill_manual(values = wes_palette(n =3,name = "Darjeeling2"), labels = c("complete", "distal fragment", "medial fragment")) 
+
+print(LSS.thickness)
+ggsave("LSS.thickness.png")
+ggsave("LSS.thickness.pdf")
+
+```
+
+## Scatterplot 
 ### Length-width ratio 
 ```{r}
-# scatterplott Keilmesser (complete + point) length VS width 
-KM.length_width <- ggplot(KM.complete_dimensions, aes(y = length, x = width, fill = artefact.state,)) +
-   geom_point(size = 3, shape = 21) +
-   labs(x = "length [mm]", y = "width [mm]", title = "", fill = "artefact state", size = 12) +
-   xlim(0, 150) + ylim(0, 150) +
-   theme_classic() +
-   scale_fill_manual(values = wes_palette(n =3,name = "Zissou1", type = "continuous"),labels = c("complete", "Keilmesser point")) 
+# Load data sheet Keilmesser 
+KM_comp_dim <- read.xlsx(xlsxFile = data_file, sheet = 6) 
 
+
+# Scatterplot Keilmesser (complete + point) length VS width 
+KM.length_width <- ggplot(KM_comp_dim, aes(y = length, x = width, fill = artefact.state,)) +
+                   geom_point(size = 3, shape = 21) +
+                   labs(x = "length [mm]", y = "width [mm]", title = "", fill = "artefact state", size = 12) +
+                   xlim(0, 150) + ylim(0, 150) +
+                   theme_classic() +
+                   scale_fill_manual(values = wes_palette(n =3,name = "Zissou1", type = "continuous"),labels = c("complete", "Keilmesser point")) 
+
+print(KM.length_width)
 ggsave("KM.length_width.png")
+ggsave("KM.length_width.pdf")
 
 
-# scatterplott Pradnick scraper length VS width 
-PS.length_width <- ggplot(PS_dimensions, aes(y = length, x = width, fill = artefact.state)) +
-   geom_point(size = 3, shape = 21) +
-   labs(x = "length [mm]", y = "width [mm]", title = "",fill = "artefact state", size = 12) +
-   xlim(10, 70) + ylim(30, 80) +
-   theme_classic() +
-   scale_fill_manual(values = wes_palette(n =1,name = "FantasticFox1", type = "continuous")) 
+# Scatterplot Pradnick scraper length VS width 
+PS.length_width <- ggplot(PS_dim, aes(y = length, x = width, fill = artefact.state)) +
+                   geom_point(size = 3, shape = 21) +
+                   labs(x = "length [mm]", y = "width [mm]", title = "",fill = "artefact state", size = 12) +
+                   xlim(10, 70) + ylim(30, 80) +
+                   theme_classic() +
+                   scale_fill_manual(values = wes_palette(n =1,name = "FantasticFox1", type = "continuous")) 
 
-
+print(PS.length_width)
 ggsave("PS.length_width.png")
+ggsave("PS.length_width.pdf")
 
-# scatterplott lateral sharpening spall length VS width 
-LSS.complete_dimensions <- LSS_dimensions[1:110,] 
 
-LSS.length_width <- ggplot(LSS.complete_dimensions, aes(y = length, x = width, fill = artefact.state)) +
-   geom_point(size = 3, shape = 21) +
-   labs(x = "length [mm]", y = "width [mm]", title = "",fill = "artefact state", size = 12) +
-   xlim(0, 50) + ylim(0, 70) +
-   theme_classic() +
-   scale_fill_manual(values = wes_palette(n =1,name = "GrandBudapest1", type = "continuous")) 
+# Scatterplot lateral sharpening spall length VS width 
+# Defines only the rows with complete LSS  
+LSS.comp_dim <- LSS_dim[1:110,] 
 
+LSS.length_width <- ggplot(LSS.comp_dim, aes(y = length, x = width, fill = artefact.state)) +
+                    geom_point(size = 3, shape = 21) +
+                    labs(x = "length [mm]", y = "width [mm]", title = "",fill = "artefact state", size = 12) +
+                    xlim(0, 45) + ylim(0, 65) +
+                    theme_classic() +
+                    scale_fill_manual(values = wes_palette(n =1,name = "GrandBudapest1", type = "continuous")) 
+
+print(LSS.length_width)
 ggsave("LSS.length_width.png")
+ggsave("LSS.length_width.pdf")
 
-# scatterplot Keilmesser (complete) + Pradnick scraper length VS width
-KM.PS_dimensions <- dimensions[c(1:191, 309:335), ] %>% arrange(artefact.state)
-KM.PS_dimensions <- KM.PS_dimensions[1:185,]
 
-KM.PS.length_width <- ggplot(KM.PS_dimensions, aes(y = length, x = width, fill = technological.class)) +
-   geom_point(size = 3, shape = 21) +
-   labs(x = "length [mm]", y = "width [mm]", title = "",fill = "artefact type", size = 12) +
-   xlim(0, 150) + ylim(0, 150) +
-   theme_classic() +
-   scale_fill_manual(values = wes_palette(n =3,name = "GrandBudapest1", type = "continuous"), labels = c("Keilmesser", "Pradnick scraper")) 
+# Scatterplot Keilmesser (complete) + Pradnick scraper length VS width
+# Load data sheet dimensions  
+dim <- read.xlsx(xlsxFile = data_file, sheet = 2) 
+
+KM.PS_dim <- dim[c(1:191, 309:335), ] %>% arrange(artefact.state)
+KM.PS_dim <- KM.PS_dim[1:185,]
+
+KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, fill = technological.class)) +
+                      geom_point(size = 3, shape = 21) +
+                      labs(x = "length [mm]", y = "width [mm]", title = "",fill = "artefact type", size = 12) +
+                      xlim(0, 140) + ylim(0, 150) +
+                      theme_classic() +
+                      scale_fill_manual(values = wes_palette(n =3,name = "GrandBudapest1", type = "continuous"), labels = c("Keilmesser", "Pradnick scraper")) 
 
 print(KM.PS.length_width)
 ggsave("KM.PS.length.width.png")
-
+ggsave("KM.PS.length.width.pdf")
 
 ```
 

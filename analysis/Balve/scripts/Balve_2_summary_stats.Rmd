@@ -90,11 +90,11 @@ The imported file is: "`r paste0("~/", data_file)`"
 
 ---
 
-# 4. Define numeric variables
+# Define numeric variables
 ```{r}
 # changes the order of columns 
 imp_data <- imp_data[c(1:22, 27,23:26, 28:34)]
-num.var <- imp_data[19:23] 
+num.var <-19:23
 ```
 
 The following variables will be used: 
@@ -123,67 +123,17 @@ nminmaxmeanmedsd <- function(x){
 }
 ```
 
-##  Compute the summary statistics in groups
+
+##  Compute the summary statistics 
 ### Dimensions
 ```{r}
-# length Keilmesser 
-KM_length <- summaryBy(.~ ID+artefact.state+length, 
+# Dimensions Keilmesser, Keilmesser-points, Pradnick scraper, scraper & Later sharpening spall 
+dimensions <- summaryBy(length + width + thickness ~ technological.class + artefact.state,
                   data=imp_data, FUN=nminmaxmeanmedsd)
-str(KM_length)
+str(dimensions)
 
-# width Keilmesser 
-KM_width <- summaryBy(.~ ID+artefact.state+width, 
-                  data=imp_data, FUN=nminmaxmeanmedsd)
-str(KM_width)
-
-# thickness Keilmesser 
-KM_thickness <- summaryBy(.~ ID+artefact.state+thickness, 
-                  data=imp_data, FUN=nminmaxmeanmedsd)
-str(KM_thickness)
 ```
 
-# Data analsysis - stats  
-## Dimension
-```{r}
-# descriptive statistics 
-# Keilmesser (including semi-finished products, and Km-points)
-length(KM_dimensions[["technological.class"]])
-summary(KM_dimensions[["length"]])
-summary(KM_dimensions[["width"]])
-summary(KM_dimensions[["thickness"]])
-
-# Keilmesser (complete)
-length(KM.only_dimensions[["technological.class"]])
-summary(KM.only_dimensions[["length"]])
-summary(KM.only_dimensions[["width"]])
-summary(KM.only_dimensions[["thickness"]])
-
-# Keilmesser-points
-length(KM.point_dimensions[["technological.class"]])
-summary(KM.point_dimensions[["length"]])
-summary(KM.point_dimensions[["width"]])
-summary(KM.point_dimensions[["thickness"]])
-
-# Pradnick scraper
-length(PS_dimensions[["technological.class"]])
-summary(PS_dimensions[["length"]])
-summary(PS_dimensions[["width"]])
-summary(PS_dimensions[["thickness"]])
-
-# Later sharpening spall
-length(LSS_dimensions[["technological.class"]])
-summary(LSS_dimensions[["length"]])
-summary(LSS_dimensions[["width"]])
-summary(LSS_dimensions[["thickness"]])
-
-# scraper 
-length(S_dimensions[["technological.class"]])
-summary(S_dimensions[["length"]])
-summary(S_dimensions[["width"]])
-summary(S_dimensions[["thickness"]]) 
-
-
-```
 
 # Save data
 ## Format name of output file
@@ -195,14 +145,14 @@ The file will be saved as "`r paste0("~/", dir_out, ".[ext]")`".
 
 ## Write to XLSX
 ```{r}
-write.xlsx(list(spot = spot, task = task, raw_material = raw_material), 
+write.xlsx(list(dimensions = dimensions), 
            file = paste0(dir_out, file_out, ".xlsx"))
 ```
 
 
 ## Save R object
 ```{r}
-saveObject(list(spot=spot, task = task, raw_material = raw_material), 
+saveObject(list(dimensions = dimensions), 
            file = paste0(dir_out, file_out, ".Rbin"))
 ```
 
@@ -210,7 +160,7 @@ saveObject(list(spot=spot, task = task, raw_material = raw_material),
 ## Show file information
 ```{r}
 file_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
-md5_out <- md5sum(files_out)
+md5_out <- md5sum(file_out)
 info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, row.names = NULL)
 ```
 
