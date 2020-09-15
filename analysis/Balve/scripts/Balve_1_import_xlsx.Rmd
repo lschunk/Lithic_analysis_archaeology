@@ -177,7 +177,7 @@ PS_cortex_blanks <- cortex_blanks[309:335,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for back modifications and sorts them based 
 # on their technological class
-keep_col <- c(2, 4:5, 11)
+keep_col <- c(2, 4:5, 11, 27)
 back <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_back <- back[1:191, ] %>% arrange(artefact.state)
