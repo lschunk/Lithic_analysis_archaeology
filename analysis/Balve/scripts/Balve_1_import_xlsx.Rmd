@@ -247,7 +247,7 @@ PS_lateralisation <- lateralisation[309:335,] %>% arrange(artefact.state)
 keep_col <- c(2, 4:5, 17:18)
 lss_type <- data_final[, keep_col] %>% arrange(technological.class)
 
-LSS_lss_type <- lss_type[192:308, ] %>% arrange(artefact.state)
+LSS_type <- lss_type[192:308, ] %>% arrange(artefact.state)
 
 
 ```
@@ -278,7 +278,7 @@ write.xlsx(list(data = data_final, dimensions = dimensions, KM_dimensions = KM_d
                   KM_morpho.type, PS_morpho.type = PS_morpho.type, KM_Pradnick.method =
                   KM_Pradnick.method, PS_Pradnick.method = PS_Pradnick.method,
                   KM_lateralisation = KM_lateralisation, PS_lateralisation =
-                  PS_lateralisation, LSS_lss_type = LSS_lss_type),
+                  PS_lateralisation, LSS_type = LSS_type),
                   file = paste0(dir_out, file_out, ".xlsx"))
 ```
 
