@@ -1,0 +1,320 @@
+---
+title: 'Import - Lithic analysis Buhlen '
+author: "Lisa Schunk"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float: true
+    theme: cerulean
+    highlight: pygments
+    number_sections: true
+  github_document: 
+    toc: true
+    toc_depth: 3
+    html_preview: false
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", 
+  knit_root_dir = rprojroot::find_rstudio_root_file()) })
+---
+
+
+```{r Knitr Options, include = FALSE}
+knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
+```
+
+
+---
+
+# Goal of the script
+This script reads the xlsx file (database techno-typological analysis) generated with E4
+and formats the data for a statistical analysis.  
+The script will:
+
+1. Reads in the original xlsx file 
+2. Changes and sort the data  in order to do stats 
+3. Saves the data as a new xlsx file and R object
+
+
+```{r}
+dir_in <-  "analysis/Buhlen/raw_data/"
+dir_out <- "analysis/Buhlen/derived_data/"
+```
+
+Raw data must be located in "`r dir_in`".  
+Formatted data will be saved in "`r dir_out`".
+The knit directory for this script is the project directory.
+
+---
+
+
+# Load packages
+```{r}
+library(openxlsx)
+library(readxl)
+library(R.utils)
+library(tools)
+library(data.table)
+library(chron)
+library(dplyr)
+```
+
+
+---
+
+# Get name, path and information of the file
+```{r}
+data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
+md5_in <- md5sum(data_file)
+info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
+                      row.names = NULL)
+```
+
+The checksum (MD5 hashes) of the imported files are:  
+```{r, echo = FALSE}
+info_in
+```
+
+
+# Read in original xlsx-file
+```{r}
+imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1, colNames = TRUE,
+                      rowNames = FALSE, skipEmptyRows = FALSE) 
+#select the columns to keep 
+keep_col <- c(1:2, 9:19, 21:35, 37:38, 40:43)
+data_final <- imp_data[,keep_col]
+
+data_final$length <- as.numeric(data_final$length)
+data_final$width <- as.numeric(data_final$width)
+data_final$thickness <- as.numeric(data_final$thickness)
+data_final$weight <- as.numeric(data_final$weight)
+data_final$perimeter.basis.back <- as.numeric(data_final$perimeter.basis.back)
+data_final$perimeter.arch <- as.numeric(data_final$perimeter.arch)
+data_final$perimeter.active.edge <- as.numeric(data_final$perimeter.active.edge)
+data_final$perimeter.total <- as.numeric(data_final$perimeter.total)
+data_final$thickness.back <- as.numeric(data_final$thickness.back)
+
+str(data_final)
+
+```
+
+# Data analsysis - sorting  
+## Dimension
+```{r}
+# keeps only columns relevant for dimensions and sorts them based on 
+# their technological class
+keep_col <- c(2, 4:5,19:21)
+dimensions <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_dimensions <- dimensions[2:131, ] %>% arrange(artefact.state)
+KM.point_dimensions <- KM_dimensions[113:127, ]
+KM.only_dimensions <- KM_dimensions[-(113:127), ]
+KM.complete_dimensions <- KM_dimensions[1:111, ]
+PS_dimensions <- dimensions[174:197, ] %>% arrange(artefact.state)
+LSS_dimensions <- dimensions[132:173, ] %>% arrange(artefact.state)
+S_dimensions <- dimensions[198:199, ] %>% arrange(artefact.state)
+
+
+```
+
+## Perimeter
+```{r}
+# keeps only columns relevant for perimeter measurements and sorts them 
+# based on their technological class
+keep_col <- c(2, 4:5,7,23:26)
+perimeter <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_perimeter <- perimeter[2:131, ] %>% arrange(artefact.state)
+PS_perimeter <- perimeter[174:197, ] %>% arrange(artefact.state)
+
+```
+
+## Weight
+```{r}
+# keeps only columns relevant for weight measurements and sorts them based 
+# on their technological class
+keep_col <- c(2, 4:5, 22)
+weight <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_weight <- weight[2:131, ] %>% arrange(artefact.state)
+PS_weight <- weight[174:197, ] %>% arrange(artefact.state)
+LSS_weight <- weight[132:173, ] %>% arrange(artefact.state)
+S_weight <- weight[198:199, ] %>% arrange(artefact.state)
+
+
+```
+
+## Raw material
+```{r}
+# keeps only columns relevant for raw material classification and sorts them 
+# based on their technological class
+keep_col <- c(2, 4:5, 3)
+raw_material <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_raw_material <- raw_material[2:131, ] %>% arrange(artefact.state)
+PS_raw_material <- raw_material[174:197, ] %>% arrange(artefact.state)
+LSS_raw_material <- raw_material[132:173, ] %>% arrange(artefact.state)
+S_raw_material <- raw_material[198:199, ] %>% arrange(artefact.state)
+ 
+
+```
+
+## Cortex + blanks 
+```{r}
+# keeps only columns relevant for cortex and blank classification and sorts them 
+# based on their technological class
+keep_col <- c(2, 4:5, 6, 8:10)
+cortex_blanks <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_cortex_blanks <- cortex_blanks[2:131, ] %>% arrange(artefact.state)
+PS_cortex_blanks <- cortex_blanks[174:197, ] %>% arrange(artefact.state)
+
+
+```
+
+## Back 
+```{r}
+# keeps only columns relevant for back modifications and sorts them based 
+# on their technological class
+keep_col <- c(2, 4:5, 11, 27)
+back <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_back <- back[2:131, ] %>% arrange(artefact.state)
+PS_back <- back[174:197, ] %>% arrange(artefact.state)
+
+
+```
+
+## Edge retouch
+```{r}
+# keeps only columns relevant for edge retouch classification and sorts them 
+# based on their technological class
+keep_col <- c(2, 4:5, 12:13, 29)
+edge_retouch <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_edge_retouch <- edge_retouch[2:131, ] %>% arrange(artefact.state)
+PS_edge_retouch <- edge_retouch[174:197, ] %>% arrange(artefact.state)
+LSS_edge_retouch <- edge_retouch[132:173, ] %>% arrange(artefact.state)
+S_edge_retouch <- edge_retouch[198:199, ] %>% arrange(artefact.state)
+
+
+```
+
+## Morpho type  
+```{r}
+# keeps only columns relevant for morpho type classification and sorts them 
+# based on their technological class
+keep_col <- c(2, 4:5, 7, 19:21)
+morpho.type <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_morpho.type <- morpho.type[2:131, ] %>% arrange(artefact.state)
+PS_morpho.type <- morpho.type[174:197, ] %>% arrange(artefact.state)
+
+
+```
+
+## Application 'Pradnick method'  
+```{r}
+# keeps only columns relevant for 'morpho type 'Pradnick method' classification 
+# and sorts them based on their technological class
+keep_col <- c(2, 4:5, 15:16)
+Pradnick.method <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_Pradnick.method <- Pradnick.method[2:131, ] %>% arrange(artefact.state)
+PS_Pradnick.method <- Pradnick.method[174:197, ] %>% arrange(artefact.state)
+
+
+```
+
+## Lateralisation
+```{r}
+# keeps only columns relevant for lateralisation and sorts them based on their
+# technological class
+keep_col <- c(2, 4:5, 18)
+lateralisation <- data_final[, keep_col] %>% arrange(technological.class)
+
+KM_lateralisation <- lateralisation[2:131, ] %>% arrange(artefact.state)
+PS_lateralisation <- lateralisation[174:197, ] %>% arrange(artefact.state)
+
+
+```
+
+## Type lateral sharpening spall 
+```{r}
+# keeps only columns relevant for lateral sharpening spall classification and sorts 
+# them based on their technological class
+keep_col <- c(2, 4:5, 17:18)
+lss_type <- data_final[, keep_col] %>% arrange(technological.class)
+
+LSS_type <- lss_type[132:173, ] %>% arrange(artefact.state)
+
+
+```
+
+
+# Save data
+## Format name of output file
+```{r}
+file_out <- "Buhlen_lithic_analysis"
+```
+The files will be saved as "`r paste0("~/", file_out, ".[ext]")`".
+
+
+## Write to XLSX
+```{r}
+write.xlsx(list(data = data_final, dimensions = dimensions, KM_dimensions = KM_dimensions, KM.point_dimensions =
+                  KM.point_dimensions, KM.only_dimensions = KM.only_dimensions,
+                  KM.complete_dimensions = KM.complete_dimensions, PS_dimensions =
+                  PS_dimensions, LSS_dimensions = LSS_dimensions, S_dimensions =
+                  S_dimensions, KM_perimeter = KM_perimeter, PS_perimeter = PS_perimeter,
+                  KM_weight = KM_weight, PS_weight = PS_weight,LSS_weight = LSS_weight,
+                  S_weight = S_weight, KM_raw_material = KM_raw_material,PS_raw_material =
+                  PS_raw_material, LSS_raw_material = LSS_raw_material, S_raw_material =
+                  S_raw_material, KM_cortex_blanks = KM_cortex_blanks, PS_cortex_blanks =
+                  PS_cortex_blanks, KM_back = KM_back, PS_back = PS_back, KM_edge_retouch =
+                  KM_edge_retouch, PS_edge_retouch = PS_edge_retouch, LSS_edge_retouch =
+                  LSS_edge_retouch, S_edge_retouch = S_edge_retouch, KM_morpho.type =
+                  KM_morpho.type, PS_morpho.type = PS_morpho.type, KM_Pradnick.method =
+                  KM_Pradnick.method, PS_Pradnick.method = PS_Pradnick.method,
+                  KM_lateralisation = KM_lateralisation, PS_lateralisation =
+                  PS_lateralisation, LSS_type = LSS_type),
+                  file = paste0(dir_out, file_out, ".xlsx"))
+```
+
+
+## Save R object
+```{r}
+saveObject(data_final, file = paste0(dir_out, file_out, ".Rbin"))
+```
+
+
+## Show file information
+```{r}
+file_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
+md5_out <- md5sum(file_out)
+info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, 
+                       row.names = NULL)
+```
+
+The checksum (MD5 hashes) of the exported files are:  
+```{r, echo = FALSE}
+info_out
+```
+
+
+---
+
+# sessionInfo() and RStudio version
+
+```{r}
+sessionInfo()
+```
+
+RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
+
+
+---
+
+
+END OF SCRIPT

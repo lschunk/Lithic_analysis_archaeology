@@ -1,0 +1,170 @@
+---
+title: 'Summary stats - Lithic analysis Ramioul' 
+author: "Lisa Schunk"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 4
+    toc_float: true
+    theme: cerulean
+    highlight: pygments
+    number_sections: true
+  github_document: 
+    toc: true
+    toc_depth: 3
+    html_preview: false
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", 
+  knit_root_dir = rprojroot::find_rstudio_root_file()) })
+---
+
+
+```{r Knitr Options, include = FALSE}
+knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
+```
+
+---
+
+
+# Goal of the script
+This script computes standard descriptive statistics for each group.  
+The groups are based on:
+
+* Tool type 
++ state of the tool (Complete, distal/proximal fragment, medial fragment)
+
+
+
+It computes the following statistics:  
+
+* n (sample size = `length`): number of measurements  
+* smallest value (`min`)  
+* largest value (`max`)
+* mean  
+* median  
+* standard deviation (`sd`)
+
+```{r}
+dir_in <- "analysis/Ramioul/derived_data/"
+dir_out <- "analysis/Ramioul/summary_stats/"
+```
+
+Raw data must be located in `r paste0("~/", dir_in)`.  
+Formatted data will be saved in `r paste0("~/", dir_out)`.
+The knit directory for this script is the project directory.
+
+---
+
+
+# Load packages
+```{r}
+library(openxlsx)
+library(R.utils)
+library(tools)
+library(doBy)
+```
+
+---
+
+
+# Get names, path and information of the file 
+```{r}
+data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
+md5_in <- md5sum(data_file)
+info_in <- data.frame(file = basename(names(md5_in)), checksum = md5_in, row.names = NULL)
+```
+
+
+The checksum (MD5 hashes) of the imported file is  
+```{r, echo = FALSE}
+info_in
+```
+
+# Load data into R object
+```{r}
+imp_data <- loadObject(paste0(dir_in, "Ramioul_lithic_analysis.Rbin"))
+```
+
+The imported file is: "`r paste0("~/", data_file)`"  
+
+---
+
+# Define numeric variables
+```{r}
+# changes the order of columns 
+imp_data <- imp_data[c(1:22, 27,23:26, 28:34)]
+num.var <-19:23
+```
+
+The following variables will be used: 
+
+```{r, echo=FALSE}
+for (i in num.var) cat("[",i,"] ", names(imp_data)[i], "\n", sep="")
+```
+
+---
+
+
+# Compute summary statistics
+## Create function to compute the statistics at once
+```{r}
+nminmaxmeanmedsd <- function(x){
+	y <- x[!is.na(x)]
+	n_test <- length(y)
+	min_test <- min(y)
+	max_test <- max(y)
+	mean_test <- mean(y)
+ 	med_test <- median(y)
+ 	sd_test <- sd(y)
+ 	out <- c(n_test, min_test, max_test, mean_test, med_test, sd_test)
+ 	names(out) <- c("n", "min", "max", "mean", "median", "sd")
+ 	return(out)
+}
+```
+
+
+##  Compute the summary statistics 
+### Dimensions
+```{r}
+# Dimensions Keilmesser, Pradnick scraper, scraper & falke 
+dimensions <- summaryBy(length + width + thickness ~ technological.class + artefact.state,
+                  data=imp_data, FUN=nminmaxmeanmedsd)
+str(dimensions)
+
+```
+
+
+# Save data
+## Format name of output file
+```{r}
+file_out <- "Ramioul_lithic_analysis_stats"
+```
+The file will be saved as "`r paste0("~/", dir_out, ".[ext]")`".
+
+
+## Write to XLSX
+```{r}
+write.xlsx(list(dimensions = dimensions), 
+           file = paste0(dir_out, file_out, ".xlsx"))
+```
+
+
+## Save R object
+```{r}
+saveObject(list(dimensions = dimensions), 
+           file = paste0(dir_out, file_out, ".Rbin"))
+```
+
+
+## Show file information
+```{r}
+file_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
+md5_out <- md5sum(file_out)
+info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, row.names = NULL)
+```
+
+The checksum (MD5 hashes) of the exported files are:  
+```{r, echo = FALSE}
+info_out
+```

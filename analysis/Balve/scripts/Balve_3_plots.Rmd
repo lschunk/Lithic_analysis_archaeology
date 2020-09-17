@@ -616,7 +616,7 @@ KM_morpho.type <- KM_morpho.type[1:158,]
 
 # Barplot Keilmesser morpho type 
 KM.morpho.type <- ggplot(data = KM_morpho.type) + aes(x = morpho.type, fill = morpho.type) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.5) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -633,7 +633,7 @@ PS_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 29)
 
 # Barplot Pradnick scraper morpho type 
 PS.morpho.type <- ggplot(data = PS_morpho.type) + aes(x = morpho.type, fill = morpho.type) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.5) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -655,7 +655,7 @@ KM_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 16)
 
 # Barplot Keilmesser raw material  
 KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.5) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -673,7 +673,7 @@ PS_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 17)
 
 # Barplot Pradnick scraper raw material  
 PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.25) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -691,7 +691,7 @@ all_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 1)
 
 # Barplot Pradnick scraper raw material  
 all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.5) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -713,7 +713,7 @@ KM_back <- read.xlsx(xlsxFile = data_file, sheet = 22)
 
 # Barplot Keilmesser raw material  
 KM.back_morpho <- ggplot(data = KM_back) + aes(x = morphology.back, fill = morphology.back) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.5) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -731,7 +731,7 @@ PS_back <- read.xlsx(xlsxFile = data_file, sheet = 23)
 
 # Barplot Pradnick scraper raw material  
 PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back, fill = morphology.back) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.5) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -749,7 +749,7 @@ KM_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 20)
 
 # Barplot Keilmesser blanks 
 KM.cortex_blanks <- ggplot(data = KM_cortex_blanks) + aes(x = blank, fill = cortex) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.5) +
      theme_classic() +
      labs(x = " ", y = "N") + 
      scale_x_discrete(labels=c("core", "flake", "N/A")) +
@@ -766,7 +766,7 @@ PS_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 21)
 
 # Barplot Pradnick scraper blanks 
 PS.cortex_blanks <- ggplot(data = PS_cortex_blanks) + aes(x = blank, fill = cortex) + 
-     geom_bar(stat = "count") +
+     geom_bar(stat = "count", width = 0.5) +
      theme_classic() +
      labs(x = " ", y = "N") + 
      scale_x_discrete(labels=c("core", "flake", "N/A")) +
@@ -789,7 +789,7 @@ KM_Pradnick.method <- read.xlsx(xlsxFile = data_file, sheet = 30)
 
 # Barplot Keilmesser Pradnick method 
 KM.PM <- ggplot(data = KM_Pradnick.method) + aes(x = application.pradnick.method, fill = application.pradnick.method) + 
-     geom_bar(stat = "count") + 
+     geom_bar(stat = "count", width = 0.5) + 
      theme_classic() +
      labs(x = " ", y = "N") + 
      theme(legend.position = "none") + 
@@ -814,10 +814,9 @@ KM_lateralisation[grep("dex.", KM_lateralisation[["tool.lateralisation"]]), "val
 # Defines only the rows with complete Keilmesser  
 KM_lateralisation <- KM_lateralisation[1:186,]
 
-
 # Barplot Keilmesser lateralisation
 KM.lat <- ggplot(KM_lateralisation, aes(y = value, x = technological.class, fill = tool.lateralisation)) + 
-          geom_bar(stat = "identity") +
+          geom_bar(stat = "identity", width = 0.15) +
           theme_minimal() +
           labs(x = NULL, y = NULL) +
           theme(axis.text.x = element_blank(), axis.text.y = element_blank()) +
@@ -830,6 +829,28 @@ print(KM.lat)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.lat", ".pdf")
 ggsave(filename = file_out, plot = KM.lat, path = dir_out, device = "pdf")
 
+
+# Pradnick scraper lateralisation
+# Load data sheet Pradnick scraper lateralisation
+PS_lateralisation <- read.xlsx(xlsxFile = data_file, sheet = 33)  
+PS_lateralisation[grep("sin.", PS_lateralisation[["tool.lateralisation"]]), "value"] <- "-1"
+PS_lateralisation[grep("dex.", PS_lateralisation[["tool.lateralisation"]]), "value"] <- "1"
+
+# Barplot Pradnick scraper lateralisation
+PS.lat <- ggplot(PS_lateralisation, aes(y = value, x = technological.class, fill = tool.lateralisation)) + 
+          geom_bar(stat = "identity", width = 0.15) +
+          theme_minimal() +
+          labs(x = NULL, y = NULL) +
+          theme(axis.text.x = element_blank(), axis.text.y = element_blank()) +
+          scale_fill_manual(values = wes_palette(n = 5, name = "Darjeeling2", type = "continuous")) + 
+          guides(fill = guide_legend(reverse=TRUE)) +
+          labs(fill = "tool lateralisation") +
+          coord_flip() 
+
+print(PS.lat)
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.lat", ".pdf")
+ggsave(filename = file_out, plot = PS.lat, path = dir_out, device = "pdf")
+
 ```
 
 ## Barplot
@@ -841,7 +862,7 @@ LSS_type <- read.xlsx(xlsxFile = data_file, sheet = 34)
 
 # Barplot lateral resharpening spall type
 LSS.type <- ggplot(data = LSS_type) + aes(x = type.lateral.sharpening.spall, fill = tool.lateralisation) + 
-     geom_bar(stat = "count") + 
+     geom_bar(stat = "count", width = 0.5) + 
      theme_classic() +
      labs(x = " ", y = "N") + 
      labs(fill = "tool lateralisation") +
@@ -853,9 +874,6 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.type", ".pdf")
 ggsave(filename = file_out, plot = LSS.type, path = dir_out, device = "pdf")
 
 ```
-
-
-
 
 
 

@@ -3,4 +3,4 @@
 #Output current version of RStudio to a text file for reporting purposes.
 
 vers <- as.character(RStudio.Version()$version)
-writeLines(c(vers, "\n"), "analysis/scripts/RStudioVersion.txt")
+writeLines(c(vers, "\n"), "analysis/Balve/scripts/RStudioVersion.txt")
