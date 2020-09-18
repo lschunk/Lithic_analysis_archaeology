@@ -168,3 +168,19 @@ The checksum (MD5 hashes) of the exported files are:
 ```{r, echo = FALSE}
 info_out
 ```
+
+---
+
+# sessionInfo() and RStudio version
+
+```{r}
+sessionInfo()
+```
+
+RStudio version `r readLines("analysis/Ramioul/scripts/RStudioVersion.txt", n = 1)`.
+
+
+---
+
+
+END OF SCRIPT

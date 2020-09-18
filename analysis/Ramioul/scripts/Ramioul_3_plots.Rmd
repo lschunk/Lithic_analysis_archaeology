@@ -586,9 +586,7 @@ ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out, devic
 ```{r}
 # Keilmesser morpho type 
 # Load data sheet Keilmesser morpho type 
-KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 28)  
-# Defines only the rows with complete Keilmesser  
-KM_morpho.type <- KM_morpho.type[1:111, ]
+KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 25)  
 
 # Barplot Keilmesser morpho type 
 KM.morpho.type <- ggplot(data = KM_morpho.type) + aes(x = morpho.type, fill = morpho.type) + 
@@ -596,7 +594,7 @@ KM.morpho.type <- ggplot(data = KM_morpho.type) + aes(x = morpho.type, fill = mo
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
-     scale_fill_manual(values = wes_palette(n = 7,name = "Royal1", type = "continuous"))    
+     scale_fill_manual(values = wes_palette(n = 3,name = "Royal1", type = "continuous"))    
  
 print(KM.morpho.type)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.morpho.type", ".pdf")
@@ -605,7 +603,7 @@ ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out, device = "pdf
 
 # Pradnick scraper morpho type 
 # Load data sheet Pradnick scraper morpho type 
-PS_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 29)  
+PS_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 26)  
 
 # Barplot Pradnick scraper morpho type 
 PS.morpho.type <- ggplot(data = PS_morpho.type) + aes(x = morpho.type, fill = morpho.type) + 
@@ -613,7 +611,7 @@ PS.morpho.type <- ggplot(data = PS_morpho.type) + aes(x = morpho.type, fill = mo
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
-     scale_fill_manual(values = wes_palette(n = 6,name = "Royal1", type = "continuous"))    
+     scale_fill_manual(values = wes_palette(n = 1,name = "Royal1"))    
 
 print(PS.morpho.type)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.morpho.type", ".pdf")
@@ -627,7 +625,7 @@ ggsave(filename = file_out, plot = PS.morpho.type, path = dir_out, device = "pdf
 ```{r}
 # Keilmesser raw material
 # Load data sheet Keilmesser raw material
-KM_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 16)  
+KM_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 13)  
 
 # Barplot Keilmesser raw material  
 KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material, fill = raw.material) + 
@@ -635,8 +633,8 @@ KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material, fill =
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
-     scale_x_discrete(labels=c("Baltic flint", "other", "Lydite")) +
-     scale_fill_manual(values = wes_palette(n = 4, name = "Darjeeling1", type = "continuous"))    
+     scale_x_discrete(labels=c("flint", "Lydite")) +
+     scale_fill_manual(values = wes_palette(n = 3, name = "Darjeeling1", type = "continuous"))    
  
 print(KM.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.raw_material", ".pdf")
@@ -645,7 +643,7 @@ ggsave(filename = file_out, plot = KM.raw_material, path = dir_out, device = "pd
 
 # Pradnick scraper raw material
 # Load data sheet Pradnick scraper raw material
-PS_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 17)  
+PS_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 14)  
 
 # Barplot Pradnick scraper raw material  
 PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, fill = raw.material) + 
@@ -653,9 +651,9 @@ PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, fill =
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
-     scale_x_discrete(labels= "Lydite") +
-     scale_fill_manual(values = wes_palette(n = 3, name = "Darjeeling1", type = "continuous"))    
- 
+     scale_x_discrete(labels= "flint") +
+     scale_fill_manual(values = wes_palette(n = 1, name = "Darjeeling1", type = "continuous"))  
+
 print(PS.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.raw_material", ".pdf")
 ggsave(filename = file_out, plot = PS.raw_material, path = dir_out, device = "pdf")
@@ -671,8 +669,8 @@ all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material, fill
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
-     scale_x_discrete(labels=c("Baltic flint", "other", "Lydite")) +
-     scale_fill_manual(values = wes_palette(n = 4, name = "Darjeeling1", type = "continuous"))    
+     scale_x_discrete(labels=c("flint", "Lydite")) +
+     scale_fill_manual(values = wes_palette(n = 3, name = "Darjeeling1", type = "continuous"))    
  
 print(all.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "all.raw_material", ".pdf")
@@ -686,7 +684,7 @@ ggsave(filename = file_out, plot = all.raw_material, path = dir_out, device = "p
 ```{r}
 # Keilmesser morphology back 
 # Load data sheet Keilmesser raw material
-KM_back <- read.xlsx(xlsxFile = data_file, sheet = 22)  
+KM_back <- read.xlsx(xlsxFile = data_file, sheet = 19)  
 
 # Barplot Keilmesser raw material  
 KM.back_morpho <- ggplot(data = KM_back) + aes(x = morphology.back, fill = morphology.back) + 
@@ -694,7 +692,7 @@ KM.back_morpho <- ggplot(data = KM_back) + aes(x = morphology.back, fill = morph
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
-     scale_x_discrete(labels=c("clear blunting", "cortex + partly retouched", "cortex/unworked", "N/A", "partly retouched", "retouched")) +
+     scale_x_discrete(labels=c("cortex + partly retouched", "cortex/unworked", "retouched")) +
      scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", type = "continuous"))    
  
 print(KM.back_morpho)
@@ -704,7 +702,7 @@ ggsave(filename = file_out, plot = KM.back_morpho, path = dir_out, device = "pdf
 
 # Pradnick scraper morphology back 
 # Load data sheet Pradnick scraper raw material
-PS_back <- read.xlsx(xlsxFile = data_file, sheet = 23)  
+PS_back <- read.xlsx(xlsxFile = data_file, sheet = 20)  
 
 # Barplot Pradnick scraper raw material  
 PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back, fill = morphology.back) + 
@@ -712,8 +710,8 @@ PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back, fill = morph
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
-     scale_x_discrete(labels=c("clear blunting", "cortex + partly retouched", "cortex/unworked", "partly retouched", "retouched")) +
-     scale_fill_manual(values = wes_palette(n = 6, name = "Darjeeling2", type = "continuous"))    
+     scale_x_discrete() +
+     scale_fill_manual(values = wes_palette(n = 9, name = "Darjeeling2", type = "continuous"))    
  
 print(PS.back_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.back_morpho", ".pdf")
@@ -722,7 +720,7 @@ ggsave(filename = file_out, plot = PS.back_morpho, path = dir_out, device = "pdf
 
 # Keilmesser blanks
 # Load data sheet Keilmesser blanks 
-KM_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 20)  
+KM_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 17)  
 
 # Barplot Keilmesser blanks 
 KM.cortex_blanks <- ggplot(data = KM_cortex_blanks) + aes(x = blank, fill = cortex) + 
@@ -739,7 +737,7 @@ ggsave(filename = file_out, plot = KM.cortex_blanks, path = dir_out, device = "p
 
 # Pradnick scraper blanks
 # Load data sheet Pradnick scraper blanks 
-PS_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 21)  
+PS_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 18)  
 
 # Barplot Pradnick scraper blanks 
 PS.cortex_blanks <- ggplot(data = PS_cortex_blanks) + aes(x = blank, fill = cortex) + 
@@ -761,7 +759,7 @@ ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out, device = "p
 ```{r}
 # Keilmesser application Pradnick method
 # Load data sheet Keilmesser Pradnick method
-KM_Pradnick.method <- read.xlsx(xlsxFile = data_file, sheet = 30)  
+KM_Pradnick.method <- read.xlsx(xlsxFile = data_file, sheet = 27)  
 
 # Barplot Keilmesser Pradnick method 
 KM.PM <- ggplot(data = KM_Pradnick.method) + aes(x = application.pradnick.method, fill = application.pradnick.method) + 
@@ -769,10 +767,10 @@ KM.PM <- ggplot(data = KM_Pradnick.method) + aes(x = application.pradnick.method
      theme_classic() +
      labs(x = " ", y = "N") + 
      theme(legend.position = "none") + 
-     scale_x_discrete(labels=c("no", "N/A", "yes")) +
-     scale_fill_manual(values = wes_palette(n = 5, name = "GrandBudapest1", type = "continuous"))    
+     scale_x_discrete(labels=c("no", "yes")) +
+     scale_fill_manual(values = wes_palette(n = 3, name = "GrandBudapest1", type = "continuous"))    
  
-print(KM.PM)
+print(KM.PM) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PM", ".pdf")
 ggsave(filename = file_out, plot = KM.PM, path = dir_out, device = "pdf")
 
@@ -784,11 +782,9 @@ ggsave(filename = file_out, plot = KM.PM, path = dir_out, device = "pdf")
 ```{r}
 # Keilmesser lateralisation
 # Load data sheet Keilmesser lateralisation
-KM_lateralisation <- read.xlsx(xlsxFile = data_file, sheet = 32)  
+KM_lateralisation <- read.xlsx(xlsxFile = data_file, sheet = 29)  
 KM_lateralisation[grep("sin.", KM_lateralisation[["tool.lateralisation"]]), "value"] <- "-1"
 KM_lateralisation[grep("dex.", KM_lateralisation[["tool.lateralisation"]]), "value"] <- "1"
-# Defines only the rows with complete Keilmesser  
-KM_lateralisation <- KM_lateralisation[1:111, ]
 
 # Barplot Keilmesser lateralisation
 KM.lat <- ggplot(KM_lateralisation, aes(y = value, x = technological.class, fill = tool.lateralisation)) + 
@@ -808,10 +804,10 @@ ggsave(filename = file_out, plot = KM.lat, path = dir_out, device = "pdf")
 
 # Pradnick scraper lateralisation
 # Load data sheet Pradnick scraper lateralisation
-PS_lateralisation <- read.xlsx(xlsxFile = data_file, sheet = 33)  
+PS_lateralisation <- read.xlsx(xlsxFile = data_file, sheet = 30)  
 PS_lateralisation[grep("sin.", PS_lateralisation[["tool.lateralisation"]]), "value"] <- "-1"
 PS_lateralisation[grep("dex.", PS_lateralisation[["tool.lateralisation"]]), "value"] <- "1"
-PS_lateralisation <- PS_lateralisation[c(1:9, 11:15, 17:24), ]
+
 # Barplot Pradnick scraper lateralisation
 PS.lat <- ggplot(PS_lateralisation, aes(y = value, x = technological.class, fill = tool.lateralisation)) + 
           geom_bar(stat = "identity", width = 0.15) +
@@ -829,29 +825,6 @@ ggsave(filename = file_out, plot = PS.lat, path = dir_out, device = "pdf")
 
 ```
 
-## Barplot
-### Barplot lateral resharpening spall type
-```{r}
-# Lateral resharpening spall type
-# Load data sheet lateral resharpening spall type
-LSS_type <- read.xlsx(xlsxFile = data_file, sheet = 34)  
-
-# Barplot lateral resharpening spall type
-LSS.type <- ggplot(data = LSS_type) + aes(x = type.lateral.sharpening.spall, fill = tool.lateralisation) + 
-     geom_bar(stat = "count", width = 0.5) + 
-     theme_classic() +
-     labs(x = " ", y = "N") + 
-     labs(fill = "tool lateralisation") +
-     scale_x_discrete(labels=c("primary", "secondary", "N/A")) +
-     scale_fill_manual(values = wes_palette(n = 5, name = "GrandBudapest1", type = "continuous"))    
- 
-print(LSS.type)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.type", ".pdf")
-ggsave(filename = file_out, plot = LSS.type, path = dir_out, device = "pdf")
-
-```
-
-
 
 ## Ternary plot
 ### Perimeter
@@ -859,9 +832,7 @@ ggsave(filename = file_out, plot = LSS.type, path = dir_out, device = "pdf")
 library(ggtern)
 # Perimeter Keilmesser 
 # Load data sheet Keilmesser perimeter
-KM_perimeter <- read.xlsx(xlsxFile = data_file, sheet = 10) 
-# Defines only the rows with complete Keilmesser  
-KM_perimeter <- KM_perimeter[1:111, ]
+KM_perimeter <- read.xlsx(xlsxFile = data_file, sheet = 7) 
 
 # Ternary diagram Keilmesser perimeter
 KM.perimeter  <- ggtern(data = KM_perimeter, aes(x = perimeter.arch, y = perimeter.active.edge, z = perimeter.basis.back)) +
@@ -885,7 +856,7 @@ ggsave(filename = file_out, plot = KM.perimeter, path = dir_out, device = "pdf")
 
 # Perimeter Pradnick scraper
 # Load data sheet Pradnick scraper perimeter
-PS_perimeter <- read.xlsx(xlsxFile = data_file, sheet = 11) 
+PS_perimeter <- read.xlsx(xlsxFile = data_file, sheet = 8) 
 
 # Ternary diagram Pradnick scraper perimeter
 PS.perimeter  <- ggtern(data = PS_perimeter, aes(x = perimeter.arch, y = perimeter.active.edge, z = perimeter.basis.back)) +
@@ -908,6 +879,37 @@ ggsave(filename = file_out, plot = PS.perimeter, path = dir_out, device = "pdf")
 
 ```
 
+
+---
+
+
+# Show plot files information
+```{r}
+info_out <- list.files(path = dir_out, pattern = "\\.pdf$", full.names = TRUE) %>% 
+            md5sum()
+```
+
+
+The checksum (MD5 hashes) of the exported files are:  
+```{r, echo = FALSE}
+info_out
+```
+
+
+---
+
+# sessionInfo() and RStudio version
+
+```{r}
+sessionInfo()
+```
+
+RStudio version `r readLines("analysis/Ramioul/scripts/RStudioVersion.txt", n = 1)`.
+
+
+---
+
+END OF SCRIPT
 
 
 

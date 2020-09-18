@@ -311,7 +311,7 @@ info_out
 sessionInfo()
 ```
 
-RStudio version `r readLines("analysis/scripts/RStudioVersion.txt", n = 1)`.
+RStudio version `r readLines("analysis/Buhlen/scripts/RStudioVersion.txt", n = 1)`.
 
 
 ---

@@ -164,7 +164,29 @@ md5_out <- md5sum(file_out)
 info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, row.names = NULL)
 ```
 
+
 The checksum (MD5 hashes) of the exported files are:  
 ```{r, echo = FALSE}
 info_out
 ```
+
+---
+
+# sessionInfo() and RStudio version
+
+```{r}
+sessionInfo()
+```
+
+RStudio version `r readLines("analysis/Balve/scripts/RStudioVersion.txt", n = 1)`.
+
+
+---
+
+
+END OF SCRIPT
+
+
+
+
+

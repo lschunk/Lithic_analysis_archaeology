@@ -931,6 +931,35 @@ ggsave(filename = file_out, plot = PS.perimeter, path = dir_out, device = "pdf")
 
 ```
 
+--- 
+
+# Show plot files information
+```{r}
+info_out <- list.files(path = dir_out, pattern = "\\.pdf$", full.names = TRUE) %>% 
+            md5sum()
+```
+
+
+The checksum (MD5 hashes) of the exported files are:  
+```{r, echo = FALSE}
+info_out
+```
+
+
+---
+
+# sessionInfo() and RStudio version
+
+```{r}
+sessionInfo()
+```
+
+RStudio version `r readLines("analysis/Buhlen/scripts/RStudioVersion.txt", n = 1)`.
+
+
+---
+
+END OF SCRIPT
 
 
 
