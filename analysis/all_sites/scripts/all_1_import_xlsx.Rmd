@@ -80,47 +80,25 @@ info_in
 ```{r}
 imp_data <- vector(mode = "list", length = length(data_files))
 names(imp_data) <- basename(data_files)
+
 # loop for import data due to the three different CSV files 
 for (i in seq_along(data_files)) {
-  imp_data[[i]] <- read.xlsx(data_files[i], sheet = 1, startRow = 2, colNames = FALSE,
-                      rowNames = FALSE, skipEmptyRows = FALSE)
+  imp_data[[i]] <- read.xlsx(data_files[i], sheet = 1, colNames = TRUE,
+                      rowNames = FALSE, skipEmptyCols = FALSE)
 }
 str(imp_data)
 
 # check pairwisely if the three lines of headers are identical among the datasets
 # merges the data based on the three lines of headers while they get only 
 # used in the first CSV file 
-comp <- all(sapply(list(imp_data[[1]][1:3, ], imp_data[[2]][1:3, ]), 
-                   FUN = identical, imp_data[[2]][1:3, ]))
-if (comp == TRUE) {
-  merged_data <- rbind(imp_data[[1]], imp_data[[2]][-(1:3), ], 
-                       imp_data[[3]][-(1:3), ])
-} else {
-  stop("The headers are not identical among the datasets")
-}
+comp <- all(sapply(list(names(imp_data[[1]]), names(imp_data[[2]])), 
+                   FUN = identical, names(imp_data[[3]])))
+merged_data <- do.call(rbind, imp_data)
+
 str(merged_data)
 
-
-
-----
-imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1, colNames = TRUE,
-                      rowNames = FALSE, skipEmptyRows = FALSE) 
-#select the columns to keep 
-keep_col <- c(1:2, 9:19, 21:35, 37:38, 40:43)
-data_final <- imp_data[,keep_col]
-
-data_final$length <- as.numeric(data_final$length)
-data_final$width <- as.numeric(data_final$width)
-data_final$thickness <- as.numeric(data_final$thickness)
-data_final$weight <- as.numeric(data_final$weight)
-data_final$perimeter.basis.back <- as.numeric(data_final$perimeter.basis.back)
-data_final$perimeter.arch <- as.numeric(data_final$perimeter.arch)
-data_final$perimeter.active.edge <- as.numeric(data_final$perimeter.active.edge)
-data_final$perimeter.total <- as.numeric(data_final$perimeter.total)
-data_final$thickness.back <- as.numeric(data_final$thickness.back)
-
-str(data_final)
-
+# adds a column with indices to the data frame 
+#merged_data <- tibble::rowid_to_column(merged_data, "N")
 ```
 
 # Data analsysis - sorting  
@@ -128,10 +106,10 @@ str(data_final)
 ```{r}
 # keeps only columns relevant for dimensions and sorts them based on 
 # their technological class
-keep_col <- c(2, 4:5,19:21)
-dimensions <- data_final[, keep_col] %>% arrange(technological.class)
+keep_col <- c(2, 4:5, 19:21)
+dimensions <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_dimensions <- dimensions[3:11, ] 
+KM_dimensions <- dimensions[4:11, ] 
 PS_dimensions <- dimensions[12:14, ] 
 F_dimensions <- dimensions[1:2, ]
 S_dimensions <- dimensions[15:20, ] 
