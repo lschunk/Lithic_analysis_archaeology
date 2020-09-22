@@ -1,5 +1,5 @@
 ---
-title: 'Import - Lithic analysis Ramioul '
+title: 'Import - Lithic analysis from three sites: Balver Höhle, Buhlen & Ramioul '
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
 output:
@@ -97,8 +97,9 @@ merged_data <- do.call(rbind, imp_data)
 
 str(merged_data)
 
-# adds a column with indices to the data frame 
-#merged_data <- tibble::rowid_to_column(merged_data, "N")
+# adds indices as row names 
+row.names(merged_data) <- 1:nrow(merged_data)
+
 ```
 
 # Data analsysis - sorting  
@@ -106,56 +107,39 @@ str(merged_data)
 ```{r}
 # keeps only columns relevant for dimensions and sorts them based on 
 # their technological class
-keep_col <- c(2, 4:5, 19:21)
+keep_col <- c(1:2, 4:5, 19:21)
 dimensions <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_dimensions <- dimensions[4:11, ] 
-PS_dimensions <- dimensions[12:14, ] 
-F_dimensions <- dimensions[1:2, ]
-S_dimensions <- dimensions[15:20, ] 
+KM_dimensions <- dimensions[4:333, ] 
+PS_dimensions <- dimensions[493:546, ] 
+LSS_dimensions <- dimensions[334:492, ]
 
 ```
+
 
 ## Perimeter
 ```{r}
 # keeps only columns relevant for perimeter measurements and sorts them 
 # based on their technological class
-keep_col <- c(2, 4:5,7,23:26)
-perimeter <- data_final[, keep_col] %>% arrange(technological.class)
+keep_col <- c(1:2, 4:5,7,23:26)
+perimeter <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_perimeter <- perimeter[3:11, ] 
-PS_perimeter <- perimeter[12:14, ] 
-
-
-```
-
-## Weight
-```{r}
-# keeps only columns relevant for weight measurements and sorts them based 
-# on their technological class
-keep_col <- c(2, 4:5, 22)
-weight <- data_final[, keep_col] %>% arrange(technological.class)
-
-KM_weight <- weight[3:11, ] 
-PS_weight <- weight[12:14, ] 
-F_weight <- weight[1:2, ] 
-S_weight <- weight[15:20, ] 
-
+KM_perimeter <- perimeter[4:333, ] %>% arrange(artefact.state)
+PS_perimeter <- perimeter[493:546, ] 
 
 ```
+
 
 ## Raw material
 ```{r}
 # keeps only columns relevant for raw material classification and sorts them 
 # based on their technological class
 keep_col <- c(2, 4:5, 3)
-raw_material <- data_final[, keep_col] %>% arrange(technological.class)
+raw_material <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_raw_material <- raw_material[3:11, ] 
-PS_raw_material <- raw_material[12:14, ]  
-F_raw_material <- raw_material[1:2, ] 
-S_raw_material <- raw_material[15:20, ] 
-
+KM_raw_material <- raw_material[4:333, ] %>% arrange(artefact.state)
+PS_raw_material <- raw_material[493:546, ] %>% arrange(artefact.state)
+LSS_raw_material <- raw_material[334:492, ] %>% arrange(artefact.state)
 
 ```
 
@@ -164,11 +148,10 @@ S_raw_material <- raw_material[15:20, ]
 # keeps only columns relevant for cortex and blank classification and sorts them 
 # based on their technological class
 keep_col <- c(2, 4:5, 6, 8:10)
-cortex_blanks <- data_final[, keep_col] %>% arrange(technological.class)
+cortex_blanks <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_cortex_blanks <- cortex_blanks[3:11, ] 
-PS_cortex_blanks <- cortex_blanks[12:14, ] 
-
+KM_cortex_blanks <- cortex_blanks[4:333, ] %>% arrange(artefact.state)
+PS_cortex_blanks <- cortex_blanks[493:546, ] %>% arrange(artefact.state)
 
 ```
 
@@ -177,100 +160,90 @@ PS_cortex_blanks <- cortex_blanks[12:14, ]
 # keeps only columns relevant for back modifications and sorts them based 
 # on their technological class
 keep_col <- c(2, 4:5, 11, 27)
-back <- data_final[, keep_col] %>% arrange(technological.class)
+back <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_back <- back[3:11, ]  
-PS_back <- back[12:14, ]
-
-
-```
-
-## Edge retouch
-```{r}
-# keeps only columns relevant for edge retouch classification and sorts them 
-# based on their technological class
-keep_col <- c(2, 4:5, 12:13, 29)
-edge_retouch <- data_final[, keep_col] %>% arrange(technological.class)
-
-KM_edge_retouch <- edge_retouch[3:11, ]
-PS_edge_retouch <- edge_retouch[12:14, ] 
-F_edge_retouch <- edge_retouch[1:2, ] 
-S_edge_retouch <- edge_retouch[15:20, ] 
-
+KM_back <- back[4:333, ] %>% arrange(artefact.state) 
+PS_back <- back[493:546, ] %>% arrange(artefact.state)
 
 ```
+
 
 ## Morpho type  
 ```{r}
 # keeps only columns relevant for morpho type classification and sorts them 
 # based on their technological class
 keep_col <- c(2, 4:5, 7, 19:21)
-morpho.type <- data_final[, keep_col] %>% arrange(technological.class)
+morpho.type <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_morpho.type <- morpho.type[3:11, ] 
-PS_morpho.type <- morpho.type[12:14, ] 
-
+KM_morpho.type <- morpho.type[4:333, ] %>% arrange(artefact.state)
+PS_morpho.type <- morpho.type[493:546, ] %>% arrange(artefact.state)
 
 ```
+
 
 ## Application 'Pradnick method'  
 ```{r}
 # keeps only columns relevant for 'morpho type 'Pradnick method' classification 
 # and sorts them based on their technological class
 keep_col <- c(2, 4:5, 15:16)
-Pradnick.method <- data_final[, keep_col] %>% arrange(technological.class)
+Pradnick.method <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_Pradnick.method <- Pradnick.method[3:11, ]
-PS_Pradnick.method <- Pradnick.method[12:14, ]  
-
+KM_Pradnick.method <- Pradnick.method[4:333, ] %>% arrange(artefact.state)
+PS_Pradnick.method <- Pradnick.method[493:546, ]  %>% arrange(artefact.state)
 
 ```
+
 
 ## Lateralisation
 ```{r}
 # keeps only columns relevant for lateralisation and sorts them based on their
 # technological class
 keep_col <- c(2, 4:5, 18)
-lateralisation <- data_final[, keep_col] %>% arrange(technological.class)
+lateralisation <- merged_data[, keep_col] %>% arrange(technological.class)
 
-KM_lateralisation <- lateralisation[3:11, ] 
-PS_lateralisation <- lateralisation[12:14, ] 
-
+KM_lateralisation <- lateralisation[4:333, ] %>% arrange(artefact.state)
+PS_lateralisation <- lateralisation[493:546, ] %>% arrange(artefact.state)
 
 ```
 
 
+# Type lateral sharpening spall 
+```{r}
+# keeps only columns relevant for lateral sharpening spall classification and sorts 
+# them based on their technological class
+keep_col <- c(2, 4:5, 17:18)
+lss_type <- merged_data[, keep_col] %>% arrange(technological.class)
+
+LSS_type <- lss_type[334:492, ] %>% arrange(artefact.state)
+
+```
+
 # Save data
 ## Format name of output file
 ```{r}
-file_out <- "Ramioul_lithic_analysis"
+file_out <- "all_sites_analysis"
 ```
 The files will be saved as "`r paste0("~/", file_out, ".[ext]")`".
 
 
 ## Write to XLSX
 ```{r}
-write.xlsx(list(data = data_final, dimensions = dimensions, KM_dimensions = KM_dimensions,  
-                  PS_dimensions = PS_dimensions, F_dimensions = F_dimensions, S_dimensions = 
-                  S_dimensions, KM_perimeter = KM_perimeter, PS_perimeter = PS_perimeter,
-                  KM_weight = KM_weight, PS_weight = PS_weight, F_weight = F_weight,
-                  S_weight = S_weight, KM_raw_material = KM_raw_material,PS_raw_material =
-                  PS_raw_material, F_raw_material = F_raw_material, S_raw_material =
-                  S_raw_material, KM_cortex_blanks = KM_cortex_blanks, PS_cortex_blanks =
-                  PS_cortex_blanks, KM_back = KM_back, PS_back = PS_back, KM_edge_retouch =
-                  KM_edge_retouch, PS_edge_retouch = PS_edge_retouch, F_edge_retouch =
-                  F_edge_retouch, S_edge_retouch = S_edge_retouch, KM_morpho.type =
-                  KM_morpho.type, PS_morpho.type = PS_morpho.type, KM_Pradnick.method =
-                  KM_Pradnick.method, PS_Pradnick.method = PS_Pradnick.method,
-                  KM_lateralisation = KM_lateralisation, PS_lateralisation =
-                  PS_lateralisation),
+write.xlsx(list(data = merged_data, dimensions = dimensions, KM_dimensions = KM_dimensions,  
+                  PS_dimensions = PS_dimensions, LSS_dimensions = LSS_dimensions, KM_perimeter = 
+                  KM_perimeter, PS_perimeter = PS_perimeter, KM_raw_material = KM_raw_material,
+                  PS_raw_material = PS_raw_material, LSS_raw_material = LSS_raw_material, 
+                  KM_cortex_blanks = KM_cortex_blanks, PS_cortex_blanks = PS_cortex_blanks, 
+                  KM_back = KM_back, PS_back = PS_back, KM_morpho.type = KM_morpho.type, 
+                  PS_morpho.type = PS_morpho.type, KM_Pradnick.method = KM_Pradnick.method, 
+                  PS_Pradnick.method = PS_Pradnick.method, KM_lateralisation = KM_lateralisation, 
+                  PS_lateralisation = PS_lateralisation, LSS_type = LSS_type), 
                   file = paste0(dir_out, file_out, ".xlsx"))
 ```
 
 
 ## Save R object
 ```{r}
-saveObject(data_final, file = paste0(dir_out, file_out, ".Rbin"))
+saveObject(merged_data, file = paste0(dir_out, file_out, ".Rbin"))
 ```
 
 
@@ -296,7 +269,7 @@ info_out
 sessionInfo()
 ```
 
-RStudio version `r readLines("analysis/Ramioul/scripts/RStudioVersion.txt", n = 1)`.
+RStudio version `r readLines("analysis/all_sites/scripts/RStudioVersion.txt", n = 1)`.
 
 
 ---
