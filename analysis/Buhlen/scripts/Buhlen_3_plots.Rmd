@@ -163,11 +163,11 @@ tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], "
 
 # Histogram Keilmesser weight
 KM.weight <- ggplot(KM_weight, aes(y = weight, fill = artefact.state)) + 
-             geom_histogram(binwidth = 5) +
+             geom_histogram(binwidth = 0.003) +
              labs(y = "weight [kg]", x = "N", title = "", fill = "artefact state", size = 12) +
              theme_classic() +
              geom_hline(aes(yintercept = mean_weight), linetype = "dashed", size = 1) +
-             geom_text(aes(y = mean_weight, x = 64, label = round(mean_weight, 3)), nudge_y = 15) +
+             geom_text(aes(y = mean_weight, x = 12.5, label = round(mean_weight, 3)), nudge_y = 0.004) +
              scale_fill_manual(values = wes_palette(n = 5, name = "Zissou1"), labels = tag) 
 
 print(KM.weight)
