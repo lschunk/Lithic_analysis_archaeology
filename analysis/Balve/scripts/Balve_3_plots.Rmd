@@ -633,7 +633,7 @@ PS_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 29)
 
 # Barplot Pradnick scraper morpho type 
 PS.morpho.type <- ggplot(data = PS_morpho.type) + aes(x = morpho.type, fill = morpho.type) + 
-     geom_bar(stat = "count", width = 0.5) +
+     geom_bar(stat = "count", width = 0.36) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -655,7 +655,7 @@ KM_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 16)
 
 # Barplot Keilmesser raw material  
 KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count", width = 0.5) +
+     geom_bar(stat = "count", width = 0.3) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -673,7 +673,7 @@ PS_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 17)
 
 # Barplot Pradnick scraper raw material  
 PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count", width = 0.25) +
+     geom_bar(stat = "count", width = 0.15) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -691,7 +691,7 @@ all_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 1)
 
 # Barplot Pradnick scraper raw material  
 all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count", width = 0.5) +
+     geom_bar(stat = "count", width = 0.3) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -731,7 +731,7 @@ PS_back <- read.xlsx(xlsxFile = data_file, sheet = 23)
 
 # Barplot Pradnick scraper raw material  
 PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back, fill = morphology.back) + 
-     geom_bar(stat = "count", width = 0.5) +
+     geom_bar(stat = "count", width = 0.4) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "N") + 
@@ -749,7 +749,7 @@ KM_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 20)
 
 # Barplot Keilmesser blanks 
 KM.cortex_blanks <- ggplot(data = KM_cortex_blanks) + aes(x = blank, fill = cortex) + 
-     geom_bar(stat = "count", width = 0.5) +
+     geom_bar(stat = "count", width = 0.4) +
      theme_classic() +
      labs(x = " ", y = "N") + 
      scale_x_discrete(labels=c("core", "flake", "N/A")) +
@@ -766,7 +766,7 @@ PS_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 21)
 
 # Barplot Pradnick scraper blanks 
 PS.cortex_blanks <- ggplot(data = PS_cortex_blanks) + aes(x = blank, fill = cortex) + 
-     geom_bar(stat = "count", width = 0.5) +
+     geom_bar(stat = "count", width = 0.3) +
      theme_classic() +
      labs(x = " ", y = "N") + 
      scale_x_discrete(labels=c("core", "flake", "N/A")) +
@@ -789,7 +789,7 @@ KM_Pradnick.method <- read.xlsx(xlsxFile = data_file, sheet = 30)
 
 # Barplot Keilmesser Pradnick method 
 KM.PM <- ggplot(data = KM_Pradnick.method) + aes(x = application.pradnick.method, fill = application.pradnick.method) + 
-     geom_bar(stat = "count", width = 0.5) + 
+     geom_bar(stat = "count", width = 0.3) + 
      theme_classic() +
      labs(x = " ", y = "N") + 
      theme(legend.position = "none") + 
@@ -862,7 +862,7 @@ LSS_type <- read.xlsx(xlsxFile = data_file, sheet = 34)
 
 # Barplot lateral resharpening spall type
 LSS.type <- ggplot(data = LSS_type) + aes(x = type.lateral.sharpening.spall, fill = tool.lateralisation) + 
-     geom_bar(stat = "count", width = 0.5) + 
+     geom_bar(stat = "count", width = 0.2) + 
      theme_classic() +
      labs(x = " ", y = "N") + 
      labs(fill = "tool lateralisation") +
