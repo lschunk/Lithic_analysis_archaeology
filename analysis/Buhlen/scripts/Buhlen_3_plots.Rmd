@@ -496,18 +496,19 @@ ggsave(filename = file_out, plot = LSS.weight, path = dir_out, device = "pdf", w
 ### Length-width ratio 
 ```{r}
 # Load data sheet Keilmesser 
-KM_comp_dim <- read.xlsx(xlsxFile = data_file, sheet = 6) 
+KM_dim <- read.xlsx(xlsxFile = data_file, sheet = 3)
+KM_dim_comp.tip <- KM_dim[c(1:111, 113:127), ]
 
 # Keilmesser length VS width 
 # Ascribes the N value 
-n <- doBy::summaryBy(length + width ~ artefact.state, data = KM_comp_dim, FUN = length)
+n <- doBy::summaryBy(length + width ~ artefact.state, data = KM_dim_comp.tip, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
 # Scatterplot Keilmesser (complete + point) length VS width 
-KM.length_width <- ggplot(KM_comp_dim, aes(y = length, x = width, fill = artefact.state)) +
+KM.length_width <- ggplot(KM_dim_comp.tip, aes(y = length, x = width, fill = artefact.state)) +
                    geom_point(size = 3, shape = 21) +
                    labs(x = "length [mm]", y = "width [mm]", title = "", fill = "artefact state", size = 12) +
-                   xlim(10, 80) + ylim(20, 120) +
+                   xlim(10, 80) + ylim(0, 120) +
                    theme_classic() +
                    scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1", type = "continuous"), labels = tag) 
 
@@ -574,7 +575,7 @@ KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, fill = techno
                       labs(x = "length [mm]", y = "width [mm]", title = "",fill = "tool type", size = 12) +
                       xlim(10, 80) + ylim(20, 120) +
                       theme_classic() +
-                      scale_fill_manual(values = wes_palette(n = 2,name = "FantasticFox1", type = "continuous"), labels = tag) 
+                      scale_fill_manual(values = wes_palette(n = 3,name = "FantasticFox1", type = "continuous"), labels = tag) 
 
 print(KM.PS.length_width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PS.length_width", ".pdf")

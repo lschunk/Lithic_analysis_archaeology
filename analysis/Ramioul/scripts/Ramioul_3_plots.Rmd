@@ -550,11 +550,11 @@ KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, fill = techno
                       labs(x = "length [mm]", y = "width [mm]", title = "",fill = "tool type", size = 12) +
                       xlim(10, 80) + ylim(20, 120) +
                       theme_classic() +
-                      scale_fill_manual(values = wes_palette(n = 2,name = "FantasticFox1", type = "continuous"), labels = tag) 
+                      scale_fill_manual(values = wes_palette(n = 3,name = "FantasticFox1", type = "continuous"), labels = tag) 
 
 print(KM.PS.length_width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PS.length_width", ".pdf")
-ggsave(filename = file_out, plot = KM.PS.length_width, path = dir_out, device = "pdf")
+ggsave(filename = file_out, plot = KM.PS.length_width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
  
 
 # Keilmesser (complete): length-width combined with morpho type
@@ -576,7 +576,7 @@ KM.width_length_morpho <- ggplot(KM_morpho.type, aes(y = length, x = width, fill
                       
 print(KM.width_length_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.width_length_morpho", ".pdf")
-ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out, device = "pdf", , width = 170, height = 250, units = "mm")
+ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
 
 ```
 

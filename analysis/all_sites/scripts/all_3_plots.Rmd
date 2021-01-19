@@ -423,7 +423,7 @@ KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, fill = techno
                       labs(x = "length [mm]", y = "width [mm]", title = "",fill = "tool type", size = 12) +
                       xlim(0, 100) + ylim(0, 150) +
                       theme_classic() +
-                      scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1", type = "continuous"), labels = tag) 
+                      scale_fill_manual(values = wes_palette(n = 3, name = "FantasticFox1", type = "continuous"), labels = tag) 
 
 print(KM.PS.length_width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PS.length_width", ".pdf")
