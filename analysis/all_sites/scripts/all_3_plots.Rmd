@@ -364,6 +364,29 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.length_width", ".p
 ggsave(filename = file_out, plot = KM.length_width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
 
 
+# Keilmesser complete + tips length vs width  
+# Define the rows with complete Keilmesser and Keilmesser tips 
+KM_comp.tip_dim <- KM_dim[-c(279, 316:330), ]
+
+# Ascribes the N value 
+n <- doBy::summaryBy(length + width ~ site, data = KM_comp.tip_dim, FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+
+# Scatterplot Keilmesser (complete + point) length VS width 
+KM.tip.length_width <- ggplot(KM_comp.tip_dim, aes(y = length, x = width, colour = site, shape = artefact.state)) +
+                   geom_point(size = 2) +
+                   scale_colour_manual(values = wes_palette(n = 3, name = "FantasticFox1", type = "continuous"), labels = tag) +
+                   labs(x = "length [mm]", y = "width [mm]", title = "", fill = "", size = 12) +
+                   xlim(10, 90) + ylim(0, 160) +
+                   theme_classic() 
+                    
+
+print(KM.tip.length_width)
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.tip.length_width", ".pdf")
+ggsave(filename = file_out, plot = KM.tip.length_width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+
+
+
 # Pradnick scraper length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ site, data = PS_dim, FUN = length)
@@ -412,12 +435,11 @@ dim <- dim[ , ] %>% arrange(artefact.state)
 # Defines only the relevant rows 
 KM.PS_dim <- dim[c(4:281, 428:481), ]  
 
-# Keilmesser (complete) + Pradnick scraper length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ technological.class, data = KM.PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Scatterplot Keilmesser (complete) + Pradnick scraper length VS width
+
 KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, fill = technological.class)) +
                       geom_point(size = 3, shape = 21) +
                       labs(x = "length [mm]", y = "width [mm]", title = "",fill = "tool type", size = 12) +
@@ -432,11 +454,16 @@ ggsave(filename = file_out, plot = KM.PS.length_width, path = dir_out, device = 
 
 # Keilmesser (complete): length-width combined with morpho type
 # Load data sheet Keilmesser morpho type 
-KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 15)  
+KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 15)
+# Arranges the data and defines only the relevant rows
+KM_morpho.type <- KM_morpho.type[ , ] %>% arrange(artefact.state)
+KM_morpho.type <- KM_morpho.type[-c(279:330), ] 
+KM_morpho.type <- KM_morpho.type[ , ] %>% arrange(morpho.type)
+KM_morpho.type <- KM_morpho.type[-c(273:278), ]
 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ morpho.type, data = KM_morpho.type, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 
 # Scatterplot Keilmesser (complete): length-width combined with morpho type 
@@ -445,11 +472,39 @@ KM.width_length_morpho <- ggplot(KM_morpho.type, aes(y = length, x = width, fill
                       labs(x = "length [mm]", y = "width [mm]", title = "", fill = "morpho type", size = 12) +
                       xlim(0, 100) + ylim(0, 160) +
                       theme_classic() +
-                      scale_fill_manual(values = wes_palette(n = 8, name = "FantasticFox1", type = "continuous"), labels = tag) 
+                      scale_fill_manual(values = wes_palette(n = 7, name = "FantasticFox1", type = "continuous"), labels = tag) 
                       
 print(KM.width_length_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.width_length_morpho", ".pdf")
 ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+
+
+
+# Pradnick scraper (complete): length-width combined with morpho type
+# Load data sheet Pradnick morpho type 
+PS_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 16)  
+# Arranges the data and defines only the relevant rows
+PS_morpho.type <- PS_morpho.type[ , ] %>% arrange(morpho.type)
+PS_morpho.type <- PS_morpho.type[-54, ]
+
+
+# Ascribes the N value 
+n <- doBy::summaryBy(length + width ~ morpho.type, data = PS_morpho.type, FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+
+
+# Scatterplot Keilmesser (complete): length-width combined with morpho type 
+PS.width_length_morpho <- ggplot(PS_morpho.type, aes(y = length, x = width, fill = morpho.type)) +
+                      geom_point(size = 2, shape = 21) +
+                      labs(x = "length [mm]", y = "width [mm]", title = "", fill = "morpho type", size = 12) +
+                      xlim(0, 65) + ylim(0, 80) +
+                      theme_classic() +
+                      scale_fill_manual(values = wes_palette(n = 5, name = "FantasticFox1", type = "continuous"), labels = tag) 
+                      
+print(PS.width_length_morpho)
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.width_length_morpho", ".pdf")
+ggsave(filename = file_out, plot = PS.width_length_morpho, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+
 ```
 
 
