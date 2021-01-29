@@ -200,18 +200,18 @@ ggsave(filename = file_out, plot = KM.back, path = dir_out, device = "pdf", widt
 ```
 
 
-### Histogram dimensions - Pradnick scraper 
+### Histogram dimensions - Pradnik scraper 
 ```{r}
-# Load data sheet Pradnick scraper  
+# Load data sheet Pradnik scraper  
 PS_dim <- read.xlsx(xlsxFile = data_file, sheet = 4) 
 
-# Pradnick scraper length 
+# Pradnik scraper length 
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_length <- mean(PS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Histogram Pradnick scraper length
+# Histogram Pradnik scraper length
 PS.length <- ggplot(PS_dim, aes(x = length, fill = artefact.state)) + 
              geom_histogram(binwidth = 0.1) +
              labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
@@ -225,13 +225,13 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.length", ".pdf")
 ggsave(filename = file_out, plot = PS.length, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
 
 
-# Pradnick scraper width 
+# Pradnik scraper width 
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_width <- mean(PS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Histogram Pradnick scraper width
+# Histogram Pradnik scraper width
 PS.width <- ggplot(PS_dim, aes(x = width, fill = artefact.state)) + 
             geom_histogram(binwidth = 0.1) +
             labs(x = "width [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
@@ -245,13 +245,13 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.width", ".pdf")
 ggsave(filename = file_out, plot = PS.width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
 
 
-# Pradnick scraper thickness
+# Pradnik scraper thickness
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_thickness <- mean(PS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Histogram Pradnick scraper thickness 
+# Histogram Pradnik scraper thickness 
 PS.thickness <- ggplot(PS_dim, aes(y = thickness, fill = artefact.state)) + 
                 geom_histogram(binwidth = 0.2) +
                 labs(y = "thickness [mm]", x = "N", title = "", fill = "artefact state", size = 12) +
@@ -265,16 +265,16 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.thickness", ".pdf"
 ggsave(filename = file_out, plot = PS.thickness, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
 
 
-# Load data sheet Pradnick scraper weight
+# Load data sheet Pradnik scraper weight
 PS_weight <- read.xlsx(xlsxFile = data_file, sheet = 10) 
 
-# Pradnick scraper weight
+# Pradnik scraper weight
 # Calculates the mean value for the plot and ascribes the N value 
 mean_weight <- mean(PS_weight$weight, na.rm = TRUE)
 n <- doBy::summaryBy(weight ~ artefact.state, data = PS_weight, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Histogram Pradnick scraper weight
+# Histogram Pradnik scraper weight
 PS.weight <- ggplot(PS_weight, aes(y = weight, fill = artefact.state)) + 
              geom_histogram(binwidth = 0.001) + 
              labs(y = "weight [kg]", x = "N", title = "", fill = "artefact state", size = 12) +
@@ -288,8 +288,8 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.weight", ".pdf")
 ggsave(filename = file_out, plot = PS.weight, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
 
 
-# Back Pradnick scraper thickness
-# Load data sheet Pradnick scraper thickness back 
+# Back Pradnik scraper thickness
+# Load data sheet Pradnik scraper thickness back 
 PS_back <- read.xlsx(xlsxFile = data_file, sheet = 20) 
 
 # Calculates the mean value for the plot and ascribes the N value 
@@ -297,7 +297,7 @@ mean_PS_back <- mean(PS_back$thickness.back, na.rm = TRUE)
 n <- doBy::summaryBy(thickness.back ~ artefact.state, data = PS_back, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Histogram Pradnick scraper thickness back  
+# Histogram Pradnik scraper thickness back  
 PS.back  <- ggplot(PS_back, aes(y = thickness.back, fill = artefact.state)) + 
                  geom_histogram(binwidth = 0.05) +
                  labs(y = "thickness [mm]", x = "N", title = "", fill = "artefact state", size = 12) +
@@ -315,7 +315,7 @@ ggsave(filename = file_out, plot = PS.back, path = dir_out, device = "pdf", widt
 
 ### Histogram dimensions - Scraper 
 ```{r}
-# Load data sheet Pradnick scraper  
+# Load data sheet Pradnik scraper  
 S_dim <- read.xlsx(xlsxFile = data_file, sheet = 6) 
 
 # Scraper length 
@@ -386,7 +386,7 @@ mean_S_weight <- mean(S_weight$weight, na.rm = TRUE)
 n <- doBy::summaryBy(weight ~ artefact.state, data = S_weight, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Histogram Pradnick scraper weight
+# Histogram Pradnik scraper weight
 S.weight <- ggplot(S_weight, aes(y = weight, fill = artefact.state)) + 
              geom_histogram(binwidth = 0.002) + 
              labs(y = "weight [kg]", x = "N", title = "", fill = "artefact state", size = 12) +
@@ -476,7 +476,7 @@ mean_F_weight <- mean(F_weight$weight, na.rm = TRUE)
 n <- doBy::summaryBy(weight ~ artefact.state, data = F_weight, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Histogram Pradnick scraper weight
+# Histogram Pradnik scraper weight
 F.weight <- ggplot(F_weight, aes(y = weight, fill = artefact.state)) + 
              geom_histogram(binwidth = 0.002) + 
              labs(y = "weight [kg]", x = "N", title = "", fill = "artefact state", size = 12) +
@@ -515,12 +515,12 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.length_width", ".p
 ggsave(filename = file_out, plot = KM.length_width, path = dir_out, device = "pdf", width = 200, height = 290, units = "mm")
 
 
-# Pradnick scraper length VS width 
+# Pradnik scraper length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ artefact.state, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Scatterplot Pradnick scraper length VS width 
+# Scatterplot Pradnik scraper length VS width 
 PS.length_width <- ggplot(PS_dim, aes(y = length, x = width, fill = artefact.state)) +
                    geom_point(size = 3, shape = 21) +
                    labs(x = "length [mm]", y = "width [mm]", title = "",fill = "artefact state", size = 12) +
@@ -533,18 +533,18 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.length_width", ".p
 ggsave(filename = file_out, plot = PS.length_width, path = dir_out, device = "pdf")
 
 
-# Keilmesser (complete) + Pradnick scraper length VS width
+# Keilmesser (complete) + Pradnik scraper length VS width
 # Load data sheet dimensions  
 dim <- read.xlsx(xlsxFile = data_file, sheet = 2) 
 # Defines only the relevant rows 
 KM.PS_dim <- dim[c(3:11, 12:14), ] 
 
-# Keilmesser (complete) + Pradnick scraper length VS width 
+# Keilmesser (complete) + Pradnik scraper length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ technological.class, data = KM.PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
 
-# Scatterplot Keilmesser (complete) + Pradnick scraper length VS width
+# Scatterplot Keilmesser (complete) + Pradnik scraper length VS width
 KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, fill = technological.class)) +
                       geom_point(size = 3, shape = 21) +
                       labs(x = "length [mm]", y = "width [mm]", title = "",fill = "tool type", size = 12) +
@@ -601,11 +601,11 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.morpho.type", ".pd
 ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out, device = "pdf", width = 170, height = 200, units = "mm")
 
 
-# Pradnick scraper morpho type 
-# Load data sheet Pradnick scraper morpho type 
+# Pradnik scraper morpho type 
+# Load data sheet Pradnik scraper morpho type 
 PS_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 26)  
 
-# Barplot Pradnick scraper morpho type 
+# Barplot Pradnik scraper morpho type 
 PS.morpho.type <- ggplot(data = PS_morpho.type) + aes(x = morpho.type, fill = morpho.type) + 
      geom_bar(stat = "count", width = 0.1) +
      theme_classic() +
@@ -641,11 +641,11 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.raw_material", ".p
 ggsave(filename = file_out, plot = KM.raw_material, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
 
 
-# Pradnick scraper raw material
-# Load data sheet Pradnick scraper raw material
+# Pradnik scraper raw material
+# Load data sheet Pradnik scraper raw material
 PS_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 14)  
 
-# Barplot Pradnick scraper raw material  
+# Barplot Pradnik scraper raw material  
 PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, fill = raw.material) + 
      geom_bar(stat = "count", width = 0.08) +
      theme_classic() +
@@ -663,7 +663,7 @@ ggsave(filename = file_out, plot = PS.raw_material, path = dir_out, device = "pd
 # Load data sheet all tool types raw material
 all_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 1)  
 
-# Barplot Pradnick scraper raw material  
+# Barplot Pradnik scraper raw material  
 all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material, fill = raw.material) + 
      geom_bar(stat = "count", width = 0.15) +
      theme_classic() +
@@ -703,11 +703,11 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.back_morpho", ".pd
 ggsave(filename = file_out, plot = KM.back_morpho, path = dir_out, device = "pdf" ,width = 250, height = 170, units = "mm")
 
 
-# Pradnick scraper morphology back 
-# Load data sheet Pradnick scraper raw material
+# Pradnik scraper morphology back 
+# Load data sheet Pradnik scraper raw material
 PS_back <- read.xlsx(xlsxFile = data_file, sheet = 20)  
 
-# Barplot Pradnick scraper raw material  
+# Barplot Pradnik scraper raw material  
 PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back, fill = morphology.back) + 
      geom_bar(stat = "count", width = 0.22) +
      theme_classic() +
@@ -738,11 +738,11 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.cortex_blanks", ".
 ggsave(filename = file_out, plot = KM.cortex_blanks, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
 
 
-# Pradnick scraper blanks
-# Load data sheet Pradnick scraper blanks 
+# Pradnik scraper blanks
+# Load data sheet Pradnik scraper blanks 
 PS_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 18)  
 
-# Barplot Pradnick scraper blanks 
+# Barplot Pradnik scraper blanks 
 PS.cortex_blanks <- ggplot(data = PS_cortex_blanks) + aes(x = blank, fill = cortex) + 
      geom_bar(stat = "count", width = 0.15) +
      theme_classic() +
@@ -758,14 +758,14 @@ ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out, device = "p
 
 
 ## Barplot
-### Pradnick method
+### Pradnik method
 ```{r}
-# Keilmesser application Pradnick method
-# Load data sheet Keilmesser Pradnick method
-KM_Pradnick.method <- read.xlsx(xlsxFile = data_file, sheet = 27)  
+# Keilmesser application Pradnik method
+# Load data sheet Keilmesser Pradnik method
+KM_Pradnik.method <- read.xlsx(xlsxFile = data_file, sheet = 27)  
 
-# Barplot Keilmesser Pradnick method 
-KM.PM <- ggplot(data = KM_Pradnick.method) + aes(x = application.pradnick.method, fill = application.pradnick.method) + 
+# Barplot Keilmesser Pradnik method 
+KM.PM <- ggplot(data = KM_Pradnik.method) + aes(x = application.Pradnik.method, fill = application.Pradnik.method) + 
      geom_bar(stat = "count", width = 0.2) + 
      theme_classic() +
      labs(x = " ", y = "N") + 
@@ -805,13 +805,13 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.lat", ".pdf")
 ggsave(filename = file_out, plot = KM.lat, path = dir_out, device = "pdf")
 
 
-# Pradnick scraper lateralisation
-# Load data sheet Pradnick scraper lateralisation
+# Pradnik scraper lateralisation
+# Load data sheet Pradnik scraper lateralisation
 PS_lateralisation <- read.xlsx(xlsxFile = data_file, sheet = 30)  
 PS_lateralisation[grep("sin.", PS_lateralisation[["tool.lateralisation"]]), "value"] <- "-1"
 PS_lateralisation[grep("dex.", PS_lateralisation[["tool.lateralisation"]]), "value"] <- "1"
 
-# Barplot Pradnick scraper lateralisation
+# Barplot Pradnik scraper lateralisation
 PS.lat <- ggplot(PS_lateralisation, aes(y = value, x = technological.class, fill = tool.lateralisation)) + 
           geom_bar(stat = "identity", width = 0.15) +
           theme_minimal() +
@@ -857,11 +857,11 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.perimeter", ".pdf"
 ggsave(filename = file_out, plot = KM.perimeter, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
 
 
-# Perimeter Pradnick scraper
-# Load data sheet Pradnick scraper perimeter
+# Perimeter Pradnik scraper
+# Load data sheet Pradnik scraper perimeter
 PS_perimeter <- read.xlsx(xlsxFile = data_file, sheet = 8) 
 
-# Ternary diagram Pradnick scraper perimeter
+# Ternary diagram Pradnik scraper perimeter
 PS.perimeter  <- ggtern(data = PS_perimeter, aes(x = perimeter.arch, y = perimeter.active.edge, z = perimeter.basis.back)) +
                  geom_point(aes(colour = morpho.type)) +
                  theme_bw() +

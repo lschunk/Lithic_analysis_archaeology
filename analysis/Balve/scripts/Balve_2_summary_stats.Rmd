@@ -127,7 +127,7 @@ nminmaxmeanmedsd <- function(x){
 ##  Compute the summary statistics 
 ### Dimensions
 ```{r}
-# Dimensions Keilmesser, Keilmesser-points, Pradnick scraper, scraper & Later sharpening spall 
+# Dimensions Keilmesser, Keilmesser-points, Pradnik scraper, scraper & Later sharpening spall 
 dimensions <- summaryBy(length + width + thickness ~ technological.class + artefact.state,
                   data=imp_data, FUN=nminmaxmeanmedsd)
 str(dimensions)
