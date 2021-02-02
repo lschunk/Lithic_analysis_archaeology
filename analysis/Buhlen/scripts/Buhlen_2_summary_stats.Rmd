@@ -2,21 +2,6 @@
 title: 'Summary stats - Lithic analysis Buhlen' 
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output:
-  html_document:
-    toc: true
-    toc_depth: 4
-    toc_float: true
-    theme: cerulean
-    highlight: pygments
-    number_sections: true
-  github_document: 
-    toc: true
-    toc_depth: 3
-    html_preview: false
-knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", 
-  knit_root_dir = rprojroot::find_rstudio_root_file()) })
 ---
 
 
@@ -157,19 +142,7 @@ saveObject(list(dimensions = dimensions),
 ```
 
 
-## Show file information
-```{r}
-file_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
-md5_out <- md5sum(file_out)
-info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, row.names = NULL)
-```
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
-```
-
----
+--
 
 # sessionInfo() and RStudio version
 

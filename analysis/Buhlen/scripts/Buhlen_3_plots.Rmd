@@ -2,21 +2,6 @@
 title: 'Plots - Lithic analysis Buhlen '
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output:
-  html_document:
-    toc: true
-    toc_depth: 4
-    toc_float: true
-    theme: cerulean
-    highlight: pygments
-    number_sections: true
-  github_document: 
-    toc: true
-    toc_depth: 3
-    html_preview: false
-knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", 
-  knit_root_dir = rprojroot::find_rstudio_root_file()) })
 ---
 
 
@@ -97,7 +82,7 @@ KM_dim <- read.xlsx(xlsxFile = data_file, sheet = 3)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_length <- mean(KM_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = KM_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Keilmesser length
 KM.length <- ggplot(KM_dim, aes(x = length, fill = artefact.state)) + 
@@ -117,7 +102,7 @@ ggsave(filename = file_out, plot = KM.length, path = dir_out, device = "pdf", wi
 # Calculates the mean value for the plot and ascribes the N value 
 mean_width <- mean(KM_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = KM_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Keilmesser width
 KM.width <- ggplot(KM_dim, aes(x = width, fill = artefact.state)) + 
@@ -137,7 +122,7 @@ ggsave(filename = file_out, plot = KM.width, path = dir_out, device = "pdf", wid
 # Calculates the mean value for the plot and ascribes the N value 
 mean_thickness <- mean(KM_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = KM_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Keilmesser thickness 
 KM.thickness  <- ggplot(KM_dim, aes(y = thickness, fill = artefact.state)) + 
@@ -159,7 +144,7 @@ KM_weight <- read.xlsx(xlsxFile = data_file, sheet = 12)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_weight <- mean(KM_weight$weight, na.rm = TRUE)
 n <- doBy::summaryBy(weight ~ artefact.state, data = KM_weight, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Keilmesser weight
 KM.weight <- ggplot(KM_weight, aes(y = weight, fill = artefact.state)) + 
@@ -183,7 +168,7 @@ KM_back <- KM_back[-c(188, 190), ]
 # Calculates the mean value for the plot and ascribes the N value 
 mean_KM_back <- mean(KM_back$thickness.back, na.rm = TRUE)
 n <- doBy::summaryBy(thickness.back ~ artefact.state, data = KM_back, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Keilmesser thickness back  
 KM.back  <- ggplot(KM_back, aes(y = thickness.back, fill = artefact.state)) + 
@@ -210,7 +195,7 @@ PS_dim <- read.xlsx(xlsxFile = data_file, sheet = 7)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_length <- mean(PS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper length
 PS.length <- ggplot(PS_dim, aes(x = length, fill = artefact.state)) + 
@@ -230,7 +215,7 @@ ggsave(filename = file_out, plot = PS.length, path = dir_out, device = "pdf", wi
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_width <- mean(PS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper width
 PS.width <- ggplot(PS_dim, aes(x = width, fill = artefact.state)) + 
@@ -250,7 +235,7 @@ ggsave(filename = file_out, plot = PS.width, path = dir_out, device = "pdf", wid
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_thickness <- mean(PS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper thickness 
 PS.thickness <- ggplot(PS_dim, aes(y = thickness, fill = artefact.state)) + 
@@ -273,7 +258,7 @@ PS_weight <- read.xlsx(xlsxFile = data_file, sheet = 13)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_weight <- mean(PS_weight$weight, na.rm = TRUE)
 n <- doBy::summaryBy(weight ~ artefact.state, data = PS_weight, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper weight
 PS.weight <- ggplot(PS_weight, aes(y = weight, fill = artefact.state)) + 
@@ -296,7 +281,7 @@ PS_back <- read.xlsx(xlsxFile = data_file, sheet = 23)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_back <- mean(PS_back$thickness.back, na.rm = TRUE)
 n <- doBy::summaryBy(thickness.back ~ artefact.state, data = PS_back, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper thickness back  
 PS.back  <- ggplot(PS_back, aes(y = thickness.back, fill = artefact.state)) + 
@@ -323,7 +308,7 @@ S_dim <- read.xlsx(xlsxFile = data_file, sheet = 9)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_S_length <- mean(S_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = S_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram scraper length
 S.length <- ggplot(S_dim, aes(x = length, fill = artefact.state)) + 
@@ -343,7 +328,7 @@ ggsave(filename = file_out, plot = S.length, path = dir_out, device = "pdf", wid
 # Calculates the mean value for the plot and ascribes the N value 
 mean_S_width <- mean(S_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = S_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram scraper width
 S.width <- ggplot(S_dim, aes(x = width, fill = artefact.state)) + 
@@ -363,7 +348,7 @@ ggsave(filename = file_out, plot = S.width, path = dir_out, device = "pdf", widt
 # Calculates the mean value for the plot and ascribes the N value 
 mean_S_thickness <- mean(S_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = S_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram scraper thickness 
 S.thickness <- ggplot(S_dim, aes(y = thickness, fill = artefact.state)) + 
@@ -385,7 +370,7 @@ S_weight <- read.xlsx(xlsxFile = data_file, sheet = 15)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_S_weight <- mean(S_weight$weight, na.rm = TRUE)
 n <- doBy::summaryBy(weight ~ artefact.state, data = S_weight, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper weight
 S.weight <- ggplot(S_weight, aes(y = weight, fill = artefact.state)) + 
@@ -412,7 +397,7 @@ LSS_dim <- read.xlsx(xlsxFile = data_file, sheet = 8)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_LSS_length <- mean(LSS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = LSS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
   
 # Histogram lateral sharpening spall length
 LSS.length <- ggplot(LSS_dim, aes(x = length, fill = artefact.state)) + 
@@ -432,7 +417,7 @@ ggsave(filename = file_out, plot = LSS.length, path = dir_out, device = "pdf", w
 # Calculates the mean value for the plot and ascribes the N value 
 mean_LSS_width <- mean(LSS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = LSS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram lateral sharpening spall width
 LSS.width <- ggplot(LSS_dim, aes(x = width, fill = artefact.state)) + 
@@ -452,7 +437,7 @@ ggsave(filename = file_out, plot = LSS.width, path = dir_out, device = "pdf", wi
 # Calculates the mean value for the plot and ascribes the N value 
 mean_LSS_thickness <- mean(LSS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = LSS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram lateral sharpening spall thickness 
 LSS.thickness <- ggplot(LSS_dim, aes(y = thickness, fill = artefact.state)) + 
@@ -475,7 +460,7 @@ LSS_weight <- read.xlsx(xlsxFile = data_file, sheet = 14)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_LSS_weight <- mean(LSS_weight$weight, na.rm = TRUE)
 n <- doBy::summaryBy(weight ~ artefact.state, data = LSS_weight, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper weight
 LSS.weight <- ggplot(LSS_weight, aes(y = weight, fill = artefact.state)) + 
@@ -502,7 +487,7 @@ KM_dim_comp.tip <- KM_dim[c(1:111, 113:127), ]
 # Keilmesser length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ artefact.state, data = KM_dim_comp.tip, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Scatterplot Keilmesser (complete + point) length VS width 
 KM.length_width <- ggplot(KM_dim_comp.tip, aes(y = length, x = width, fill = artefact.state)) +
@@ -520,7 +505,7 @@ ggsave(filename = file_out, plot = KM.length_width, path = dir_out, device = "pd
 # Pradnik scraper length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ artefact.state, data = PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Scatterplot Pradnik scraper length VS width 
 PS.length_width <- ggplot(PS_dim, aes(y = length, x = width, fill = artefact.state)) +
@@ -542,7 +527,7 @@ LSS.comp_dim <- LSS_dim[1:36,]
 # Lateral sharpening spall length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ artefact.state, data = LSS.comp_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Scatterplot lateral sharpening spall length VS width 
 LSS.length_width <- ggplot(LSS.comp_dim, aes(y = length, x = width, fill = artefact.state)) +
@@ -567,7 +552,7 @@ KM.PS_dim <- KM.PS_dim[1:135,]
 # Keilmesser (complete) + Pradnik scraper length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ technological.class, data = KM.PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 # Scatterplot Keilmesser (complete) + Pradnik scraper length VS width
 KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, fill = technological.class)) +
@@ -587,7 +572,7 @@ KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 28)
 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ morpho.type, data = KM_morpho.type, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
 
 
 # Scatterplot Keilmesser (complete): length-width combined with morpho type 
@@ -934,20 +919,6 @@ ggsave(filename = file_out, plot = PS.perimeter, path = dir_out, device = "pdf")
 
 --- 
 
-# Show plot files information
-```{r}
-info_out <- list.files(path = dir_out, pattern = "\\.pdf$", full.names = TRUE) %>% 
-            md5sum()
-```
-
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
-```
-
-
----
 
 # sessionInfo() and RStudio version
 
