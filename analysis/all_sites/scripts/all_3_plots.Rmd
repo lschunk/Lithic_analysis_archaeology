@@ -817,7 +817,7 @@ KM.width_length_morpho <- ggplot(KM_morpho.type, aes(y = length, x = width,
                                   fill = morpho.type)) +
                       geom_point(size = 2, shape = 21) +
                       labs(y = "length [mm]", x = "width [mm]", title = "", 
-                           fill = "morpho type", size = 12) +
+                           fill = "keilmesser shape", size = 12) +
                       xlim(0, 100) + ylim(0, 160) +
                       theme_classic() +
                       scale_fill_manual(values = wes_palette(n = 7, name = "FantasticFox1",
@@ -826,36 +826,6 @@ KM.width_length_morpho <- ggplot(KM_morpho.type, aes(y = length, x = width,
 print(KM.width_length_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.width_length_morpho", ".pdf")
 ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out, device = "pdf",
-       width = 170, height = 250, units = "mm")
-
-
-
-# Pradnik scraper (complete): length-width combined with morpho type
-# Load data sheet Pradnik morpho type 
-PS_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 16)  
-# Arranges the data and defines only the relevant rows
-PS_morpho.type <- PS_morpho.type[ , ] %>% arrange(morpho.type)
-PS_morpho.type <- PS_morpho.type[-54, ]
-
-
-# Ascribes the N value 
-n <- doBy::summaryBy(length + width ~ morpho.type, data = PS_morpho.type, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
-
-
-# Scatterplot Keilmesser (complete): length-width combined with morpho type 
-PS.width_length_morpho <- ggplot(PS_morpho.type, aes(y = length, x = width, fill = morpho.type)) +
-                      geom_point(size = 2, shape = 21) +
-                      labs(y = "length [mm]", x = "width [mm]", title = "", 
-                           fill = "morpho type", size = 12) +
-                      xlim(0, 60) + ylim(0, 80) +
-                      theme_classic() +
-                      scale_fill_manual(values = wes_palette(n = 5, name = "FantasticFox1",
-                                          type = "continuous"), labels = tag) 
-                      
-print(PS.width_length_morpho)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.width_length_morpho", ".pdf")
-ggsave(filename = file_out, plot = PS.width_length_morpho, path = dir_out, device = "pdf",
        width = 170, height = 250, units = "mm")
 
 ```
@@ -1071,7 +1041,7 @@ ggsave(filename = file_out, plot = KM.PM, path = dir_out, device = "pdf",
 ```
 
 
-## Diverging barplot
+## Barplot
 ### Lateralisation 
 ```{r}
 # Keilmesser lateralisation
@@ -1145,20 +1115,21 @@ library(ggtern)
 KM_perimeter <- read.xlsx(xlsxFile = data_file, sheet = 6) 
 # Defines only the rows with complete Keilmesser 
 KM_perimeter <- KM_perimeter[-c (279:330), ]
+KM_perimeter <- KM_perimeter [ , ] %>% arrange(morpho.type)
+# Removes type 'undefined' 
+KM_perimeter <- KM_perimeter[-c (273:278), ]
 
 # Ternary diagram Keilmesser perimeter
-KM.perimeter  <- ggtern(data = KM_perimeter, aes(x = perimeter.distal.posterior.part, 
-                                                 y = perimeter.active.edge, 
-                                                 z = perimeter.basis.back)) +
+KM.perimeter  <- ggtern(data = KM_perimeter, aes(x = perimeter.distal.posterior.part, y = perimeter.active.edge, z = perimeter.basis.back)) +
                  geom_point(aes(colour = morpho.type)) +
                  theme_bw() +
                  scale_colour_startrek() +
                  theme_hidetitles() +
                  theme_showarrows() +
-                 xlab("distal posterior part")+ 
+                 xlab("distal.posterior.part")+ 
                  ylab("active edge")+
                  zlab("basis + back")+ 
-                 labs(colour = "morpho type") +
+                 labs(colour = "Keilmesser shape") +
                  tern_limits(labels=c(0, 20, 40, 60, 80, 100)) +
                  theme_rotate(degrees = 330)
                 
@@ -1168,48 +1139,6 @@ file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.perimeter", ".pdf"
 ggsave(filename = file_out, plot = KM.perimeter, path = dir_out, device = "pdf")
 
 
-# Perimeter Pradnik scraper
-# Load data sheet Pradnik scraper perimeter
-PS_perimeter <- read.xlsx(xlsxFile = data_file, sheet = 7) 
-
-
-# Ternary diagram Pradnik scraper perimeter
-PS.perimeter  <- ggtern(data = PS_perimeter, aes(x = perimeter.distal.posterior.part, 
-                                                 y = perimeter.active.edge, 
-                                                 z = perimeter.basis.back)) +
-                 geom_point(aes(colour = morpho.type)) +
-                 theme_bw() +
-                 scale_colour_startrek() +
-                 theme_hidetitles() +
-                 theme_showarrows() +
-                 xlab("arch")+ 
-                 ylab("active edge")+
-                 zlab("basis + back")+ 
-                 labs(colour = "morpho type") +
-                 tern_limits(labels=c(0, 20, 40, 60, 80, 100)) +
-                 theme_rotate(degrees = 330)
-                
-
-print(PS.perimeter) 
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.perimeter", ".pdf")
-ggsave(filename = file_out, plot = PS.perimeter, path = dir_out, device = "pdf")
-
-```
-
-
----
-
-
-# Show plot files information
-```{r}
-info_out <- list.files(path = dir_out, pattern = "\\.pdf$", full.names = TRUE) %>% 
-            md5sum()
-```
-
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
 ```
 
 

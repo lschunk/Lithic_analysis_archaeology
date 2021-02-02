@@ -2,21 +2,6 @@
 title: 'Import - Lithic analysis Balver Höhle '
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output:
-  html_document:
-    toc: true
-    toc_depth: 4
-    toc_float: true
-    theme: cerulean
-    highlight: pygments
-    number_sections: true
-  github_document: 
-    toc: true
-    toc_depth: 3
-    html_preview: false
-knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_format = "all", 
-  knit_root_dir = rprojroot::find_rstudio_root_file()) })
 ---
 
 
@@ -104,7 +89,7 @@ str(data_final)
 ```{r}
 # keeps only columns relevant for dimensions and sorts them based on 
 # their technological class
-keep_col <- c(2, 4:5,19:21)
+keep_col <- c(1:2, 4:5,19:21)
 dimensions <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_dimensions <- dimensions[1:191, ] %>% arrange(artefact.state)
@@ -122,7 +107,7 @@ S_dimensions <- dimensions[336:347,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for perimeter measurements and sorts them 
 # based on their technological class
-keep_col <- c(2, 4:5,7,23:26)
+keep_col <- c(1:2, 4:5,7,23:26)
 perimeter <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_perimeter <- perimeter[1:191, ] %>% arrange(artefact.state)
@@ -134,7 +119,7 @@ PS_perimeter <- perimeter[309:335,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for weight measurements and sorts them based 
 # on their technological class
-keep_col <- c(2, 4:5, 22)
+keep_col <- c(1:2, 4:5, 22)
 weight <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_weight <- weight[1:191, ] %>% arrange(artefact.state)
@@ -149,7 +134,7 @@ S_weight <- weight[336:347,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for raw material classification and sorts them 
 # based on their technological class
-keep_col <- c(2, 4:5, 3)
+keep_col <- c(1:2, 4:5, 3)
 raw_material <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_raw_material <- raw_material[1:191, ] %>% arrange(artefact.state)
@@ -164,7 +149,7 @@ S_raw_material <- raw_material[336:347,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for cortex and blank classification and sorts them 
 # based on their technological class
-keep_col <- c(2, 4:5, 6, 8:10)
+keep_col <- c(1:2, 4:5, 6, 8:10)
 cortex_blanks <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_cortex_blanks <- cortex_blanks[1:191, ] %>% arrange(artefact.state)
@@ -177,7 +162,7 @@ PS_cortex_blanks <- cortex_blanks[309:335,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for back modifications and sorts them based 
 # on their technological class
-keep_col <- c(2, 4:5, 11, 27)
+keep_col <- c(1:2, 4:5, 11, 27)
 back <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_back <- back[1:191, ] %>% arrange(artefact.state)
@@ -190,7 +175,7 @@ PS_back <- back[309:335,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for edge retouch classification and sorts them 
 # based on their technological class
-keep_col <- c(2, 4:5, 12:13, 29)
+keep_col <- c(1:2, 4:5, 12:13, 29)
 edge_retouch <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_edge_retouch <- edge_retouch[1:191, ] %>% arrange(artefact.state)
@@ -205,7 +190,7 @@ S_edge_retouch <- edge_retouch[336:347,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for morpho type classification and sorts them 
 # based on their technological class
-keep_col <- c(2, 4:5, 7, 19:21)
+keep_col <- c(1:2, 4:5, 7, 19:21)
 morpho.type <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_morpho.type <- morpho.type[1:191, ] %>% arrange(artefact.state)
@@ -218,7 +203,7 @@ PS_morpho.type <- morpho.type[309:335,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for 'morpho type 'Pradnik method' classification 
 # and sorts them based on their technological class
-keep_col <- c(2, 4:5, 15:16)
+keep_col <- c(1:2, 4:5, 15:16)
 Pradnik.method <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_Pradnik.method <- Pradnik.method[1:191, ] %>% arrange(artefact.state)
@@ -231,7 +216,7 @@ PS_Pradnik.method <- Pradnik.method[309:335,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for lateralisation and sorts them based on their
 # technological class
-keep_col <- c(2, 4:5, 18)
+keep_col <- c(1:2, 4:5, 18)
 lateralisation <- data_final[, keep_col] %>% arrange(technological.class)
 
 KM_lateralisation <- lateralisation[1:191, ] %>% arrange(artefact.state)
@@ -244,7 +229,7 @@ PS_lateralisation <- lateralisation[309:335,] %>% arrange(artefact.state)
 ```{r}
 # keeps only columns relevant for lateral sharpening spall classification and sorts 
 # them based on their technological class
-keep_col <- c(2, 4:5, 17:18)
+keep_col <- c(1:2, 4:5, 17:18)
 lss_type <- data_final[, keep_col] %>% arrange(technological.class)
 
 LSS_type <- lss_type[192:308, ] %>% arrange(artefact.state)
