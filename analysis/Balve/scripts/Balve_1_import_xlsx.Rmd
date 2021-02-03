@@ -274,20 +274,6 @@ saveObject(data_final, file = paste0(dir_out, file_out, ".Rbin"))
 ```
 
 
-## Show file information
-```{r}
-file_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
-md5_out <- md5sum(file_out)
-info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, 
-                       row.names = NULL)
-```
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
-```
-
-
 ---
 
 # sessionInfo() and RStudio version

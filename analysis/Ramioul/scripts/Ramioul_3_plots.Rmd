@@ -355,11 +355,10 @@ KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 25)
 
 # Barplot Keilmesser morpho type 
 KM.morpho.type <- ggplot(data = KM_morpho.type) + aes(x = morpho.type, fill = morpho.type) + 
-     geom_bar(stat = "count", width = 0.3) +
+     geom_bar(stat = "count", width = 0.3, fill = c("#899DA4", "#D76848", "#E8B37B")) +
      theme_classic() +
      theme(legend.position = "none") + 
-     labs(x = " ", y = "n") + 
-     scale_fill_manual(values = wes_palette(n = 3,name = "Royal1", type = "continuous"))    
+     labs(x = " ", y = "n")  
  
 print(KM.morpho.type)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.morpho.type", ".pdf")
@@ -377,13 +376,12 @@ KM_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 13)
 
 # Barplot Keilmesser raw material  
 KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count", width = 0.15) +
+     geom_bar(stat = "count", width = 0.15, fill = c("#D69C4E", "#046C9A")) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "n") + 
-     scale_x_discrete(labels=c("flint", "silicified schist")) +
-     scale_fill_manual(values = wes_palette(n = 2, name = "Darjeeling2"))    
- 
+     scale_x_discrete(labels=c("flint", "silicified schist")) 
+       
 print(KM.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.raw_material", ".pdf")
 ggsave(filename = file_out, plot = KM.raw_material, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
@@ -395,12 +393,11 @@ PS_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 14)
 
 # Barplot Pradnik scraper raw material  
 PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count", width = 0.08) +
+     geom_bar(stat = "count", width = 0.08, fill = c("#D69C4E")) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "n") + 
-     scale_x_discrete(labels= "flint") +
-     scale_fill_manual(values = wes_palette(n = 2, name = "Darjeeling2"))  
+     scale_x_discrete(labels= "flint") 
 
 print(PS.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.raw_material", ".pdf")
@@ -413,12 +410,11 @@ all_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 1)
 
 # Barplot Pradnik scraper raw material  
 all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material, fill = raw.material) + 
-     geom_bar(stat = "count", width = 0.15) +
+     geom_bar(stat = "count", width = 0.15, fill = c("#D69C4E", "#046C9A")) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "n") + 
-     scale_x_discrete(labels=c("flint", "silicified schist")) +
-     scale_fill_manual(values = wes_palette(n = 2, name = "Darjeeling2"))    
+     scale_x_discrete(labels=c("flint", "silicified schist")) 
  
 print(all.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "all.raw_material", ".pdf")
@@ -431,20 +427,19 @@ ggsave(filename = file_out, plot = all.raw_material, path = dir_out, device = "p
 ### Morphology back 
 ```{r}
 # Keilmesser morphology back 
-# Load data sheet Keilmesser raw material
+# Load data sheet Keilmesser morphology back 
 KM_back <- read.xlsx(xlsxFile = data_file, sheet = 19)  
 
 # colour code 
 # Darjeeling2 = c("#ECCBAE", "#046C9A", "#D69C4E", "#ABDDDE", "#000000"),
 
-# Barplot Keilmesser raw material  
+# Barplot Keilmesser morphology back  
 KM.back_morpho <- ggplot(data = KM_back) + aes(x = morphology.back, fill = morphology.back) + 
-     geom_bar(stat = "count", width = 0.25) +
+     geom_bar(stat = "count", width = 0.25, fill = c("#518BA0", "#518BA0", "#B9C7AD")) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "n") + 
-     scale_x_discrete(labels=c("cortex + partly retouched", "cortex/unworked", "retouched")) +
-     scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", type = "continuous"))    
+     scale_x_discrete(labels=c("cortex + partly retouched", "cortex/unworked", "retouched")) 
  
 print(KM.back_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.back_morpho", ".pdf")
@@ -452,17 +447,16 @@ ggsave(filename = file_out, plot = KM.back_morpho, path = dir_out, device = "pdf
 
 
 # Pradnik scraper morphology back 
-# Load data sheet Pradnik scraper raw material
+# Load data sheet Pradnik scraper morphology back 
 PS_back <- read.xlsx(xlsxFile = data_file, sheet = 20)  
 
-# Barplot Pradnik scraper raw material  
+# Barplot Pradnik scraper morphology back  
 PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back, fill = morphology.back) + 
-     geom_bar(stat = "count", width = 0.22) +
+     geom_bar(stat = "count", width = 0.22, fill = "#B9C7AD") +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "n") + 
-     scale_x_discrete() +
-      scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", type = "continuous")) 
+     scale_x_discrete() 
  
 print(PS.back_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.back_morpho", ".pdf")
