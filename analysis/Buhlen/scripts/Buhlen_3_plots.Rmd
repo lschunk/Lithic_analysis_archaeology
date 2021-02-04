@@ -466,6 +466,46 @@ ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out, device = "pdf
 
 
 ## Barplot
+### Edge retouch  
+```{r}
+# Keilmesser edge retouch 
+# Load data sheet Keilmesser edge retouch 
+KM_edge <- read.xlsx(xlsxFile = data_file, sheet = 24)  
+# Defines only the rows with complete Keilmesser and Keilmesser tips   
+KM_edge <- KM_edge[-c(112, 128:130),]
+
+# Barplot Keilmesser edge retouch  
+KM.edge <- ggplot(data = KM_edge) + aes(x = retouch.type.edge, fill = retouch.type.edge) + 
+     geom_bar(stat = "count", width = 0.5, fill = c ("#798E87", "#972D15", "#29211F")) +
+     theme_classic() +
+     theme(legend.position = "none") + 
+     labs(x = " ", y = "n") 
+ 
+print(KM.edge)
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.edge", ".pdf")
+ggsave(filename = file_out, plot = KM.edge, path = dir_out, device = "pdf", width = 170, height = 200, units = "mm")
+
+
+
+# Pradnik scraper edge retouch 
+# Load data sheet Pradnik scraper edge retouch 
+PS_edge <- read.xlsx(xlsxFile = data_file, sheet = 25)  
+
+# Barplot Pradnik scraper edge retouch  
+PS.edge <- ggplot(data = PS_edge) + aes(x = retouch.type.edge, fill = retouch.type.edge) + 
+     geom_bar(stat = "count", width = 0.5, fill = c ("#798E87", "#972D15", "#29211F")) +
+     theme_classic() +
+     theme(legend.position = "none") + 
+     labs(x = " ", y = "n") 
+ 
+print(PS.edge)
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.edge", ".pdf")
+ggsave(filename = file_out, plot = PS.edge, path = dir_out, device = "pdf", width = 170, height = 200, units = "mm")
+
+```
+
+
+## Barplot
 ### Raw material 
 ```{r}
 # Keilmesser raw material

@@ -2,6 +2,7 @@
 title: 'Summary stats - Lithic analysis Balver Höhle '
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
+output: word_document
 ---
 
 
@@ -33,6 +34,7 @@ It computes the following statistics:
 ```{r}
 dir_in <- "analysis/Balve/derived_data/"
 dir_out <- "analysis/Balve/summary_stats/"
+
 ```
 
 Raw data must be located in `r paste0("~/", dir_in)`.  
@@ -48,6 +50,7 @@ library(openxlsx)
 library(R.utils)
 library(tools)
 library(doBy)
+
 ```
 
 ---
@@ -58,17 +61,20 @@ library(doBy)
 data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
 md5_in <- md5sum(data_file)
 info_in <- data.frame(file = basename(names(md5_in)), checksum = md5_in, row.names = NULL)
+
 ```
 
 
 The checksum (MD5 hashes) of the imported file is  
 ```{r, echo = FALSE}
 info_in
+
 ```
 
 # Load data into R object
 ```{r}
 imp_data <- loadObject(paste0(dir_in, "Balve_lithic_analysis.Rbin"))
+
 ```
 
 The imported file is: "`r paste0("~/", data_file)`"  
@@ -80,12 +86,14 @@ The imported file is: "`r paste0("~/", data_file)`"
 # changes the order of columns 
 imp_data <- imp_data[c(1:22, 27,23:26, 28:34)]
 num.var <-19:23
+
 ```
 
 The following variables will be used: 
 
 ```{r, echo=FALSE}
 for (i in num.var) cat("[",i,"] ", names(imp_data)[i], "\n", sep="")
+
 ```
 
 ---
@@ -106,6 +114,7 @@ nminmaxmeanmedsd <- function(x){
  	names(out) <- c("n", "min", "max", "mean", "median", "sd")
  	return(out)
 }
+
 ```
 
 
@@ -114,7 +123,7 @@ nminmaxmeanmedsd <- function(x){
 ```{r}
 # Dimensions Keilmesser, Keilmesser-points, Pradnik scraper, scraper & Later sharpening spall 
 dimensions <- summaryBy(length + width + thickness ~ technological.class + artefact.state,
-                  data=imp_data, FUN=nminmaxmeanmedsd)
+                        data = imp_data, FUN = nminmaxmeanmedsd)
 str(dimensions)
 
 ```
@@ -124,6 +133,7 @@ str(dimensions)
 ## Format name of output file
 ```{r}
 file_out <- "Balve_lithic_analysis_stats"
+
 ```
 The file will be saved as "`r paste0("~/", dir_out, ".[ext]")`".
 
@@ -131,7 +141,8 @@ The file will be saved as "`r paste0("~/", dir_out, ".[ext]")`".
 ## Write to XLSX
 ```{r}
 write.xlsx(list(dimensions = dimensions), 
-           file = paste0(dir_out, file_out, ".xlsx"))
+           file = paste0(dir_out, file_out, ".xlsx")) 
+
 ```
 
 
@@ -139,23 +150,9 @@ write.xlsx(list(dimensions = dimensions),
 ```{r}
 saveObject(list(dimensions = dimensions), 
            file = paste0(dir_out, file_out, ".Rbin"))
+
 ```
 
-
-## Show file information
-```{r}
-file_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
-md5_out <- md5sum(file_out)
-info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, row.names = NULL)
-```
-
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
-```
-
----
 
 # sessionInfo() and RStudio version
 

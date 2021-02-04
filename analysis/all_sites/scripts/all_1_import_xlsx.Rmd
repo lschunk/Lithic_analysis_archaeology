@@ -154,6 +154,17 @@ PS_back <- back[493:546, ] %>% arrange(artefact.state)
 
 ```
 
+## Edge retouch
+```{r}
+# keeps only columns relevant for edge retouch classification and sorts them 
+# based on their technological class
+keep_col <- c(1:2, 4:5, 12:13, 29)
+edge_retouch <- merged_data[, keep_col] %>% arrange(technological.class)
+
+KM_edge_retouch <- edge_retouch[4:333, ] %>% arrange(artefact.state)
+PS_edge_retouch <- edge_retouch[493:546,] %>% arrange(artefact.state)
+
+```
 
 ## Morpho type  
 ```{r}
@@ -166,7 +177,6 @@ KM_morpho.type <- morpho.type[4:333, ] %>% arrange(artefact.state)
 PS_morpho.type <- morpho.type[493:546, ] %>% arrange(artefact.state)
 
 ```
-
 
 ## Application 'Pradnik method'  
 ```{r}
@@ -220,7 +230,8 @@ write.xlsx(list(data = merged_data, dimensions = dimensions, KM_dimensions = KM_
                   KM_perimeter, PS_perimeter = PS_perimeter, KM_raw_material = KM_raw_material,
                   PS_raw_material = PS_raw_material, LSS_raw_material = LSS_raw_material, 
                   KM_cortex_blanks = KM_cortex_blanks, PS_cortex_blanks = PS_cortex_blanks, 
-                  KM_back = KM_back, PS_back = PS_back, KM_morpho.type = KM_morpho.type, 
+                  KM_back = KM_back, PS_back = PS_back, KM_edge_retouch = KM_edge_retouch, 
+                  PS_edge_retouch = PS_edge_retouch, KM_morpho.type = KM_morpho.type, 
                   PS_morpho.type = PS_morpho.type, KM_Pradnik.method = KM_Pradnik.method, 
                   PS_Pradnik.method = PS_Pradnik.method, KM_lateralisation = KM_lateralisation, 
                   PS_lateralisation = PS_lateralisation, LSS_type = LSS_type), 

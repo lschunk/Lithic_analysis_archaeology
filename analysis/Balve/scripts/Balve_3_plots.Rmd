@@ -2,11 +2,13 @@
 title: 'Plots - Lithic analysis Balver Höhle '
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
+output: word_document
 ---
 
 
 ```{r Knitr Options, include = FALSE}
 knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
+
 ```
 
 
@@ -16,14 +18,15 @@ knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
 This script reads the xlsx file (derived data) containing all the information gained through a lithic analysis.   
 The script will:
 
-1. Reads the xlsx file 
-2. Plots all relevant variables in various combinations 
-3. Saves the plot as PDFs
+1. Read the xlsx file 
+2. Plot all relevant variables in various combinations 
+3. Save the plot as PDFs
 
 
 ```{r}
 dir_in <-  "analysis/Balve/derived_data/"
 dir_out <- "analysis/Balve/plots/"
+
 ```
 
 Raw data must be located in "`r dir_in`".  
@@ -44,6 +47,7 @@ library(ggplot2)
 library(wesanderson)
 library(dplyr)
 library(ggsci)
+
 ```
 
 
@@ -55,18 +59,22 @@ data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
 md5_in <- md5sum(data_file)
 info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
                       row.names = NULL)
+
 ```
 
 The checksum (MD5 hashes) of the imported files are:  
 ```{r, echo = FALSE}
 info_in
+
 ```
 
 
 # Load data into R object
 ```{r}
-imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1, colNames = TRUE,
+imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1, 
+                      colNames = TRUE,
                       rowNames = FALSE, skipEmptyRows = FALSE) 
+
 ```
 
 
@@ -84,60 +92,78 @@ KM.tip_dim <- KM_dim[-c(180:191), ]
 # Calculates the mean value for the plot and ascribes the N value 
 mean_length <- mean(KM.tip_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = KM.tip_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                      ")"))
 
 # Histogram Keilmesser length
 KM.length <- ggplot(KM.tip_dim, aes(x = length, fill = artefact.state)) + 
              geom_histogram(binwidth = 1) +
-             labs(x = "length [mm]", y = "n", title = "", fill = "artefact state", size = 12) +
+             labs(x = "length [mm]", y = "n", title = "", 
+             fill = "artefact state", size = 12) +
              theme_classic() +
-             geom_vline(aes(xintercept = mean_length), linetype="dashed", size = 1) +
-             geom_text(aes(y = mean_length, x = 70, label = round(mean_length, 1)), nudge_y = -48) +
-             scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1", type = "continuous"), labels = tag) 
+             geom_vline(aes(xintercept = mean_length), linetype="dashed", 
+             size = 1) +
+             geom_text(aes(y = mean_length, x = 70, label = round(mean_length,  
+                              1)), nudge_y = -48) +
+             scale_fill_manual(values = wes_palette(n = 2, name =
+             "FantasticFox1", type = "continuous"), labels = tag) 
 
 print(KM.length)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.length", ".pdf")
-ggsave(filename = file_out, plot = KM.length, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+ggsave(filename = file_out, plot = KM.length, path = dir_out, device = "pdf",
+          width = 170, height = 250, units = "mm")
 
 
 # Keilmesser width
 # Calculates the mean value for the plot and ascribes the N value 
 mean_width <- mean(KM.tip_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = KM.tip_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                        ")"))
 
 # Histogram Keilmesser width
 KM.width <- ggplot(KM.tip_dim, aes(x = width, fill = artefact.state)) + 
             geom_histogram(binwidth = 1) +
-            labs(x = "width [mm]", y = "n", title = "", fill = "artefact state", size = 12) +
+            labs(x = "width [mm]", y = "n", title = "", fill = "artefact state",
+            size = 12) +
             theme_classic() +
-            geom_vline(aes(xintercept = mean_width), linetype = "dashed", size = 1) +
-            geom_text(aes(y = mean_length, x = 45, label = round(mean_width, 1)), nudge_y = -45) +
-            scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1", type = "continuous"), labels = tag) 
+            geom_vline(aes(xintercept = mean_width), linetype = "dashed", 
+            size = 1) +
+            geom_text(aes(y = mean_length, x = 45, label = round(mean_width, 1)),
+            nudge_y = -45) +
+            scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1",
+            type = "continuous"), labels = tag) 
 
 print(KM.width) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.width", ".pdf")
-ggsave(filename = file_out, plot = KM.width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+ggsave(filename = file_out, plot = KM.width, path = dir_out, device = "pdf",
+          width = 170, height = 250, units = "mm")
 
 
 # Keilmesser thickness
 # Calculates the mean value for the plot and ascribes the N value 
 mean_thickness <- mean(KM.tip_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = KM.tip_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 # Histogram Keilmesser thickness 
 KM.thickness  <- ggplot(KM.tip_dim, aes(y = thickness, fill = artefact.state)) + 
                  geom_histogram(binwidth = 1) +
-                 labs(y = "thickness [mm]", x = "n", title = "", fill = "artefact state", size = 12) +
+                 labs(y = "thickness [mm]", x = "n", title = "", 
+                 fill = "artefact state", size = 12) +
                  theme_classic() +
-                 geom_hline(aes(yintercept = mean_thickness), linetype = "dashed", size = 1) +
-                 geom_text(aes(y = mean_thickness, x = 20, label = round(mean_thickness, 1)), nudge_y = 1) +
-                 scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1", type = "continuous"), labels = tag) 
+                 geom_hline(aes(yintercept = mean_thickness), 
+                 linetype = "dashed", size = 1) +
+                 geom_text(aes(y = mean_thickness, x = 20, 
+                 label = round(mean_thickness, 1)), nudge_y = 1) +
+                 scale_fill_manual(values = wes_palette(n = 2, 
+                 name = "FantasticFox1", type = "continuous"), labels = tag) 
 
 print(KM.thickness) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.thickness", ".pdf")
-ggsave(filename = file_out, plot = KM.thickness, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
+ggsave(filename = file_out, plot = KM.thickness, path = dir_out, device = "pdf",
+          width = 250, height = 170, units = "mm")
 
 
 # Keilmesser Back 
@@ -147,21 +173,28 @@ KM_back <- KM_back[-c(159:191), ]
 
 # Calculates the mean value for the plot and ascribes the N value 
 mean_KM_back <- mean(KM_back$thickness.back, na.rm = TRUE)
-n <- doBy::summaryBy(thickness.back ~ artefact.state, data = KM_back, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+n <- doBy::summaryBy(thickness.back ~ artefact.state, data = KM_back, 
+                     FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
+                                         " (n = ", n[[2]], ")"))
 
 # Histogram Keilmesser thickness back  
 KM.back  <- ggplot(KM_back, aes(y = thickness.back, fill = artefact.state)) + 
                  geom_histogram(binwidth = 1) +
-                 labs(x = "thickness [mm]", y = "n", title = "", fill = "artefact state", size = 12) +
+                 labs(x = "thickness [mm]", y = "n", title = "", 
+                 fill = "artefact state", size = 12) +
                  theme_classic() +
-                 geom_hline(aes(yintercept = mean_KM_back), linetype = "dashed", size = 1) +
-                 geom_text(aes(y = mean_KM_back, x = 16, label = round(mean_KM_back, 1)), nudge_y = -0.7) +
-                 scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1", type = "continuous"), labels = tag) 
+                 geom_hline(aes(yintercept = mean_KM_back), linetype = "dashed",
+                 size = 1) +
+                 geom_text(aes(y = mean_KM_back, x = 16, 
+                 label = round(mean_KM_back, 1)), nudge_y = -0.7) +
+                 scale_fill_manual(values = wes_palette(n = 2, 
+                 name = "FantasticFox1", type = "continuous"), labels = tag) 
 
 print(KM.back) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.back", ".pdf")
-ggsave(filename = file_out, plot = KM.back, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
+ggsave(filename = file_out, plot = KM.back, path = dir_out, device = "pdf", 
+          width = 250, height = 170, units = "mm")
 
 ```
 
@@ -175,60 +208,77 @@ PS_dim <- read.xlsx(xlsxFile = data_file, sheet = 7)
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_length <- mean(PS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]],
+                                         " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper length
 PS.length <- ggplot(PS_dim, aes(x = length, fill = artefact.state)) + 
              geom_histogram(binwidth = 1) +
-             labs(x = "length [mm]", y = "n", title = "", fill = "artefact state", size = 12) +
+             labs(x = "length [mm]", y = "n", title = "", 
+             fill = "artefact state", size = 12) +
              theme_classic() +
-             geom_vline(aes(xintercept = mean_PS_length), linetype = "dashed", size = 1) +
-             geom_text(aes(y = mean_PS_length, x = 55, label = round(mean_PS_length, 1)), nudge_y = -47) +
-             scale_fill_manual(values = wes_palette(n = 1, name = "Chevalier1"), labels = tag) 
+             geom_vline(aes(xintercept = mean_PS_length), linetype = "dashed",
+             size = 1) +
+             geom_text(aes(y = mean_PS_length, x = 55, 
+             label = round(mean_PS_length, 1)), nudge_y = -47) +
+             scale_fill_manual(values = wes_palette(n = 1, name = "Chevalier1"),
+             labels = tag) 
 
 print(PS.length)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.length", ".pdf")
-ggsave(filename = file_out, plot = PS.length, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+ggsave(filename = file_out, plot = PS.length, path = dir_out, device = "pdf",
+          width = 170, height = 250, units = "mm")
 
 
 # Pradnik scraper width 
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_width <- mean(PS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]],
+                                         " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper width
 PS.width <- ggplot(PS_dim, aes(x = width, fill = artefact.state)) + 
             geom_histogram(binwidth = 1) +
-            labs(x = "width [mm]", y = "n", title = "", fill = "artefact state", size = 12) +
+            labs(x = "width [mm]", y = "n", title = "", fill = "artefact state",
+            size = 12) +
             theme_classic() +
-            geom_vline(aes(xintercept = mean_PS_width), linetype="dashed", size = 1) +
-            geom_text(aes(y = mean_PS_width, x = 30, label = round(mean_PS_width, 1)), nudge_y = -30) +
+            geom_vline(aes(xintercept = mean_PS_width), linetype="dashed",
+            size = 1) +
+            geom_text(aes(y = mean_PS_width, x = 30, label = round(mean_PS_width,
+            1)), nudge_y = -30) +
             scale_fill_manual(values = wes_palette(n = 1, name = "Chevalier1"), labels = tag) 
  
 print(PS.width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.width", ".pdf")
-ggsave(filename = file_out, plot = PS.width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+ggsave(filename = file_out, plot = PS.width, path = dir_out, device = "pdf",
+          width = 170, height = 250, units = "mm")
 
 
 # Pradnik scraper thickness
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_thickness <- mean(PS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
+                                         " (n = ", n[[2]], ")"))
 
 # Histogram Pradnik scraper thickness 
 PS.thickness <- ggplot(PS_dim, aes(y = thickness, fill = artefact.state)) + 
                 geom_histogram(binwidth = 1) +
-                labs(y = "thickness [mm]", x = "n", title = "", fill = "artefact state", size = 12) +
+                labs(y = "thickness [mm]", x = "n", title = "", 
+                fill = "artefact state", size = 12) +
                 theme_classic() +
-                geom_hline(aes(yintercept = mean_PS_thickness), linetype = "dashed", size = 1) +
-                geom_text(aes(y = mean_PS_thickness, x = 5.9, label = round(mean_PS_thickness, 1)), nudge_y = -1) +
-                scale_fill_manual(values = wes_palette(n = 1, name = "Chevalier1"), labels = tag) 
+                geom_hline(aes(yintercept = mean_PS_thickness), 
+                linetype = "dashed", size = 1) +
+                geom_text(aes(y = mean_PS_thickness, x = 5.9, 
+                label = round(mean_PS_thickness, 1)), nudge_y = -1) +
+                scale_fill_manual(values = wes_palette(n = 1, name =
+                "Chevalier1"), labels = tag) 
 
 print(PS.thickness)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.thickness", ".pdf")
-ggsave(filename = file_out, plot = PS.thickness, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
+ggsave(filename = file_out, plot = PS.thickness, path = dir_out, device = "pdf",
+          width = 250, height = 170, units = "mm")
 
 
 
@@ -238,21 +288,28 @@ PS_back <- read.xlsx(xlsxFile = data_file, sheet = 23)
 
 # Calculates the mean value for the plot and ascribes the N value 
 mean_PS_back <- mean(PS_back$thickness.back, na.rm = TRUE)
-n <- doBy::summaryBy(thickness.back ~ artefact.state, data = PS_back, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+n <- doBy::summaryBy(thickness.back ~ artefact.state, data = PS_back, 
+                     FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 # Histogram Pradnik scraper thickness back  
 PS.back  <- ggplot(PS_back, aes(y = thickness.back, fill = artefact.state)) + 
                  geom_histogram(binwidth = 0.8) +
-                 labs(y = "thickness [mm]", x = "n", title = "", fill = "artefact state", size = 12) +
+                 labs(y = "thickness [mm]", x = "n", title = "", 
+                 fill = "artefact state", size = 12) +
                  theme_classic() +
-                 geom_hline(aes(yintercept = mean_PS_back), linetype = "dashed", size = 1) +
-                 geom_text(aes(y = mean_PS_back, x = 2.9, label = round(mean_PS_back, 1)), nudge_y = -0.8) +
-                 scale_fill_manual(values = wes_palette(n = 1, name = "Chevalier1"), labels = tag) 
+                 geom_hline(aes(yintercept = mean_PS_back), linetype = "dashed",
+                 size = 1) +
+                 geom_text(aes(y = mean_PS_back, x = 2.9, 
+                 label = round(mean_PS_back, 1)), nudge_y = -0.8) +
+                 scale_fill_manual(values = wes_palette(n = 1, name =
+                 "Chevalier1"), labels = tag) 
 
 print(PS.back) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.back", ".pdf")
-ggsave(filename = file_out, plot = PS.back, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
+ggsave(filename = file_out, plot = PS.back, path = dir_out, device = "pdf", 
+          width = 250, height = 170, units = "mm")
 
 ```
 
@@ -268,60 +325,79 @@ LSS_dim <- LSS_dim [-c(111:117), ]
 # Calculates the mean value for the plot and ascribes the N value 
 mean_LSS_length <- mean(LSS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = LSS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]],
+                                                     ")"))
   
 # Histogram lateral sharpening spall length
 LSS.length <- ggplot(LSS_dim, aes(x = length, fill = artefact.state)) + 
               geom_histogram(binwidth = 1) +
-              labs(x = "length [mm]", y = "N", title = "", fill = "artefact state", size = 12) +
+              labs(x = "length [mm]", y = "N", title = "", 
+              fill = "artefact state", size = 12) +
               theme_classic() +
-              geom_vline(aes(xintercept = mean_LSS_length), linetype = "dashed", size = 1) +
-              geom_text(aes(y = mean_LSS_length, x = 33, label = round(mean_LSS_length, 1)), nudge_y = -20) +
-              scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"), labels = tag) 
+              geom_vline(aes(xintercept = mean_LSS_length), linetype = "dashed",
+              size = 1) +
+              geom_text(aes(y = mean_LSS_length, x = 33, 
+              label = round(mean_LSS_length, 1)), nudge_y = -20) +
+              scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"),
+              labels = tag) 
 
 print(LSS.length)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.length", ".pdf")
-ggsave(filename = file_out, plot = LSS.length, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+ggsave(filename = file_out, plot = LSS.length, path = dir_out, device = "pdf",
+          width = 170, height = 250, units = "mm")
 
 
 # Lateral sharpening spall width 
 # Calculates the mean value for the plot and ascribes the N value 
 mean_LSS_width <- mean(LSS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = LSS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 # Histogram lateral sharpening spall width
 LSS.width <- ggplot(LSS_dim, aes(x = width, fill = artefact.state)) + 
              geom_histogram(binwidth = 1) +
-             labs(x = "width [mm]", y = "n", title = "", fill = "artefact state", size = 12) +
+             labs(x = "width [mm]", y = "n", title = "", fill = "artefact state",
+             size = 12) +
              theme_classic() +
-             geom_vline(aes(xintercept = mean_LSS_width), linetype = "dashed", size = 1) +
-             geom_text(aes(y = mean_LSS_width, x = 19, label = round(mean_LSS_width, 1)), nudge_y = -7) +
-             scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"), labels = tag) 
+             geom_vline(aes(xintercept = mean_LSS_width), linetype = "dashed",
+             size = 1) +
+             geom_text(aes(y = mean_LSS_width, x = 19, 
+             label = round(mean_LSS_width, 1)), nudge_y = -7) +
+             scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"),
+                               labels = tag) 
 
 print(LSS.width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.width", ".pdf")
-ggsave(filename = file_out, plot = LSS.width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+ggsave(filename = file_out, plot = LSS.width, path = dir_out, device = "pdf",
+          width = 170, height = 250, units = "mm")
 
 
 # Lateral sharpening spall thickness
 # Calculates the mean value for the plot and ascribes the N value 
 mean_LSS_thickness <- mean(LSS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = LSS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 # Histogram lateral sharpening spall thickness 
 LSS.thickness <- ggplot(LSS_dim, aes(y = thickness, fill = artefact.state)) + 
                  geom_histogram(binwidth = 0.8) +
-                 labs(y = "thickness[mm]", x = "n", title = "", fill = "artefact state", size = 12) +
+                 labs(y = "thickness[mm]", x = "n", title = "", 
+                 fill = "artefact state", size = 12) +
                  theme_classic() + 
-                 geom_hline(aes(yintercept = mean_LSS_thickness), linetype = "dashed", size = 1) +
-                 geom_text(aes(y = mean_LSS_thickness, x = 23.1, label = round(mean_LSS_thickness, 2)), nudge_y = -0.3) +
-                 scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"), labels = tag) 
+                 geom_hline(aes(yintercept = mean_LSS_thickness), 
+                 linetype = "dashed", size = 1) +
+                 geom_text(aes(y = mean_LSS_thickness, x = 23.1, 
+                 label = round(mean_LSS_thickness, 2)), nudge_y = -0.3) +
+                 scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"),
+                 labels = tag) 
 
 print(LSS.thickness)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.thickness", ".pdf")
-ggsave(filename = file_out, plot = LSS.thickness, path = dir_out, device = "pdf", width = 250, height = 170, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.thickness",
+                   ".pdf")
+ggsave(filename = file_out, plot = LSS.thickness, path = dir_out, 
+         device = "pdf", width = 250, height = 170, units = "mm")
 
 ```
 
@@ -333,38 +409,51 @@ KM_comp_dim <- read.xlsx(xlsxFile = data_file, sheet = 6)
 
 # Keilmesser length VS width 
 # Ascribes the N value 
-n <- doBy::summaryBy(length + width ~ artefact.state, data = KM_comp_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+n <- doBy::summaryBy(length + width ~ artefact.state, data = KM_comp_dim, 
+                     FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 # Scatterplot Keilmesser (complete + point) length VS width 
-KM.length_width <- ggplot(KM_comp_dim, aes(y = length, x = width, fill = artefact.state)) +
+KM.length_width <- ggplot(KM_comp_dim, aes(y = length, x = width, 
+                                        fill = artefact.state)) +
                    geom_point(size = 3, shape = 21) +
-                   labs(y = "length [mm]", x = "width [mm]", title = "", fill = "artefact state", size = 12) +
+                   labs(y = "length [mm]", x = "width [mm]", title = "", 
+                   fill = "artefact state", size = 12) +
                    xlim(0, 90) + ylim(0, 160) +
                    theme_classic() +
-                   scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1", type = "continuous"), labels = tag) 
+                   scale_fill_manual(values = wes_palette(n = 2, 
+                   name = "FantasticFox1", type = "continuous"), labels = tag) 
 
 print(KM.length_width)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.length_width", ".pdf")
-ggsave(filename = file_out, plot = KM.length_width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.length_width",
+                   ".pdf")
+ggsave(filename = file_out, plot = KM.length_width, path = dir_out, 
+         device = "pdf", width = 170, height = 250, units = "mm")
 
 
 # Pradnik scraper length VS width 
 # Ascribes the N value 
 n <- doBy::summaryBy(length + width ~ artefact.state, data = PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 # Scatterplot Pradnik scraper length VS width 
-PS.length_width <- ggplot(PS_dim, aes(y = length, x = width, fill = artefact.state)) +
+PS.length_width <- ggplot(PS_dim, aes(y = length, x = width, 
+                                   fill = artefact.state)) +
                    geom_point(size = 3, shape = 21) +
-                   labs(y = "length [mm]", x = "width [mm]", title = "",fill = "artefact state", size = 12) +
+                   labs(y = "length [mm]", x = "width [mm]", title = "", 
+                   fill = "artefact state", size = 12) +
                    xlim(0, 70) + ylim(0, 80) +
                    theme_classic() +
-                   scale_fill_manual(values = wes_palette(n = 6, name = "Chevalier1", type = "continuous"), labels = tag) 
+                   scale_fill_manual(values = wes_palette(n = 6, 
+                   name = "Chevalier1", type = "continuous"), labels = tag) 
 
 print(PS.length_width)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.length_width", ".pdf")
-ggsave(filename = file_out, plot = PS.length_width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.length_width",
+                   ".pdf")
+ggsave(filename = file_out, plot = PS.length_width, path = dir_out, 
+       device = "pdf", width = 170, height = 250, units = "mm")
 
 
 # Lateral sharpening spall length VS width 
@@ -373,20 +462,27 @@ LSS.comp_dim <- LSS_dim[1:110,]
 
 # Lateral sharpening spall length VS width 
 # Ascribes the N value 
-n <- doBy::summaryBy(length + width ~ artefact.state, data = LSS.comp_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+n <- doBy::summaryBy(length + width ~ artefact.state, data = LSS.comp_dim, 
+                     FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                             ")"))
 
 # Scatterplot lateral sharpening spall length VS width 
-LSS.length_width <- ggplot(LSS.comp_dim, aes(y = length, x = width, fill = artefact.state)) +
+LSS.length_width <- ggplot(LSS.comp_dim, aes(y = length, x = width, 
+                                          fill = artefact.state)) +
                     geom_point(size = 3, shape = 21) +
-                    labs(y = "length [mm]", x = "width [mm]", title = "", fill = "artefact state", size = 12) +
+                    labs(y = "length [mm]", x = "width [mm]", title = "", 
+                    fill = "artefact state", size = 12) +
                     xlim(0, 45) + ylim(0, 65) +
                     theme_classic() +
-                    scale_fill_manual(values = wes_palette(n = 2, name = "Royal1", type = "continuous"), labels = tag) 
+                    scale_fill_manual(values = wes_palette(n = 2, 
+                    name = "Royal1", type = "continuous"), labels = tag) 
 
 print(LSS.length_width)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.length_width", ".pdf")
-ggsave(filename = file_out, plot = LSS.length_width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.length_width",
+                   ".pdf")
+ggsave(filename = file_out, plot = LSS.length_width, path = dir_out, 
+         device = "pdf", width = 170, height = 250, units = "mm")
 
 
 # Keilmesser (complete) + Pradnik scraper length VS width
@@ -398,42 +494,54 @@ KM.PS_dim <- KM.PS_dim[1:185,]
 
 # Keilmesser (complete) + Pradnik scraper length VS width 
 # Ascribes the N value 
-n <- doBy::summaryBy(length + width ~ technological.class, data = KM.PS_dim, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+n <- doBy::summaryBy(length + width ~ technological.class, data = KM.PS_dim, 
+                     FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 # Scatterplot Keilmesser (complete) + Pradnik scraper length VS width
-KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, fill = technological.class)) +
+KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width, 
+                                         fill = technological.class)) +
                       geom_point(size = 3, shape = 21) +
-                      labs(y = "length [mm]", x = "width [mm]", title = "",fill = "artefact category", size = 12) +
+                      labs(y = "length [mm]", x = "width [mm]", title = "",
+                      fill = "artefact category", size = 12) +
                       xlim(0, 100) + ylim(0, 150) +
                       theme_classic() +
-                      scale_fill_manual(values = wes_palette(n = 3, name = "GrandBudapest1",
-                                            type = "continuous"), labels = tag) 
+                      scale_fill_manual(values = wes_palette(n = 3, name =
+                      "GrandBudapest1", type = "continuous"), labels = tag) 
 
 print(KM.PS.length_width)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PS.length_width", ".pdf")
-ggsave(filename = file_out, plot = KM.PS.length_width, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PS.length_width",
+                   ".pdf")
+ggsave(filename = file_out, plot = KM.PS.length_width, path = dir_out, 
+       device = "pdf", width = 170, height = 250, units = "mm")
  
 # Keilmesser (complete): length-width combined with morpho type
 # Load data sheet Keilmesser morpho type 
 KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 28)  
 
 # Ascribes the N value 
-n <- doBy::summaryBy(length + width ~ morpho.type, data = KM_morpho.type, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+n <- doBy::summaryBy(length + width ~ morpho.type, data = KM_morpho.type, 
+                     FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 
 # Scatterplot Keilmesser (complete): length-width combined with morpho type 
-KM.width_length_morpho <- ggplot(KM_morpho.type, aes(y = length, x = width, fill = morpho.type)) +
+KM.width_length_morpho <- ggplot(KM_morpho.type, aes(y = length, x = width, 
+                                                  fill = morpho.type)) +
                       geom_point(size = 2, shape = 21) +
-                      labs(y = "length [mm]", x = "width [mm]", title = "", fill = "Keilmesser shape", size = 12) +
+                      labs(y = "length [mm]", x = "width [mm]", title = "", 
+                      fill = "Keilmesser shape", size = 12) +
                       xlim(0, 100) + ylim(0, 150) +
                       theme_classic() +
-                      scale_fill_manual(values = wes_palette(n = 7,name = "FantasticFox1", type = "continuous"), labels = tag) 
+                      scale_fill_manual(values = wes_palette(n = 7,name =
+                      "FantasticFox1", type = "continuous"), labels = tag) 
                       
 print(KM.width_length_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.width_length_morpho", ".pdf")
-ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out, device = "pdf", width = 170, height = 250, units = "mm")
+ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out, 
+         device = "pdf", width = 170, height = 250, units = "mm")
 
 ```
 
@@ -448,15 +556,67 @@ KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 28)
 KM_morpho.type <- KM_morpho.type[1:158,]
 
 # Barplot Keilmesser morpho type 
-KM.morpho.type <- ggplot(data = KM_morpho.type) + aes(x = morpho.type, fill = morpho.type) + 
-     geom_bar(stat = "count", width = 0.5, fill = c("#899DA4", "#A46F65", "#BF4226", "#D76848", "#EBB99A", "#E8B37B")) +
+KM.morpho.type <- ggplot(data = KM_morpho.type) + aes(x = morpho.type, 
+                                                   fill = morpho.type) + 
+     geom_bar(stat = "count", width = 0.5, fill = c("#899DA4", "#A46F65",
+                    "#BF4226", "#D76848", "#EBB99A", "#E8B37B")) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "n") 
  
 print(KM.morpho.type)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.morpho.type", ".pdf")
-ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out, device = "pdf", width = 170, height = 200, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.morpho.type",
+                   ".pdf")
+ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out, 
+         device = "pdf", width = 170, height = 200, units = "mm")
+
+```
+
+
+## Barplot
+### Edge retouch  
+```{r}
+# Keilmesser edge retouch 
+# Load data sheet Keilmesser edge retouch 
+KM_edge <- read.xlsx(xlsxFile = data_file, sheet = 24)  
+# Defines only the rows with complete Keilmesser and Keilmesser tips   
+KM_edge <- KM_edge[-c(180:191),]
+
+# Barplot Keilmesser edge retouch  
+KM.edge <- ggplot(data = KM_edge) + aes(x = retouch.type.edge, 
+                                     fill = retouch.type.edge) + 
+     geom_bar(stat = "count", width = 0.5, fill = c ("#798E87", "#C27D38",
+     "#972D15", "#29211F")) +
+     theme_classic() +
+     theme(legend.position = "none") + 
+     labs(x = " ", y = "n") 
+ 
+print(KM.edge)
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.edge", ".pdf")
+ggsave(filename = file_out, plot = KM.edge, path = dir_out, device = "pdf", 
+          width = 170, height = 200, units = "mm")
+
+
+
+# Pradnik scraper edge retouch 
+# Load data sheet Pradnik scraper edge retouch 
+PS_edge <- read.xlsx(xlsxFile = data_file, sheet = 25)  
+# Defines only the rows with complete Keilmesser and Keilmesser tips   
+PS_edge <- PS_edge[-c(3:5),]
+
+# Barplot Pradnik scraper edge retouch  
+PS.edge <- ggplot(data = PS_edge) + aes(x = retouch.type.edge, 
+                                     fill = retouch.type.edge) + 
+     geom_bar(stat = "count", width = 0.5, fill = c ("#798E87", "#C27D38",
+     "#972D15", "#29211F")) +
+     theme_classic() +
+     theme(legend.position = "none") + 
+     labs(x = " ", y = "n") 
+ 
+print(PS.edge)
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.edge", ".pdf")
+ggsave(filename = file_out, plot = PS.edge, path = dir_out, device = "pdf", 
+          width = 170, height = 200, units = "mm")
 
 ```
 
@@ -469,7 +629,8 @@ ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out, device = "pdf
 KM_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 16)  
 
 # Barplot Keilmesser raw material  
-KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material, fill = raw.material) + 
+KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material, 
+                                                     fill = raw.material) + 
      geom_bar(stat = "count", width = 0.22, fill = c("#D69C4E", "#046C9A")) +
      theme_classic() +
      theme(legend.position = "none") + 
@@ -477,8 +638,10 @@ KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material, fill =
      scale_x_discrete(labels=c("Baltic flint", "silicified schist")) 
  
 print(KM.raw_material)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.raw_material", ".pdf")
-ggsave(filename = file_out, plot = KM.raw_material, path = dir_out, device = "pdf")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.raw_material",
+                     ".pdf")
+ggsave(filename = file_out, plot = KM.raw_material, path = dir_out, 
+         device = "pdf")
 
 
 # Pradnik scraper raw material
@@ -486,7 +649,8 @@ ggsave(filename = file_out, plot = KM.raw_material, path = dir_out, device = "pd
 PS_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 17)  
 
 # Barplot Pradnik scraper raw material  
-PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, fill = raw.material) + 
+PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, 
+                                                     fill = raw.material) + 
      geom_bar(stat = "count", width = 0.08, fill = c("#046C9A")) +
      theme_classic() +
      theme(legend.position = "none") + 
@@ -494,8 +658,10 @@ PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material, fill =
      scale_x_discrete(labels=c("silicified schist")) 
  
 print(PS.raw_material)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.raw_material", ".pdf")
-ggsave(filename = file_out, plot = PS.raw_material, path = dir_out, device = "pdf")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.raw_material",
+                   ".pdf")
+ggsave(filename = file_out, plot = PS.raw_material, path = dir_out, 
+         device = "pdf")
 
 
 # All tool types raw material
@@ -503,7 +669,8 @@ ggsave(filename = file_out, plot = PS.raw_material, path = dir_out, device = "pd
 all_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 1)  
 
 # Barplot Pradnik scraper raw material  
-all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material, fill = raw.material) + 
+all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material, 
+                                                       fill = raw.material) + 
      geom_bar(stat = "count", width = 0.24, fill = c("#D69C4E", "#046C9A")) +
      theme_classic() +
      theme(legend.position = "none") + 
@@ -511,8 +678,10 @@ all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material, fill
      scale_x_discrete(labels=c("Baltic flint", "silicified schist")) 
  
 print(all.raw_material)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "all.raw_material", ".pdf")
-ggsave(filename = file_out, plot = all.raw_material, path = dir_out, device = "pdf")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "all.raw_material",
+                      ".pdf")
+ggsave(filename = file_out, plot = all.raw_material, path = dir_out, 
+         device = "pdf")
 
 ```
 
@@ -525,17 +694,22 @@ ggsave(filename = file_out, plot = all.raw_material, path = dir_out, device = "p
 KM_back <- read.xlsx(xlsxFile = data_file, sheet = 22)  
 
 # Barplot Keilmesser morphology back  
-KM.back_morpho <- ggplot(data = KM_back) + aes(x = morphology.back, fill = morphology.back) + 
-     geom_bar(stat = "count", width = 0.5, fill = c("#518BA0", "#497C80", "#D69C4E", "#729394","#B9C7AD")) +
+KM.back_morpho <- ggplot(data = KM_back) + aes(x = morphology.back, 
+                                            fill = morphology.back) + 
+     geom_bar(stat = "count", width = 0.5, fill = c("#518BA0", "#497C80",
+     "#D69C4E", "#729394","#B9C7AD")) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "n") + 
-     scale_x_discrete(labels=c("cortex + partly retouched", "cortex/unworked", "N/A", "partly retouched", "retouched")) 
+     scale_x_discrete(labels=c("cortex + partly retouched", "cortex/unworked",
+                               "N/A", "partly retouched", "retouched")) 
      
  
 print(KM.back_morpho)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.back_morpho", ".pdf")
-ggsave(filename = file_out, plot = KM.back_morpho, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.back_morpho",
+                   ".pdf")
+ggsave(filename = file_out, plot = KM.back_morpho, path = dir_out, 
+         device = "pdf",width = 250, height = 170, units = "mm")
 
 
 # Pradnik scraper morphology back 
@@ -543,17 +717,23 @@ ggsave(filename = file_out, plot = KM.back_morpho, path = dir_out, device = "pdf
 PS_back <- read.xlsx(xlsxFile = data_file, sheet = 23)  
 
 # Barplot Pradnik scraper morphology back 
-PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back, fill = morphology.back) + 
-     geom_bar(stat = "count", width = 0.4, fill = c("#518BA0", "#497C80", "#D69C4E", "#729394")) +
+PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back, 
+                                            fill = morphology.back) + 
+     geom_bar(stat = "count", width = 0.4, fill = c("#518BA0", "#497C80",
+                                                    "#D69C4E", "#729394")) +
      theme_classic() +
      theme(legend.position = "none") + 
      labs(x = " ", y = "n") + 
-     scale_x_discrete(labels=c("cortex + partly retouched", "cortex/unworked", "N/A", "partly retouched", "retouched")) +
-     scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", type = "continuous"))    
+     scale_x_discrete(labels=c("cortex + partly retouched", "cortex/unworked",
+                               "N/A", "partly retouched", "retouched")) +
+     scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", 
+                                         type = "continuous"))    
  
 print(PS.back_morpho)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.back_morpho", ".pdf")
-ggsave(filename = file_out, plot = PS.back_morpho, path = dir_out, device = "pdf",width = 250, height = 170, units = "mm")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.back_morpho",
+                   ".pdf")
+ggsave(filename = file_out, plot = PS.back_morpho, path = dir_out, 
+         device = "pdf",width = 250, height = 170, units = "mm")
 
 
 # Keilmesser blanks
@@ -562,19 +742,24 @@ ggsave(filename = file_out, plot = PS.back_morpho, path = dir_out, device = "pdf
 KM_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 20)  
 # Ascribes the N value 
 n <- doBy::summaryBy(blank ~ cortex, data = KM_cortex_blanks, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]],
+                                                     ")"))
 
 # Barplot Keilmesser blanks 
-KM.cortex_blanks <- ggplot(data = KM_cortex_blanks) + aes(x = blank, fill = cortex) + 
+KM.cortex_blanks <- ggplot(data = KM_cortex_blanks) + aes(x = blank, 
+                                                       fill = cortex) + 
      geom_bar(stat = "count", width = 0.4) +
      theme_classic() +
      labs(x = " ", y = "n") + 
      scale_x_discrete(labels=c("core", "flake", "N/A")) +
-     scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", type = "continuous"), labels = tag)    
+     scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", 
+                                         type = "continuous"), labels = tag)    
  
 print(KM.cortex_blanks)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.cortex_blanks", ".pdf")
-ggsave(filename = file_out, plot = KM.cortex_blanks, path = dir_out, device = "pdf")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), 
+                   "KM.cortex_blanks", ".pdf")
+ggsave(filename = file_out, plot = KM.cortex_blanks, path = dir_out, 
+         device = "pdf")
 
 
 # Pradnik scraper blanks
@@ -583,19 +768,24 @@ PS_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 21)
 
 # Ascribes the N value 
 n <- doBy::summaryBy(blank ~ cortex, data = PS_cortex_blanks, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
+                                                     " (n = ", n[[2]], ")"))
 
 # Barplot Pradnik scraper blanks 
-PS.cortex_blanks <- ggplot(data = PS_cortex_blanks) + aes(x = blank, fill = cortex) + 
+PS.cortex_blanks <- ggplot(data = PS_cortex_blanks) + aes(x = blank, 
+                                                       fill = cortex) + 
      geom_bar(stat = "count", width = 0.3) +
      theme_classic() +
      labs(x = " ", y = "n") + 
      scale_x_discrete(labels=c("core", "flake", "N/A")) +
-     scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", type = "continuous"), labels = tag)    
+     scale_fill_manual(values = wes_palette(n = 7, name = "Darjeeling2", 
+                                         type = "continuous"), labels = tag)    
  
 print(PS.cortex_blanks)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.cortex_blanks", ".pdf")
-ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out, device = "pdf")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.cortex_blanks",
+                   ".pdf")
+ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out, 
+                = "pdf")
 
 ```
 
@@ -609,13 +799,15 @@ ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out, device = "p
 KM_Pradnik.method <- read.xlsx(xlsxFile = data_file, sheet = 30)  
 
 # Barplot Keilmesser Pradnik method 
-KM.PM <- ggplot(data = KM_Pradnik.method) + aes(x = application.Pradnik.method, fill = application.Pradnik.method) + 
+KM.PM <- ggplot(data = KM_Pradnik.method) + aes(x = application.Pradnik.method,
+                                             fill = application.Pradnik.method) + 
      geom_bar(stat = "count", width = 0.3) + 
      theme_classic() +
      labs(x = " ", y = "n") + 
      theme(legend.position = "none") + 
      scale_x_discrete(labels=c("no", "N/A", "yes")) +
-     scale_fill_manual(values = wes_palette(n = 5, name = "GrandBudapest1", type = "continuous"))    
+     scale_fill_manual(values = wes_palette(n = 5, name = "GrandBudapest1", 
+                                         type = "continuous"))    
  
 print(KM.PM)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PM", ".pdf")
@@ -637,7 +829,8 @@ KM.lat <- ggplot(data = KM_lateralisation) + aes(x = tool.lateralisation,
           theme_classic() +
           labs(x = " ", y = "n") + 
           theme(legend.position = "none") +
-          scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", type = "continuous"))    
+          scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", 
+                                              type = "continuous"))    
  
 print(KM.lat)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.lat", ".pdf")
@@ -658,7 +851,8 @@ PS.lat <- ggplot(data = PS_lateralisation) + aes(x = tool.lateralisation,
           theme_classic() +
           labs(x = " ", y = "n") + 
           theme(legend.position = "none") +
-          scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", type = "continuous")) 
+          scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", 
+                                              type = "continuous")) 
 
 print(PS.lat)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.lat", ".pdf")
@@ -674,17 +868,21 @@ ggsave(filename = file_out, plot = PS.lat, path = dir_out, device = "pdf")
 LSS_type <- read.xlsx(xlsxFile = data_file, sheet = 34) 
 
 # Ascribes the N value 
-n <- doBy::summaryBy(type.lateral.sharpening.spall ~ tool.lateralisation, data = LSS_type, FUN = length)
-tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], ")"))
+n <- doBy::summaryBy(type.lateral.sharpening.spall ~ tool.lateralisation, 
+                     data = LSS_type, FUN = length)
+tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
+                                                     " (n = ", n[[2]], ")"))
 
 # Barplot lateral resharpening spall type
-LSS.type <- ggplot(data = LSS_type) + aes(x = type.lateral.sharpening.spall, fill = tool.lateralisation) + 
+LSS.type <- ggplot(data = LSS_type) + aes(x = type.lateral.sharpening.spall, 
+                                       fill = tool.lateralisation) + 
      geom_bar(stat = "count", width = 0.2) + 
      theme_classic() +
      labs(x = " ", y = "n") + 
      labs(fill = "tool lateralisation") +
      scale_x_discrete() +
-     scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", type = "continuous"), labels = tag)
+     scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", 
+     type = "continuous"), labels = tag)
  
 print(LSS.type)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.type", ".pdf")
@@ -732,6 +930,7 @@ ggsave(filename = file_out, plot = KM.perimeter, path = dir_out, device = "pdf")
 
 ```{r}
 sessionInfo()
+
 ```
 
 RStudio version `r readLines("analysis/Balve/scripts/RStudioVersion.txt", n = 1)`.

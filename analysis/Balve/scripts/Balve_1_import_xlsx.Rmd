@@ -2,11 +2,13 @@
 title: 'Import - Lithic analysis Balver Höhle '
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
+output: word_document
 ---
 
 
 ```{r Knitr Options, include = FALSE}
 knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
+
 ```
 
 
@@ -25,6 +27,7 @@ The script will:
 ```{r}
 dir_in <-  "analysis/Balve/raw_data/"
 dir_out <- "analysis/Balve/derived_data/"
+
 ```
 
 Raw data must be located in "`r dir_in`".  
@@ -43,6 +46,7 @@ library(tools)
 library(data.table)
 library(chron)
 library(dplyr)
+
 ```
 
 
@@ -54,11 +58,13 @@ data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
 md5_in <- md5sum(data_file)
 info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
                       row.names = NULL)
+
 ```
 
 The checksum (MD5 hashes) of the imported files are:  
 ```{r, echo = FALSE}
 info_in
+
 ```
 
 
@@ -84,6 +90,7 @@ str(data_final)
 
 ```
 
+
 # Data analsysis - sorting  
 ## Dimension
 ```{r}
@@ -100,8 +107,8 @@ PS_dimensions <- dimensions[309:335,] %>% arrange(artefact.state)
 LSS_dimensions <- dimensions[192:308,] %>% arrange(artefact.state)
 S_dimensions <- dimensions[336:347,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Perimeter
 ```{r}
@@ -115,6 +122,7 @@ PS_perimeter <- perimeter[309:335,] %>% arrange(artefact.state)
 
 ```
 
+
 ## Weight
 ```{r}
 # keeps only columns relevant for weight measurements and sorts them based 
@@ -127,8 +135,8 @@ PS_weight <- weight[309:335,] %>% arrange(artefact.state)
 LSS_weight <- weight[192:308,] %>% arrange(artefact.state)
 S_weight <- weight[336:347,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Raw material
 ```{r}
@@ -142,8 +150,8 @@ PS_raw_material <- raw_material[309:335,] %>% arrange(artefact.state)
 LSS_raw_material <- raw_material[192:308,] %>% arrange(artefact.state)
 S_raw_material <- raw_material[336:347,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Cortex + blanks 
 ```{r}
@@ -155,8 +163,8 @@ cortex_blanks <- data_final[, keep_col] %>% arrange(technological.class)
 KM_cortex_blanks <- cortex_blanks[1:191, ] %>% arrange(artefact.state)
 PS_cortex_blanks <- cortex_blanks[309:335,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Back 
 ```{r}
@@ -168,8 +176,8 @@ back <- data_final[, keep_col] %>% arrange(technological.class)
 KM_back <- back[1:191, ] %>% arrange(artefact.state)
 PS_back <- back[309:335,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Edge retouch
 ```{r}
@@ -183,8 +191,8 @@ PS_edge_retouch <- edge_retouch[309:335,] %>% arrange(artefact.state)
 LSS_edge_retouch <- edge_retouch[192:308,] %>% arrange(artefact.state)
 S_edge_retouch <- edge_retouch[336:347,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Morpho type  
 ```{r}
@@ -196,8 +204,8 @@ morpho.type <- data_final[, keep_col] %>% arrange(technological.class)
 KM_morpho.type <- morpho.type[1:191, ] %>% arrange(artefact.state)
 PS_morpho.type <- morpho.type[309:335,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Application 'Pradnik method'  
 ```{r}
@@ -209,8 +217,8 @@ Pradnik.method <- data_final[, keep_col] %>% arrange(technological.class)
 KM_Pradnik.method <- Pradnik.method[1:191, ] %>% arrange(artefact.state)
 PS_Pradnik.method <- Pradnik.method[309:335,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Lateralisation
 ```{r}
@@ -222,8 +230,8 @@ lateralisation <- data_final[, keep_col] %>% arrange(technological.class)
 KM_lateralisation <- lateralisation[1:191, ] %>% arrange(artefact.state)
 PS_lateralisation <- lateralisation[309:335,] %>% arrange(artefact.state)
 
-
 ```
+
 
 ## Type lateral sharpening spall 
 ```{r}
@@ -234,7 +242,6 @@ lss_type <- data_final[, keep_col] %>% arrange(technological.class)
 
 LSS_type <- lss_type[192:308, ] %>% arrange(artefact.state)
 
-
 ```
 
 
@@ -242,6 +249,7 @@ LSS_type <- lss_type[192:308, ] %>% arrange(artefact.state)
 ## Format name of output file
 ```{r}
 file_out <- "Balve_lithic_analysis"
+
 ```
 The files will be saved as "`r paste0("~/", file_out, ".[ext]")`".
 
@@ -265,12 +273,14 @@ write.xlsx(list(data = data_final, dimensions = dimensions, KM_dimensions = KM_d
                   KM_lateralisation = KM_lateralisation, PS_lateralisation =
                   PS_lateralisation, LSS_type = LSS_type),
                   file = paste0(dir_out, file_out, ".xlsx"))
+
 ```
 
 
 ## Save R object
 ```{r}
 saveObject(data_final, file = paste0(dir_out, file_out, ".Rbin"))
+
 ```
 
 
