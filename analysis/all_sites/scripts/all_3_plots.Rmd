@@ -200,7 +200,7 @@ tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (n = ", n[[2]], "
 
 # Histogram Keilmesser length
 KM.length_sites <- ggplot(KM_dim, aes(x = length, fill = site)) + 
-             geom_histogram(binwidth = 1) +
+             geom_histogram(binwidth = 2) +
              labs(x = "length [mm]", y = "n", title = "", fill = "site", 
                   size = 12) +
              theme_classic() +
