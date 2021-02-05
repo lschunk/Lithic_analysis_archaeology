@@ -82,7 +82,7 @@ imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1,
 # Data analsysis - plots  
 ## Histogram
 ### Histogram dimensions - Keilmesser 
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Load data sheet Keilmesser 
 KM_dim <- read.xlsx(xlsxFile = data_file, sheet = 3) 
 KM_dim <- KM_dim [ , ] %>% arrange(artefact.state) 
@@ -200,7 +200,7 @@ ggsave(filename = file_out, plot = KM.back, path = dir_out, device = "pdf",
 
 
 ### Histogram dimensions - Pradnik scraper 
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Load data sheet Pradnik scraper  
 PS_dim <- read.xlsx(xlsxFile = data_file, sheet = 7) 
 
@@ -281,7 +281,6 @@ ggsave(filename = file_out, plot = PS.thickness, path = dir_out, device = "pdf",
           width = 250, height = 170, units = "mm")
 
 
-
 # Back Pradnik scraper thickness
 # Load data sheet Pradnik scraper thickness back 
 PS_back <- read.xlsx(xlsxFile = data_file, sheet = 23) 
@@ -316,7 +315,7 @@ ggsave(filename = file_out, plot = PS.back, path = dir_out, device = "pdf",
 
 
 ### Histogram dimension - Lateral sharpening spall
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Load data sheet lateral sharpening spall  
 LSS_dim <- read.xlsx(xlsxFile = data_file, sheet = 8) 
 LSS_dim <- LSS_dim [-c(111:117), ]
@@ -327,7 +326,6 @@ mean_LSS_length <- mean(LSS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = LSS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], " (N = ", n[[2]],
                                                      ")"))
-  
 # Histogram lateral sharpening spall length
 LSS.length <- ggplot(LSS_dim, aes(x = length, fill = artefact.state)) + 
               geom_histogram(binwidth = 1) +
@@ -403,7 +401,7 @@ ggsave(filename = file_out, plot = LSS.thickness, path = dir_out,
 
 ## Scatterplot 
 ### Length-width ratio 
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Load data sheet Keilmesser 
 KM_comp_dim <- read.xlsx(xlsxFile = data_file, sheet = 6) 
 
@@ -548,7 +546,7 @@ ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out,
 
 ## Barplot
 ### Morphotype 
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Keilmesser morpho type 
 # Load data sheet Keilmesser morpho type 
 KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 28)  
@@ -575,7 +573,7 @@ ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out,
 
 ## Barplot
 ### Edge retouch  
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Keilmesser edge retouch 
 # Load data sheet Keilmesser edge retouch 
 KM_edge <- read.xlsx(xlsxFile = data_file, sheet = 24)  
@@ -595,7 +593,6 @@ print(KM.edge)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.edge", ".pdf")
 ggsave(filename = file_out, plot = KM.edge, path = dir_out, device = "pdf", 
           width = 170, height = 200, units = "mm")
-
 
 
 # Pradnik scraper edge retouch 
@@ -623,7 +620,7 @@ ggsave(filename = file_out, plot = PS.edge, path = dir_out, device = "pdf",
 
 ## Barplot
 ### Raw material 
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Keilmesser raw material
 # Load data sheet Keilmesser raw material
 KM_raw_material <- read.xlsx(xlsxFile = data_file, sheet = 16)  
@@ -688,7 +685,7 @@ ggsave(filename = file_out, plot = all.raw_material, path = dir_out,
 
 ## Barplot
 ### Morphology back 
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Keilmesser morphology back 
 # Load data sheet Keilmesser morphology back
 KM_back <- read.xlsx(xlsxFile = data_file, sheet = 22)  
@@ -703,7 +700,6 @@ KM.back_morpho <- ggplot(data = KM_back) + aes(x = morphology.back,
      labs(x = " ", y = "n") + 
      scale_x_discrete(labels=c("cortex + partly retouched", "cortex/unworked",
                                "N/A", "partly retouched", "retouched")) 
-     
  
 print(KM.back_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.back_morpho",
@@ -782,10 +778,8 @@ PS.cortex_blanks <- ggplot(data = PS_cortex_blanks) + aes(x = blank,
                                          type = "continuous"), labels = tag)    
  
 print(PS.cortex_blanks)
-file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.cortex_blanks",
-                   ".pdf")
-ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out, 
-                = "pdf")
+file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.cortex_blanks", ".pdf")
+ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out, device = "pdf")
 
 ```
 
@@ -793,7 +787,7 @@ ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out,
 
 ## Barplot
 ### Pradnik method
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Keilmesser application Pradnik method
 # Load data sheet Keilmesser Pradnik method
 KM_Pradnik.method <- read.xlsx(xlsxFile = data_file, sheet = 30)  
@@ -818,7 +812,7 @@ ggsave(filename = file_out, plot = KM.PM, path = dir_out, device = "pdf")
 
 ## Barplot
 ### Lateralisation 
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Keilmesser lateralisation
 # Load data sheet Keilmesser lateralisation
 KM_lateralisation <- read.xlsx(xlsxFile = data_file, sheet = 32)  
@@ -862,7 +856,7 @@ ggsave(filename = file_out, plot = PS.lat, path = dir_out, device = "pdf")
 
 ## Barplot
 ### Barplot lateral resharpening spall type
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Lateral resharpening spall type
 # Load data sheet lateral resharpening spall type
 LSS_type <- read.xlsx(xlsxFile = data_file, sheet = 34) 
@@ -894,7 +888,7 @@ ggsave(filename = file_out, plot = LSS.type, path = dir_out, device = "pdf")
 
 ## Ternary plot
 ### Perimeter
-```{r}
+```{r, fig.width = 10, fig.height = 8, dpi = 200}
 library(ggtern)
 # Perimeter Keilmesser 
 # Load data sheet Keilmesser perimeter

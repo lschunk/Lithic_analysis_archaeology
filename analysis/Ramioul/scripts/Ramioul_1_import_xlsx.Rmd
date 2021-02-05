@@ -2,11 +2,13 @@
 title: 'Import - Lithic analysis Ramioul '
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
+output: word_document
 ---
 
 
 ```{r Knitr Options, include = FALSE}
 knitr::opts_chunk$set(comment = NA, message = FALSE, indent = "", error = TRUE)
+
 ```
 
 
@@ -25,6 +27,7 @@ The script will:
 ```{r}
 dir_in <-  "analysis/Ramioul/raw_data/"
 dir_out <- "analysis/Ramioul/derived_data/"
+
 ```
 
 Raw data must be located in "`r dir_in`".  
@@ -43,6 +46,7 @@ library(tools)
 library(data.table)
 library(chron)
 library(dplyr)
+
 ```
 
 
@@ -54,11 +58,14 @@ data_file <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
 md5_in <- md5sum(data_file)
 info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
                       row.names = NULL)
+
 ```
+
 
 The checksum (MD5 hashes) of the imported files are:  
 ```{r, echo = FALSE}
 info_in
+
 ```
 
 
@@ -84,6 +91,7 @@ str(data_final)
 
 ```
 
+
 # Data analsysis - sorting  
 ## Dimension
 ```{r}
@@ -99,6 +107,7 @@ S_dimensions <- dimensions[15:20, ]
 
 ```
 
+
 ## Perimeter
 ```{r}
 # keeps only columns relevant for perimeter measurements and sorts them 
@@ -109,8 +118,8 @@ perimeter <- data_final[, keep_col] %>% arrange(technological.class)
 KM_perimeter <- perimeter[3:11, ] 
 PS_perimeter <- perimeter[12:14, ] 
 
-
 ```
+
 
 ## Weight
 ```{r}
@@ -124,8 +133,8 @@ PS_weight <- weight[12:14, ]
 F_weight <- weight[1:2, ] 
 S_weight <- weight[15:20, ] 
 
-
 ```
+
 
 ## Raw material
 ```{r}
@@ -139,8 +148,8 @@ PS_raw_material <- raw_material[12:14, ]
 F_raw_material <- raw_material[1:2, ] 
 S_raw_material <- raw_material[15:20, ] 
 
-
 ```
+
 
 ## Cortex + blanks 
 ```{r}
@@ -152,8 +161,8 @@ cortex_blanks <- data_final[, keep_col] %>% arrange(technological.class)
 KM_cortex_blanks <- cortex_blanks[3:11, ] 
 PS_cortex_blanks <- cortex_blanks[12:14, ] 
 
-
 ```
+
 
 ## Back 
 ```{r}
@@ -165,8 +174,8 @@ back <- data_final[, keep_col] %>% arrange(technological.class)
 KM_back <- back[3:11, ]  
 PS_back <- back[12:14, ]
 
-
 ```
+
 
 ## Edge retouch
 ```{r}
@@ -180,8 +189,8 @@ PS_edge_retouch <- edge_retouch[12:14, ]
 F_edge_retouch <- edge_retouch[1:2, ] 
 S_edge_retouch <- edge_retouch[15:20, ] 
 
-
 ```
+
 
 ## Morpho type  
 ```{r}
@@ -193,8 +202,8 @@ morpho.type <- data_final[, keep_col] %>% arrange(technological.class)
 KM_morpho.type <- morpho.type[3:11, ] 
 PS_morpho.type <- morpho.type[12:14, ] 
 
-
 ```
+
 
 ## Application 'Pradnik method'  
 ```{r}
@@ -206,8 +215,8 @@ Pradnik.method <- data_final[, keep_col] %>% arrange(technological.class)
 KM_Pradnik.method <- Pradnik.method[3:11, ]
 PS_Pradnik.method <- Pradnik.method[12:14, ]  
 
-
 ```
+
 
 ## Lateralisation
 ```{r}
@@ -219,7 +228,6 @@ lateralisation <- data_final[, keep_col] %>% arrange(technological.class)
 KM_lateralisation <- lateralisation[3:11, ] 
 PS_lateralisation <- lateralisation[12:14, ] 
 
-
 ```
 
 
@@ -227,47 +235,36 @@ PS_lateralisation <- lateralisation[12:14, ]
 ## Format name of output file
 ```{r}
 file_out <- "Ramioul_lithic_analysis"
+
 ```
 The files will be saved as "`r paste0("~/", file_out, ".[ext]")`".
 
 
 ## Write to XLSX
 ```{r}
-write.xlsx(list(data = data_final, dimensions = dimensions, KM_dimensions = KM_dimensions,  
-                  PS_dimensions = PS_dimensions, F_dimensions = F_dimensions, S_dimensions = 
+write.xlsx(list(data = data_final, dimensions = dimensions, KM_dimensions = KM_dimensions,
+                PS_dimensions = PS_dimensions, F_dimensions = F_dimensions, S_dimensions =
                   S_dimensions, KM_perimeter = KM_perimeter, PS_perimeter = PS_perimeter,
                   KM_weight = KM_weight, PS_weight = PS_weight, F_weight = F_weight,
                   S_weight = S_weight, KM_raw_material = KM_raw_material,PS_raw_material =
                   PS_raw_material, F_raw_material = F_raw_material, S_raw_material =
                   S_raw_material, KM_cortex_blanks = KM_cortex_blanks, PS_cortex_blanks =
-                  PS_cortex_blanks, KM_back = KM_back, PS_back = PS_back, KM_edge_retouch =
-                  KM_edge_retouch, PS_edge_retouch = PS_edge_retouch, F_edge_retouch =
+                  PS_cortex_blanks, KM_back = KM_back, PS_back = PS_back, KM_edge_retouch
+                  = KM_edge_retouch, PS_edge_retouch = PS_edge_retouch, F_edge_retouch =
                   F_edge_retouch, S_edge_retouch = S_edge_retouch, KM_morpho.type =
                   KM_morpho.type, PS_morpho.type = PS_morpho.type, KM_Pradnik.method =
                   KM_Pradnik.method, PS_Pradnik.method = PS_Pradnik.method,
                   KM_lateralisation = KM_lateralisation, PS_lateralisation =
                   PS_lateralisation),
                   file = paste0(dir_out, file_out, ".xlsx"))
+
 ```
 
 
 ## Save R object
 ```{r}
 saveObject(data_final, file = paste0(dir_out, file_out, ".Rbin"))
-```
 
-
-## Show file information
-```{r}
-file_out <- c(paste0(dir_out, file_out, ".xlsx"), paste0(dir_out, file_out, ".Rbin"))
-md5_out <- md5sum(file_out)
-info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out, 
-                       row.names = NULL)
-```
-
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
 ```
 
 
@@ -277,6 +274,7 @@ info_out
 
 ```{r}
 sessionInfo()
+
 ```
 
 RStudio version `r readLines("analysis/Ramioul/scripts/RStudioVersion.txt", n = 1)`.
