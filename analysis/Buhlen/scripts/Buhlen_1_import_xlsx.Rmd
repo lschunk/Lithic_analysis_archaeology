@@ -1,8 +1,14 @@
 ---
-title: 'Import - Lithic analysis Buhlen '
+title: 'Import - Lithic analysis Buhlen'
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output: word_document
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
 ---
 
 
@@ -38,14 +44,9 @@ The knit directory for this script is the project directory.
 
 
 # Load packages
-```{r}
-library(openxlsx)
-library(readxl)
-library(R.utils)
-library(tools)
-library(data.table)
-library(chron)
-library(dplyr)
+```{r Libraries}
+pack_to_load <- c("R.utils", "tools", "openxlsx", "data.table", "readxl", "chron", "dplyr")
+sapply(pack_to_load, library, character.only = TRUE, logical.return = TRUE)
 
 ```
 
@@ -62,18 +63,11 @@ info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in,
 ```
 
 
-The checksum (MD5 hashes) of the imported files are:  
-```{r, echo = FALSE}
-info_in
-
-```
-
-
 # Read in original xlsx-file
 ```{r}
 imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1, colNames = TRUE,
                       rowNames = FALSE, skipEmptyRows = FALSE) 
-#select the columns to keep 
+# select the columns to keep 
 keep_col <- c(1:2, 9:19, 21:35, 37:38, 40:43)
 data_final <- imp_data[,keep_col]
 
@@ -95,7 +89,7 @@ str(data_final)
 # Data analsysis - sorting  
 ## Dimension
 ```{r}
-# keeps only columns relevant for dimensions and sorts them based on 
+# keep only columns relevant for dimensions and sorts them based on 
 # their technological class
 keep_col <- c(1:2, 4:5,19:21)
 dimensions <- data_final[, keep_col] %>% arrange(technological.class)
@@ -113,7 +107,7 @@ S_dimensions <- dimensions[198:199, ] %>% arrange(artefact.state)
 
 ## Perimeter
 ```{r}
-# keeps only columns relevant for perimeter measurements and sorts them 
+# keep only columns relevant for perimeter measurements and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5,7,23:26)
 perimeter <- data_final[, keep_col] %>% arrange(technological.class)
@@ -126,7 +120,7 @@ PS_perimeter <- perimeter[174:197, ] %>% arrange(artefact.state)
 
 ## Weight
 ```{r}
-# keeps only columns relevant for weight measurements and sorts them based 
+# keep only columns relevant for weight measurements and sort them based 
 # on their technological class
 keep_col <- c(1:2, 4:5, 22)
 weight <- data_final[, keep_col] %>% arrange(technological.class)
@@ -141,7 +135,7 @@ S_weight <- weight[198:199, ] %>% arrange(artefact.state)
 
 ## Raw material
 ```{r}
-# keeps only columns relevant for raw material classification and sorts them 
+# keep only columns relevant for raw material classification and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5, 3)
 raw_material <- data_final[, keep_col] %>% arrange(technological.class)
@@ -156,7 +150,7 @@ S_raw_material <- raw_material[198:199, ] %>% arrange(artefact.state)
 
 ## Cortex + blanks 
 ```{r}
-# keeps only columns relevant for cortex and blank classification and sorts them 
+# keep only columns relevant for cortex and blank classification and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5, 6, 8:10)
 cortex_blanks <- data_final[, keep_col] %>% arrange(technological.class)
@@ -169,7 +163,7 @@ PS_cortex_blanks <- cortex_blanks[174:197, ] %>% arrange(artefact.state)
 
 ## Back 
 ```{r}
-# keeps only columns relevant for back modifications and sorts them based 
+# keep only columns relevant for back modifications and sort them based 
 # on their technological class
 keep_col <- c(1:2, 4:5, 11, 27)
 back <- data_final[, keep_col] %>% arrange(technological.class)
@@ -182,7 +176,7 @@ PS_back <- back[174:197, ] %>% arrange(artefact.state)
 
 ## Edge retouch
 ```{r}
-# keeps only columns relevant for edge retouch classification and sorts them 
+# keep only columns relevant for edge retouch classification and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5, 12:13, 29)
 edge_retouch <- data_final[, keep_col] %>% arrange(technological.class)
@@ -197,7 +191,7 @@ S_edge_retouch <- edge_retouch[198:199, ] %>% arrange(artefact.state)
 
 ## Morpho type  
 ```{r}
-# keeps only columns relevant for morpho type classification and sorts them 
+# keep only columns relevant for morpho type classification and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5, 7, 19:21)
 morpho.type <- data_final[, keep_col] %>% arrange(technological.class)
@@ -210,8 +204,8 @@ PS_morpho.type <- morpho.type[174:197, ] %>% arrange(artefact.state)
 
 ## Application 'Pradnik method'  
 ```{r}
-# keeps only columns relevant for 'morpho type 'Pradnik method' classification 
-# and sorts them based on their technological class
+# keep only columns relevant for 'morpho type 'Pradnik method' classification 
+# and sort them based on their technological class
 keep_col <- c(1:2, 4:5, 15:16)
 Pradnik.method <- data_final[, keep_col] %>% arrange(technological.class)
 
@@ -223,7 +217,7 @@ PS_Pradnik.method <- Pradnik.method[174:197, ] %>% arrange(artefact.state)
 
 ## Lateralisation
 ```{r}
-# keeps only columns relevant for lateralisation and sorts them based on their
+# keep only columns relevant for lateralisation and sort them based on their
 # technological class
 keep_col <- c(1:2, 4:5, 18)
 lateralisation <- data_final[, keep_col] %>% arrange(technological.class)
@@ -236,7 +230,7 @@ PS_lateralisation <- lateralisation[174:197, ] %>% arrange(artefact.state)
 
 ## Type lateral sharpening spall 
 ```{r}
-# keeps only columns relevant for lateral sharpening spall classification and sorts 
+# keep only columns relevant for lateral sharpening spall classification and sort 
 # them based on their technological class
 keep_col <- c(1:2, 4:5, 17:18)
 lss_type <- data_final[, keep_col] %>% arrange(technological.class)
@@ -286,8 +280,14 @@ saveObject(data_final, file = paste0(dir_out, file_out, ".Rbin"))
 ```
 
 
-RStudio version `r readLines("analysis/Buhlen/scripts/RStudioVersion.txt", n = 1)`.
+RStudio version `r readLines("RStudioVersion.txt", n = 1)`.
 
+
+# Cite R packages used
+```{r Citation}
+for (i in pack_to_load) print(citation(i), bibtex = FALSE)
+
+```
 
 ---
 

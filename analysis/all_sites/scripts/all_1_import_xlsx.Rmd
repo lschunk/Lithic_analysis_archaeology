@@ -1,9 +1,14 @@
 ---
-title: 'Import - Lithic analysis from three sites: Balver Höhle, Buhlen & Ramioul '
+title: 'Import - Lithic analysis from three sites: Balver Höhle, Buhlen & Ramioul'
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
 output:
-  word_document: default
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
 ---
 
 
@@ -36,16 +41,10 @@ The knit directory for this script is the project directory.
 
 ---
 
-
 # Load packages
-```{r}
-library(openxlsx)
-library(readxl)
-library(R.utils)
-library(tools)
-library(data.table)
-library(chron)
-library(dplyr)
+```{r Libraries}
+pack_to_load <- c("R.utils", "tools", "openxlsx", "data.table", "readxl", "chron", "dplyr")
+sapply(pack_to_load, library, character.only = TRUE, logical.return = TRUE)
 
 ```
 
@@ -58,12 +57,6 @@ data_files <- list.files(dir_in, pattern = "\\.xlsx$", full.names = TRUE)
 md5_in <- md5sum(data_files)
 info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in, 
                       row.names = NULL)
-
-```
-
-The checksum (MD5 hashes) of the imported files are:  
-```{r, echo = FALSE}
-info_in
 
 ```
 
@@ -81,7 +74,7 @@ for (i in seq_along(data_files)) {
 str(imp_data)
 
 # check pairwisely if the three lines of headers are identical among the datasets
-# merges the data based on the three lines of headers while they get only 
+# merge the data based on the three lines of headers while they get only 
 # used in the first CSV file 
 comp <- all(sapply(list(names(imp_data[[1]]), names(imp_data[[2]])), 
                    FUN = identical, names(imp_data[[3]])))
@@ -89,7 +82,7 @@ merged_data <- do.call(rbind, imp_data)
 
 str(merged_data)
 
-# adds indices as row names 
+# add indices as row names 
 row.names(merged_data) <- 1:nrow(merged_data)
 
 ```
@@ -98,7 +91,7 @@ row.names(merged_data) <- 1:nrow(merged_data)
 # Data analsysis - sorting  
 ## Dimension
 ```{r}
-# keeps only columns relevant for dimensions and sorts them based on 
+# keep only columns relevant for dimensions and sort them based on 
 # their technological class
 keep_col <- c(1:2, 4:5, 19:21)
 dimensions <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -112,7 +105,7 @@ LSS_dimensions <- dimensions[334:492, ]
 
 ## Perimeter
 ```{r}
-# keeps only columns relevant for perimeter measurements and sorts them 
+# keep only columns relevant for perimeter measurements and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5,7,23:26)
 perimeter <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -125,7 +118,7 @@ PS_perimeter <- perimeter[493:546, ]
 
 ## Raw material
 ```{r}
-# keeps only columns relevant for raw material classification and sorts them 
+# keep only columns relevant for raw material classification and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5, 3)
 raw_material <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -139,7 +132,7 @@ LSS_raw_material <- raw_material[334:492, ] %>% arrange(artefact.state)
 
 ## Cortex + blanks 
 ```{r}
-# keeps only columns relevant for cortex and blank classification and sorts them 
+# keep only columns relevant for cortex and blank classification and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5, 6, 8:10)
 cortex_blanks <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -152,7 +145,7 @@ PS_cortex_blanks <- cortex_blanks[493:546, ] %>% arrange(artefact.state)
 
 ## Back 
 ```{r}
-# keeps only columns relevant for back modifications and sorts them based 
+# keep only columns relevant for back modifications and sort them based 
 # on their technological class
 keep_col <- c(1:2, 4:5, 11, 27)
 back <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -165,7 +158,7 @@ PS_back <- back[493:546, ] %>% arrange(artefact.state)
 
 ## Edge retouch
 ```{r}
-# keeps only columns relevant for edge retouch classification and sorts them 
+# keeps only columns relevant for edge retouch classification and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5, 12:13, 29)
 edge_retouch <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -178,7 +171,7 @@ PS_edge_retouch <- edge_retouch[493:546,] %>% arrange(artefact.state)
 
 ## Morpho type  
 ```{r}
-# keeps only columns relevant for morpho type classification and sorts them 
+# keep only columns relevant for morpho type classification and sort them 
 # based on their technological class
 keep_col <- c(1:2, 4:5, 7, 19:21)
 morpho.type <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -191,8 +184,8 @@ PS_morpho.type <- morpho.type[493:546, ] %>% arrange(artefact.state)
 
 ## Application 'Pradnik method'  
 ```{r}
-# keeps only columns relevant for 'morpho type 'Pradnik method' classification 
-# and sorts them based on their technological class
+# keep only columns relevant for 'morpho type 'Pradnik method' classification 
+# and sort them based on their technological class
 keep_col <- c(1:2, 4:5, 15:16)
 Pradnik.method <- merged_data[, keep_col] %>% arrange(technological.class)
 
@@ -204,7 +197,7 @@ PS_Pradnik.method <- Pradnik.method[493:546, ]  %>% arrange(artefact.state)
 
 ## Lateralisation
 ```{r}
-# keeps only columns relevant for lateralisation and sorts them based on their
+# keep only columns relevant for lateralisation and sort them based on their
 # technological class
 keep_col <- c(1:2, 4:5, 18)
 lateralisation <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -217,7 +210,7 @@ PS_lateralisation <- lateralisation[493:546, ] %>% arrange(artefact.state)
 
 # Type lateral sharpening spall 
 ```{r}
-# keeps only columns relevant for lateral sharpening spall classification and sorts 
+# keep only columns relevant for lateral sharpening spall classification and sort 
 # them based on their technological class
 keep_col <- c(1:2, 4:5, 17:18)
 lss_type <- merged_data[, keep_col] %>% arrange(technological.class)
@@ -225,6 +218,7 @@ lss_type <- merged_data[, keep_col] %>% arrange(technological.class)
 LSS_type <- lss_type[334:492, ] %>% arrange(artefact.state)
 
 ```
+
 
 # Save data
 ## Format name of output file
@@ -272,7 +266,14 @@ sessionInfo()
 
 ```
 
-RStudio version `r readLines("analysis/all_sites/scripts/RStudioVersion.txt", n = 1)`.
+RStudio version `r readLines("RStudioVersion.txt", n = 1)`.
+
+
+# Cite R packages used
+```{r Citation}
+for (i in pack_to_load) print(citation(i), bibtex = FALSE)
+
+```
 
 
 ---

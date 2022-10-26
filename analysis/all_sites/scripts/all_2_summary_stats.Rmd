@@ -2,7 +2,13 @@
 title: 'Summary stats - Lithic analysis from three sites: Balver Höhle, Buhlen & Ramioul'
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output: word_document
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
 ---
 
 
@@ -45,13 +51,12 @@ The knit directory for this script is the project directory.
 
 
 # Load packages
-```{r}
-library(openxlsx)
-library(R.utils)
-library(tools)
-library(doBy)
+```{r Libraries}
+pack_to_load <- c("tools", "openxlsx", "doBy", "R.utils")
+sapply(pack_to_load, library, character.only = TRUE, logical.return = TRUE)
 
 ```
+
 
 ---
 
@@ -66,12 +71,6 @@ info_in <- data.frame(file = basename(names(md5_in)), checksum = md5_in,
 ```
 
 
-The checksum (MD5 hashes) of the imported file is  
-```{r, echo = FALSE}
-info_in
-
-```
-
 # Load data into R object
 ```{r}
 imp_data <- loadObject(paste0(dir_in, "all_sites_analysis.Rbin"))
@@ -84,7 +83,7 @@ The imported file is: "`r paste0("~/", data_file)`"
 
 # Define numeric variables
 ```{r}
-# changes the order of columns 
+# change the order of columns 
 imp_data <- imp_data[c(1:22, 27,23:26, 28:34)]
 num.var <-19:23
 
@@ -123,7 +122,7 @@ nminmaxmeanmedsd <- function(x){
 ### Dimensions
 ```{r}
 # Dimensions Keilmesser, Keilmesser-points, Pradnik scraper & 
-# Later sharpening spall 
+# Lateral sharpening spall 
 dimensions <- summaryBy(length + width + thickness ~ technological.class +
               artefact.state, data = imp_data, FUN = nminmaxmeanmedsd)
 str(dimensions)
@@ -167,12 +166,6 @@ info_out <- data.frame(files = basename(names(md5_out)), checksum = md5_out,
 ```
 
 
-The checksum (MD5 hashes) of the exported files are:  
-```{r, echo = FALSE}
-info_out
-
-```
-
 ---
 
 # sessionInfo() and RStudio version
@@ -182,7 +175,14 @@ sessionInfo()
 
 ```
 
-RStudio version `r readLines("analysis/all_sites/scripts/RStudioVersion.txt", n = 1)`.
+RStudio version `r readLines("RStudioVersion.txt", n = 1)`.
+
+
+# Cite R packages used
+```{r Citation}
+for (i in pack_to_load) print(citation(i), bibtex = FALSE)
+
+```
 
 
 ---

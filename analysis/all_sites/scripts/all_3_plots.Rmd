@@ -2,7 +2,13 @@
 title: 'Plots - Lithic analysis from three sites: Balver Höhle, Buhlen & Ramioul'
 author: "Lisa Schunk"
 date: "`r Sys.Date()`"
-output: word_document
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
 ---
 
 
@@ -35,18 +41,10 @@ The knit directory for this script is the project directory.
 
 ---
 
-
 # Load packages
-```{r}
-library(openxlsx)
-library(readxl)
-library(R.utils)
-library(tools)
-library(chron)
-library(ggplot2)
-library(wesanderson)
-library(dplyr)
-library(ggsci)
+```{r Libraries}
+pack_to_load <- c("tools", "openxlsx", "ggplot2", "readxl", "R.utils", "chron", "dplyr", "wesanderson", "ggsci")
+sapply(pack_to_load, library, character.only = TRUE, logical.return = TRUE)
 
 ```
 
@@ -62,12 +60,6 @@ info_in <- data.frame(files = basename(names(md5_in)), checksum = md5_in,
 
 ```
 
-The checksum (MD5 hashes) of the imported files are:  
-```{r, echo = FALSE}
-info_in
-
-```
-
 
 # Load data into R object
 ```{r}
@@ -78,19 +70,18 @@ imp_data <- read.xlsx(xlsxFile = data_file, sheet = 1, startRow = 1,
 ```
 
 
-
 # Data analsysis - plots  
 ## Histogram
 ### Histogram dimensions - Keilmesser 
 ```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Load data sheet Keilmesser 
 KM_dim <- read.xlsx(xlsxFile = data_file, sheet = 3) 
-# removes incomplete artefacts 
+# Remove incomplete artefacts 
 KM_dim <- KM_dim[ , ] %>% arrange(artefact.state)
 KM.tip_dim <- KM_dim[-c(279, 316:330), ]
 
 # Keilmesser length 
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_length <- mean(KM.tip_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = KM.tip_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -115,7 +106,7 @@ ggsave(filename = file_out, plot = KM.length, path = dir_out, device = "pdf",
 
 
 # Keilmesser width
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_width <- mean(KM.tip_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = KM.tip_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -140,7 +131,7 @@ ggsave(filename = file_out, plot = KM.width, path = dir_out, device = "pdf",
 
 
 # Keilmesser thickness
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_thickness <- mean(KM.tip_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = KM.tip_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -171,7 +162,7 @@ KM_back <- read.xlsx(xlsxFile = data_file, sheet = 13)
 KM_back <- KM_back[-c(279:330), ]
 
 
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_KM_back <- mean(KM_back$thickness.back, na.rm = TRUE)
 n <- doBy::summaryBy(thickness.back ~ artefact.state, data = KM_back, 
                      FUN = length)
@@ -203,12 +194,12 @@ ggsave(filename = file_out, plot = KM.back, path = dir_out, device = "pdf",
 ```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Load data sheet Keilmesser 
 KM_dim <- read.xlsx(xlsxFile = data_file, sheet = 3) 
-# removes incomplete artefacts 
+# Remove incomplete artefacts 
 KM_dim <- KM_dim[ , ] %>% arrange(artefact.state)
 KM_dim <- KM_dim[-c(279:330), ]
 
 # Keilmesser length 
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_length <- mean(KM_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ site, data = KM_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -235,7 +226,7 @@ ggsave(filename = file_out, plot = KM.length_sites, path = dir_out,
 
 
 # Keilmesser width
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_width <- mean(KM_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ site, data = KM_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -261,7 +252,7 @@ ggsave(filename = file_out, plot = KM.width_sites, path = dir_out,
 
 
 # Keilmesser thickness
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_thickness <- mean(KM_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ site, data = KM_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -292,7 +283,7 @@ KM_back <- read.xlsx(xlsxFile = data_file, sheet = 13)
 KM_back <- KM_back[-c(279:330), ]
 
 
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_KM_back <- mean(KM_back$thickness.back, na.rm = TRUE)
 n <- doBy::summaryBy(thickness.back ~ site, data = KM_back, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -326,7 +317,7 @@ ggsave(filename = file_out, plot = KM.back_sites, path = dir_out, device = "pdf"
 PS_dim <- read.xlsx(xlsxFile = data_file, sheet = 4) 
 
 # Pradnik scraper length 
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_PS_length <- mean(PS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -351,7 +342,7 @@ ggsave(filename = file_out, plot = PS.length, path = dir_out, device = "pdf",
 
 
 # Pradnik scraper width 
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_PS_width <- mean(PS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]],
@@ -377,7 +368,7 @@ ggsave(filename = file_out, plot = PS.width, path = dir_out, device = "pdf",
 
 
 # Pradnik scraper thickness
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_PS_thickness <- mean(PS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -407,7 +398,7 @@ ggsave(filename = file_out, plot = PS.thickness, path = dir_out, device = "pdf",
 # Load data sheet Pradnik scraper thickness back 
 PS_back <- read.xlsx(xlsxFile = data_file, sheet = 14) 
 
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_PS_back <- mean(PS_back$thickness.back, na.rm = TRUE)
 n <- doBy::summaryBy(thickness.back ~ artefact.state, data = PS_back, 
                     FUN = length)
@@ -441,7 +432,7 @@ ggsave(filename = file_out, plot = PS.back, path = dir_out, device = "pdf",
 PS_dim <- read.xlsx(xlsxFile = data_file, sheet = 4) 
 
 # Pradnik scraper length 
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_PS_length <- mean(PS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ site, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -467,7 +458,7 @@ ggsave(filename = file_out, plot = PS.length_sites, path = dir_out,
 
 
 # Pradnik scraper width 
-# Calculates the mean value for the plot and ascribes the N value 
+# Calculate the mean value for the plot and ascribe the N value 
 mean_PS_width <- mean(PS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ site, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -494,7 +485,7 @@ ggsave(filename = file_out, plot = PS.width_sites, path = dir_out,
 
 
 # Pradnik scraper thickness
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_PS_thickness <- mean(PS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ site, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -523,7 +514,7 @@ ggsave(filename = file_out, plot = PS.thickness_sites, path = dir_out,
 # Load data sheet Pradnik scraper thickness back 
 PS_back <- read.xlsx(xlsxFile = data_file, sheet = 14) 
 
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_PS_back <- mean(PS_back$thickness.back, na.rm = TRUE)
 n <- doBy::summaryBy(thickness.back ~ site, data = PS_back, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -553,13 +544,13 @@ ggsave(filename = file_out, plot = PS.back_sites, path = dir_out,
 ```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Load data sheet lateral sharpening spall  
 LSS_dim <- read.xlsx(xlsxFile = data_file, sheet = 5) 
-# removes incomplete artefacts 
+# Remove incomplete artefacts 
 LSS_dim <-LSS_dim[ , ] %>% arrange(artefact.state)
 LSS_dim <- LSS_dim[-c(147:159), ]
 
 
 # Lateral sharpening spall length 
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_LSS_length <- mean(LSS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ artefact.state, data = LSS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -584,7 +575,7 @@ ggsave(filename = file_out, plot = LSS.length, path = dir_out, device = "pdf",
 
 
 # Lateral sharpening spall width 
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_LSS_width <- mean(LSS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ artefact.state, data = LSS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -609,7 +600,7 @@ ggsave(filename = file_out, plot = LSS.width, path = dir_out, device = "pdf",
 
 
 # Lateral sharpening spall thickness
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_LSS_thickness <- mean(LSS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ artefact.state, data = LSS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -641,13 +632,13 @@ ggsave(filename = file_out, plot = LSS.thickness, path = dir_out, device = "pdf"
 ```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Load data sheet lateral sharpening spall  
 LSS_dim <- read.xlsx(xlsxFile = data_file, sheet = 5) 
-# removes incomplete artefacts 
+# Remove incomplete artefacts 
 LSS_dim <-LSS_dim[ , ] %>% arrange(artefact.state)
 LSS_dim <- LSS_dim[-c(147:159), ]
 
 
 # Lateral sharpening spall length 
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_LSS_length <- mean(LSS_dim$length, na.rm = TRUE)
 n <- doBy::summaryBy(length ~ site, data = LSS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -673,7 +664,7 @@ ggsave(filename = file_out, plot = LSS.length_sites, path = dir_out,
 
 
 # Lateral sharpening spall width 
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_LSS_width <- mean(LSS_dim$width, na.rm = TRUE)
 n <- doBy::summaryBy(width ~ site, data = LSS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -699,7 +690,7 @@ ggsave(filename = file_out, plot = LSS.width_sites, path = dir_out,
 
 
 # Lateral sharpening spall thickness
-# Calculates the mean value for the plot and ascribes the n value 
+# Calculate the mean value for the plot and ascribe the n value 
 mean_LSS_thickness <- mean(LSS_dim$thickness, na.rm = TRUE)
 n <- doBy::summaryBy(thickness ~ site, data = LSS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -726,7 +717,6 @@ ggsave(filename = file_out, plot = LSS.thickness_sites, path = dir_out,
 ```
 
 
-
 ## Scatterplot 
 ### Length-width ratio 
 ```{r, fig.width = 10, fig.height = 8, dpi = 200}
@@ -736,7 +726,7 @@ KM_dim <- KM_dim[ , ] %>% arrange(artefact.state)
 KM_comp_dim <- KM_dim[-c(279:330 ), ]
 
 # Keilmesser length VS width 
-# Ascribes the n value 
+# Ascribe the n value 
 n <- doBy::summaryBy(width + length ~ site, data = KM_comp_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
                                          " (n = ", n[[2]], ")"))
@@ -787,7 +777,7 @@ ggsave(filename = file_out, plot = KM.tip.length_width, path = dir_out,
 PS_dim <- read.xlsx(xlsxFile = data_file, sheet = 4) 
 
 # Pradnik scraper length VS width 
-# Ascribes the n value 
+# Ascribe the n value 
 n <- doBy::summaryBy(length + width ~ site, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
                                          " (N = ", n[[2]], ")"))
@@ -811,12 +801,12 @@ ggsave(filename = file_out, plot = PS.length_width, path = dir_out,
 
 
 # Lateral sharpening spall length VS width 
-# Defines only the rows with complete LSS  
+# Define only the rows with complete LSS  
 LSS_dim <- LSS_dim[ , ] %>% arrange(artefact.state)
 LSS.comp_dim <- LSS_dim[1:146, ]
 
 # Lateral sharpening spall length VS width 
-# Ascribes the n value 
+# Ascribe the n value 
 n <- doBy::summaryBy(length + width ~ site, data = LSS.comp_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
                                          " (n = ", n[[2]], ")"))
@@ -842,10 +832,10 @@ ggsave(filename = file_out, plot = LSS.length_width, path = dir_out,
 # Load data sheet dimensions  
 dim <- read.xlsx(xlsxFile = data_file, sheet = 2)
 dim <- dim[ , ] %>% arrange(artefact.state)
-# Defines only the relevant rows 
+# Define only the relevant rows 
 KM.PS_dim <- dim[c(4:281, 428:481), ]  
 
-# Ascribes the n value 
+# Ascribe the n value 
 n <- doBy::summaryBy(length + width ~ technological.class, data = KM.PS_dim, 
                      FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -872,13 +862,13 @@ ggsave(filename = file_out, plot = KM.PS.length_width, path = dir_out,
 # Keilmesser (complete): length-width combined with morpho type
 # Load data sheet Keilmesser morpho type 
 KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 17)
-# Arranges the data and defines only the relevant rows
+# Arrange the data and define only the relevant rows
 KM_morpho.type <- KM_morpho.type[ , ] %>% arrange(artefact.state)
 KM_morpho.type <- KM_morpho.type[-c(279:330), ] 
 KM_morpho.type <- KM_morpho.type[ , ] %>% arrange(morpho.type)
 KM_morpho.type <- KM_morpho.type[-c(273:278), ]
 
-# Ascribes the N value 
+# Ascribe the N value 
 n <- doBy::summaryBy(length + width ~ morpho.type, data = KM_morpho.type, 
                      FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -913,7 +903,7 @@ KM_dim <- KM_dim[ , ] %>% arrange(artefact.state)
 KM_comp_dim <- KM_dim[-c(279:330 ), ]
 
 # Keilmesser length VS width 
-# Ascribes the n value 
+# Ascribe the n value 
 n <- doBy::summaryBy(width + length ~ site, data = KM_comp_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
                                          " (n = ", n[[2]], ")"))
@@ -939,7 +929,7 @@ ggsave(filename = file_out, plot = KM.length_width_reg, path = dir_out,
 
 
 # Pradnik scraper length VS width 
-# Ascribes the n value 
+# Ascribe the n value 
 n <- doBy::summaryBy(length + width ~ site, data = PS_dim, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
                                          " (N = ", n[[2]], ")"))
@@ -966,10 +956,10 @@ ggsave(filename = file_out, plot = PS.length_width_reg, path = dir_out,
 # Load data sheet dimensions  
 dim <- read.xlsx(xlsxFile = data_file, sheet = 2)
 dim <- dim[ , ] %>% arrange(artefact.state)
-# Defines only the relevant rows 
+# Define only the relevant rows 
 KM.PS_dim <- dim[c(4:281, 428:481), ]  
 
-# Ascribes the n value 
+# Ascribe the n value 
 n <- doBy::summaryBy(length + width ~ technological.class, data = KM.PS_dim, 
                     FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -995,13 +985,14 @@ ggsave(filename = file_out, plot = KM.PS.length_width_reg, path = dir_out,
  
 ```
 
+
 ## Barplot
 ### Morpho type Keilmesser
 ```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Keilmesser morpho type 
 # Load data sheet Keilmesser morpho type 
 KM_morpho.type <- read.xlsx(xlsxFile = data_file, sheet = 17)  
-# Defines only the rows with complete Keilmesser  
+# Define only the rows with complete Keilmesser  
 KM_morpho.type <- KM_morpho.type[1:279,]
 
 # Barplot Keilmesser morpho type 
@@ -1028,7 +1019,7 @@ ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out,
 # Keilmesser edge retouch 
 # Load data sheet Keilmesser edge retouch 
 KM_edge <- read.xlsx(xlsxFile = data_file, sheet = 15)  
-# Defines only the rows with complete Keilmesser and Keilmesser tips   
+# Define only the rows with complete Keilmesser and Keilmesser tips   
 KM_edge <- KM_edge[-c(279, 316:330),]
 
 # Barplot Keilmesser edge retouch  
@@ -1048,7 +1039,7 @@ ggsave(filename = file_out, plot = KM.edge, path = dir_out, device = "pdf",
 # Pradnik scraper edge retouch 
 # Load data sheet Pradnik scraper edge retouch 
 PS_edge <- read.xlsx(xlsxFile = data_file, sheet = 16)  
-# Defines only the rows with complete Keilmesser and Keilmesser tips   
+# Define only the rows with complete Keilmesser and Keilmesser tips   
 PS_edge <- PS_edge[-c(3:5),]
 
 # Barplot Pradnik scraper edge retouch  
@@ -1181,7 +1172,7 @@ ggsave(filename = file_out, plot = PS.back_morpho, path = dir_out,
 # Load data sheet Keilmesser blanks 
 KM_cortex_blanks <- read.xlsx(xlsxFile = data_file, sheet = 11)  
 
-# Ascribes the N value 
+# Ascribe the N value 
 n <- doBy::summaryBy(blank ~ cortex, data = KM_cortex_blanks, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
                                          " (n = ", n[[2]], ")"))
@@ -1226,7 +1217,6 @@ ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out,
          device = "pdf", width = 250, height = 170, units = "mm")
 
 ```
-
 
 
 ## Barplot
@@ -1292,13 +1282,14 @@ ggsave(filename = file_out, plot = PS.lat, path = dir_out, device = "pdf")
 
 ```
 
+
 ## Barplot
 ### Barplot lateral resharpening spall type
 ```{r, fig.width = 10, fig.height = 8, dpi = 200}
 # Lateral resharpening spall type
 # Load data sheet lateral resharpening spall type
 LSS_type <- read.xlsx(xlsxFile = data_file, sheet = 23)  
-# Ascribes the N value 
+# Ascribe the N value 
 n <- doBy::summaryBy(type.lateral.sharpening.spall ~ tool.lateralisation, 
                      data = LSS_type, FUN = length)
 tag <- gsub(pattern = "_", replacement = " ", paste0(n[[1]], 
@@ -1328,10 +1319,10 @@ library(ggtern)
 # Perimeter Keilmesser 
 # Load data sheet Keilmesser perimeter
 KM_perimeter <- read.xlsx(xlsxFile = data_file, sheet = 6) 
-# Defines only the rows with complete Keilmesser 
+# Define only the rows with complete Keilmesser 
 KM_perimeter <- KM_perimeter[-c (279:330), ]
 KM_perimeter <- KM_perimeter [ , ] %>% arrange(morpho.type)
-# Removes type 'undefined' 
+# Remove type 'undefined' 
 KM_perimeter <- KM_perimeter[-c (273:278), ]
 
 # Ternary diagram Keilmesser perimeter
@@ -1354,7 +1345,6 @@ KM.perimeter  <- ggtern(data = KM_perimeter, aes(x =
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.perimeter", ".pdf")
 ggsave(filename = file_out, plot = KM.perimeter, path = dir_out, device = "pdf")
 
-
 ```
 
 
@@ -1367,6 +1357,16 @@ sessionInfo()
 
 ```
 
+---
+
+RStudio version `r readLines("RStudioVersion.txt", n = 1)`.
+
+
+# Cite R packages used
+```{r Citation}
+for (i in pack_to_load) print(citation(i), bibtex = FALSE)
+
+```
 
 ---
 
