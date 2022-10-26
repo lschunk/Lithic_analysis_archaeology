@@ -107,7 +107,6 @@ KM.length <- ggplot(KM.tip_dim, aes(x = length, fill = artefact.state)) +
              scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1", 
              type = "continuous"), labels = tag) 
 
-print(KM.length)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.length", ".pdf")
 ggsave(filename = file_out, plot = KM.length, path = dir_out, device = "pdf", 
           width = 170, height = 250, units = "mm")
@@ -131,7 +130,6 @@ KM.width <- ggplot(KM.tip_dim, aes(x = width, fill = artefact.state)) +
             nudge_y = -40) +
             scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1",              type = "continuous"), labels = tag) 
 
-print(KM.width) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.width", ".pdf")
 ggsave(filename = file_out, plot = KM.width, path = dir_out, device = "pdf", 
           width = 170, height = 250, units = "mm")
@@ -158,7 +156,6 @@ KM.thickness  <- ggplot(KM.tip_dim, aes(y = thickness, fill = artefact.state)) +
                  scale_fill_manual(values = wes_palette(n = 2, 
                  name = "FantasticFox1", type = "continuous"), labels = tag) 
 
-print(KM.thickness) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.thickness", ".pdf")
 ggsave(filename = file_out, plot = KM.thickness, path = dir_out, device = "pdf", 
           width = 250, height = 170, units = "mm")
@@ -189,7 +186,6 @@ KM.back  <- ggplot(KM_back, aes(y = thickness.back, fill = artefact.state)) +
             scale_fill_manual(values = wes_palette(n = 2, name = "FantasticFox1",
             type = "continuous"), labels = tag) 
 
-print(KM.back) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.back", ".pdf")
 ggsave(filename = file_out, plot = KM.back, path = dir_out, device = "pdf", width = 250,
          height = 170, units = "mm")
@@ -222,7 +218,6 @@ PS.length <- ggplot(PS_dim, aes(x = length, fill = artefact.state)) +
              scale_fill_manual(values = wes_palette(n = 1, name = "Chevalier1"), 
              labels = tag) 
 
-print(PS.length)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.length", ".pdf")
 ggsave(filename = file_out, plot = PS.length, path = dir_out, device = "pdf", 
           width = 170, height = 250, units = "mm")
@@ -249,7 +244,6 @@ PS.width <- ggplot(PS_dim, aes(x = width, fill = artefact.state)) +
             scale_fill_manual(values = wes_palette(n = 1, name = "Chevalier1"), 
             labels = tag) 
  
-print(PS.width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.width", ".pdf")
 ggsave(filename = file_out, plot = PS.width, path = dir_out, device = "pdf", 
           width = 170, height = 250, units = "mm")
@@ -276,7 +270,6 @@ PS.thickness <- ggplot(PS_dim, aes(y = thickness, fill = artefact.state)) +
                 scale_fill_manual(values = wes_palette(n = 1, 
                 name = "Chevalier1"), labels = tag) 
 
-print(PS.thickness)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.thickness", ".pdf")
 ggsave(filename = file_out, plot = PS.thickness, path = dir_out, device = "pdf", 
           width = 250, height = 170, units = "mm")
@@ -307,7 +300,6 @@ PS.back  <- ggplot(PS_back, aes(y = thickness.back, fill = artefact.state)) +
             scale_fill_manual(values = wes_palette(n = 1, name = "Chevalier1"), 
             labels = tag) 
 
-print(PS.back) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.back", ".pdf")
 ggsave(filename = file_out, plot = PS.back, path = dir_out, device = "pdf", 
           width = 250, height = 170, units = "mm")
@@ -342,7 +334,6 @@ LSS.length <- ggplot(LSS_dim, aes(x = length, fill = artefact.state)) +
               scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"), 
               labels = tag) 
 
-print(LSS.length)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.length", ".pdf")
 ggsave(filename = file_out, plot = LSS.length, path = dir_out, device = "pdf", 
           width = 170, height = 250, units = "mm")
@@ -368,7 +359,6 @@ LSS.width <- ggplot(LSS_dim, aes(x = width, fill = artefact.state)) +
              scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"), 
              labels = tag) 
 
-print(LSS.width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.width", ".pdf")
 ggsave(filename = file_out, plot = LSS.width, path = dir_out, device = "pdf", 
           width = 170, height = 250, units = "mm")
@@ -395,7 +385,6 @@ LSS.thickness <- ggplot(LSS_dim, aes(y = thickness, fill = artefact.state)) +
                  scale_fill_manual(values = wes_palette(n = 1, name = "Royal1"), 
                  labels = tag) 
 
-print(LSS.thickness)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.thickness", ".pdf")
 ggsave(filename = file_out, plot = LSS.thickness, path = dir_out, device = "pdf", 
           width = 250, height = 170, units = "mm")
@@ -428,7 +417,6 @@ KM.length_width <- ggplot(KM_dim_comp.tip, aes(y = length, x = width, fill =
                    name = "FantasticFox1",
                    type = "continuous"), labels = tag) 
 
-print(KM.length_width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.length_width",
                    ".pdf")
 ggsave(filename = file_out, plot = KM.length_width, path = dir_out, 
@@ -453,7 +441,6 @@ PS.length_width <- ggplot(PS_dim, aes(y = length, x = width,
                    name = "Chevalier1", 
                    type = "continuous"), labels = tag) 
 
-print(PS.length_width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.length_width",
                    ".pdf")
 ggsave(filename = file_out, plot = PS.length_width, path = dir_out, 
@@ -479,10 +466,10 @@ LSS.length_width <- ggplot(LSS.comp_dim, aes(y = length, x = width,
                     fill = "artefact state", size = 12) +
                     xlim(0, 40) + ylim(0, 60) +
                     theme_classic() +
-                    scale_fill_manual(values = wes_palette(n = 2, name = "Royal1", 
+                    scale_fill_manual(values = wes_palette(n = 2, name = "Royal1",
                     type = "continuous"), labels = tag) 
 
-print(LSS.length_width)
+
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.length_width",
                    ".pdf")
 ggsave(filename = file_out, plot = LSS.length_width, path = dir_out, 
@@ -514,7 +501,6 @@ KM.PS.length_width <- ggplot(KM.PS_dim, aes(y = length, x = width,
                       scale_fill_manual(values = wes_palette(n = 3, name =
                       "GrandBudapest1", type = "continuous"), labels = tag) 
 
-print(KM.PS.length_width)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PS.length_width",
                    ".pdf")
 ggsave(filename = file_out, plot = KM.PS.length_width, path = dir_out, 
@@ -542,7 +528,6 @@ KM.width_length_morpho <- ggplot(KM_morpho.type, aes(y = length, x = width,
                           scale_fill_manual(values = wes_palette(n = 7,name =
                           "FantasticFox1", type = "continuous"), labels = tag) 
                       
-print(KM.width_length_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.width_length_morpho",
                    ".pdf")
 ggsave(filename = file_out, plot = KM.width_length_morpho, path = dir_out, 
@@ -570,7 +555,6 @@ KM.morpho.type <- ggplot(data = KM_morpho.type) + aes(x = morpho.type,
                   theme(legend.position = "none") +
                   labs(x = " ", y = "n")  
  
-print(KM.morpho.type)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.morpho.type", ".pdf")
 ggsave(filename = file_out, plot = KM.morpho.type, path = dir_out, device = "pdf", 
           width = 190, height = 210, units = "mm") 
@@ -595,7 +579,6 @@ KM.edge <- ggplot(data = KM_edge) + aes(x = retouch.type.edge,
            theme(legend.position = "none") + 
            labs(x = " ", y = "n") 
  
-print(KM.edge)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.edge", ".pdf")
 ggsave(filename = file_out, plot = KM.edge, path = dir_out, device = "pdf", 
           width = 170, height = 200, units = "mm")
@@ -615,7 +598,6 @@ PS.edge <- ggplot(data = PS_edge) + aes(x = retouch.type.edge,
            theme(legend.position = "none") + 
            labs(x = " ", y = "n") 
  
-print(PS.edge)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.edge", ".pdf")
 ggsave(filename = file_out, plot = PS.edge, path = dir_out, device = "pdf", 
           width = 170, height = 200, units = "mm")
@@ -641,7 +623,6 @@ KM.raw_material <- ggplot(data = KM_raw_material) + aes(x = raw.material,
                    scale_x_discrete(labels=c("Baltic flint", "other", 
                    "silicified schist")) 
    
-print(KM.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.raw_material",
                   ".pdf")
 ggsave(filename = file_out, plot = KM.raw_material, path = dir_out, 
@@ -661,7 +642,6 @@ PS.raw_material <- ggplot(data = PS_raw_material) + aes(x = raw.material,
                    labs(x = " ", y = "n") + 
                    scale_x_discrete(labels= "silicified schist") 
  
-print(PS.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.raw_material",
                    ".pdf")
 ggsave(filename = file_out, plot = PS.raw_material, path = dir_out, device = "pdf")
@@ -682,7 +662,6 @@ all.raw_material <- ggplot(data = all_raw_material) + aes(x = raw.material,
                     scale_x_discrete(labels=c("Baltic flint", "other", 
                     "silicified schist")) 
     
-print(all.raw_material)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "all.raw_material",
                    ".pdf")
 ggsave(filename = file_out, plot = all.raw_material, path = dir_out, 
@@ -710,7 +689,6 @@ KM.back_morpho <- ggplot(data = KM_back) + aes(x = morphology.back,
                   scale_x_discrete(labels=c("cortex + partly retouched",
                   "cortex/unworked", "N/A", "partly retouched", "retouched")) 
   
-print(KM.back_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.back_morpho", ".pdf")
 ggsave(filename = file_out, plot = KM.back_morpho, path = dir_out, device = "pdf",
           width = 250, height = 170, units = "mm")
@@ -731,7 +709,6 @@ PS.back_morpho <- ggplot(data = PS_back) + aes(x = morphology.back,
                   scale_x_discrete(labels=c("cortex + partly retouched",
                   "cortex/unworked", "partly retouched", "retouched")) 
  
-print(PS.back_morpho)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.back_morpho", ".pdf")
 ggsave(filename = file_out, plot = PS.back_morpho, path = dir_out, device = "pdf",
           width = 250, height = 170, units = "mm")
@@ -757,7 +734,6 @@ KM.cortex_blanks <- ggplot(data = KM_cortex_blanks) + aes(x = blank,
                     "Darjeeling2", 
                     type = "continuous"), labels = tag)    
  
-print(KM.cortex_blanks)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.cortex_blanks",
                    ".pdf")
 ggsave(filename = file_out, plot = KM.cortex_blanks, path = dir_out, 
@@ -783,7 +759,6 @@ PS.cortex_blanks <- ggplot(data = PS_cortex_blanks) +
                     scale_fill_manual(values = wes_palette(n = 7, 
                     name = "Darjeeling2", type = "continuous"), labels = tag)    
  
-print(PS.cortex_blanks)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.cortex_blanks",
                    ".pdf")
 ggsave(filename = file_out, plot = PS.cortex_blanks, path = dir_out, 
@@ -810,7 +785,6 @@ KM.PM <- ggplot(data = KM_Pradnik.method) + aes(x = application.Pradnik.method,
          scale_fill_manual(values = wes_palette(n = 5, name = "GrandBudapest1", 
          type = "continuous"))    
  
-print(KM.PM)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.PM", ".pdf")
 ggsave(filename = file_out, plot = KM.PM, path = dir_out, device = "pdf")
 
@@ -834,7 +808,6 @@ KM.lat <- ggplot(data = KM_lateralisation) + aes(x = tool.lateralisation,
           scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", 
           type = "continuous"))    
  
-print(KM.lat)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.lat", ".pdf")
 ggsave(filename = file_out, plot = KM.lat, path = dir_out, device = "pdf")
 
@@ -852,7 +825,6 @@ PS.lat <- ggplot(data = PS_lateralisation) + aes(x = tool.lateralisation,
           scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", 
           type = "continuous")) 
 
-print(PS.lat)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "PS.lat", ".pdf")
 ggsave(filename = file_out, plot = PS.lat, path = dir_out, device = "pdf")
 
@@ -882,7 +854,6 @@ LSS.type <- ggplot(data = LSS_type) + aes(x = type.lateral.sharpening.spall,
             scale_fill_manual(values = wes_palette(n = 9, name = "Royal1", 
             type = "continuous"), labels = tag)    
  
-print(LSS.type)
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "LSS.type", ".pdf")
 ggsave(filename = file_out, plot = LSS.type, path = dir_out, device = "pdf")
 
@@ -916,7 +887,6 @@ KM.perimeter  <- ggtern(data = KM_perimeter, aes(x = perimeter.distal.posterior.
                  theme_rotate(degrees = 330)
                 
 
-print(KM.perimeter) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.perimeter", ".pdf")
 ggsave(filename = file_out, plot = KM.perimeter, path = dir_out, device = "pdf")
 
