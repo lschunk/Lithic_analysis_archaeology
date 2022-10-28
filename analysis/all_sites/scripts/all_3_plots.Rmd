@@ -744,7 +744,7 @@ KM.length_width <- ggplot(KM_comp_dim, aes(y = length, x = width, fill = site)) 
 file_out <- paste0(file_path_sans_ext(info_in[["file"]]), "KM.length_width",
                    ".pdf")
 ggsave(filename = file_out, plot = KM.length_width, path = dir_out, 
-          evice = "pdf", width = 170, height = 250, units = "mm")
+          device = "pdf", width = 170, height = 250, units = "mm")
 
 
 # Keilmesser complete + tips length vs width  

@@ -11,7 +11,7 @@
 
 <meta name="author" content="Lisa Schunk" />
 
-<meta name="date" content="2022-10-27" />
+<meta name="date" content="2022-10-28" />
 
 <title>Plots - Lithic analysis from three sites: Balver Höhle, Buhlen &amp; Ramioul</title>
 
@@ -249,7 +249,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Plots - Lithic analysis from three sites: Balver Höhle, Buhlen &amp; Ramioul</h1>
 <h4 class="author">Lisa Schunk</h4>
-<h4 class="date">2022-10-27</h4>
+<h4 class="date">2022-10-28</h4>
 
 </div>
 
@@ -275,8 +275,12 @@ Formatted data will be saved in “analysis/all_sites/plots/”. The knit direct
 <pre class="r"><code>pack_to_load &lt;- c(&quot;tools&quot;, &quot;openxlsx&quot;, &quot;ggplot2&quot;, &quot;readxl&quot;, &quot;R.utils&quot;, &quot;chron&quot;, &quot;dplyr&quot;, &quot;wesanderson&quot;, &quot;ggsci&quot;)
 sapply(pack_to_load, library, character.only = TRUE, logical.return = TRUE)</code></pre>
 <pre><code>Warning: package &#39;openxlsx&#39; was built under R version 4.1.3</code></pre>
+<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 4.1.3</code></pre>
 <pre><code>Warning: package &#39;readxl&#39; was built under R version 4.1.3</code></pre>
 <pre><code>Warning: package &#39;R.utils&#39; was built under R version 4.1.3</code></pre>
+<pre><code>Warning: package &#39;R.oo&#39; was built under R version 4.1.3</code></pre>
+<pre><code>Warning: package &#39;R.methodsS3&#39; was built under R version 4.1.3</code></pre>
+<pre><code>Warning: package &#39;chron&#39; was built under R version 4.1.3</code></pre>
 <pre><code>Warning: package &#39;dplyr&#39; was built under R version 4.1.3</code></pre>
 <pre><code>      tools    openxlsx     ggplot2      readxl     R.utils       chron 
        TRUE        TRUE        TRUE        TRUE        TRUE        TRUE 
@@ -956,9 +960,10 @@ KM.length_width &lt;- ggplot(KM_comp_dim, aes(y = length, x = width, fill = site
 file_out &lt;- paste0(file_path_sans_ext(info_in[[&quot;file&quot;]]), &quot;KM.length_width&quot;,
                    &quot;.pdf&quot;)
 ggsave(filename = file_out, plot = KM.length_width, path = dir_out, 
-          evice = &quot;pdf&quot;, width = 170, height = 250, units = &quot;mm&quot;)</code></pre>
-<pre><code>Error in grDevices::pdf(file = filename, ..., version = version): unused argument (evice = &quot;pdf&quot;)</code></pre>
-<pre class="r"><code># Keilmesser complete + tips length vs width  
+          device = &quot;pdf&quot;, width = 170, height = 250, units = &quot;mm&quot;)
+
+
+# Keilmesser complete + tips length vs width  
 # Define the rows with complete Keilmesser and Keilmesser tips 
 KM_comp.tip_dim &lt;- KM_dim[-c(279, 316:330), ]
 
@@ -1551,7 +1556,7 @@ ggsave(filename = file_out, plot = KM.perimeter, path = dir_out, device = &quot;
 <div id="sessioninfo-and-rstudio-version" class="section level1" number="6">
 <h1 number="6"><span class="header-section-number">6</span> sessionInfo() and RStudio version</h1>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.1.0 (2021-05-18)
+<pre><code>R version 4.1.1 (2021-08-10)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 19043)
 
@@ -1567,34 +1572,33 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] ggtern_3.3.5      ggsci_2.9         wesanderson_0.3.6 dplyr_1.0.9      
- [5] chron_2.3-56      R.utils_2.11.0    R.oo_1.24.0       R.methodsS3_1.8.1
- [9] readxl_1.4.0      ggplot2_3.3.6     openxlsx_4.2.5   
+ [1] ggtern_3.3.5      ggsci_2.9         wesanderson_0.3.6 dplyr_1.0.10     
+ [5] chron_2.3-57      R.utils_2.12.0    R.oo_1.25.0       R.methodsS3_1.8.2
+ [9] readxl_1.4.1      ggplot2_3.3.6     openxlsx_4.2.5   
 
 loaded via a namespace (and not attached):
- [1] sass_0.4.1           tidyr_1.2.0          jsonlite_1.8.0      
- [4] splines_4.1.0        bslib_0.3.1          microbenchmark_1.4.9
+ [1] sass_0.4.2           tidyr_1.2.1          jsonlite_1.8.0      
+ [4] splines_4.1.1        bslib_0.4.0          microbenchmark_1.4.9
  [7] assertthat_0.2.1     tensorA_0.36.2       doBy_4.6.13         
 [10] cellranger_1.1.0     yaml_2.3.5           robustbase_0.95-0   
-[13] pillar_1.7.0         backports_1.4.1      lattice_0.20-44     
+[13] pillar_1.8.1         backports_1.4.1      lattice_0.20-44     
 [16] glue_1.6.2           digest_0.6.29        colorspace_2.0-3    
-[19] htmltools_0.5.2      Matrix_1.3-3         plyr_1.8.7          
-[22] pkgconfig_2.0.3      broom_0.8.0          purrr_0.3.4         
-[25] scales_1.2.0         tibble_3.1.6         mgcv_1.8-35         
-[28] generics_0.1.2       farver_2.1.0         ellipsis_0.3.2      
-[31] withr_2.5.0          cli_3.3.0            proto_1.0.0         
-[34] magrittr_2.0.3       crayon_1.5.1         evaluate_0.15       
-[37] fansi_1.0.3          nlme_3.1-152         MASS_7.3-54         
-[40] compositions_2.0-4   lifecycle_1.0.1      stringr_1.4.0       
-[43] munsell_0.5.0        zip_2.2.0            Deriv_4.1.3         
-[46] compiler_4.1.0       jquerylib_0.1.4      rlang_1.0.2         
-[49] grid_4.1.0           rstudioapi_0.13      labeling_0.4.2      
-[52] rmarkdown_2.14       gtable_0.3.0         DBI_1.1.2           
-[55] R6_2.5.1             bayesm_3.1-4         gridExtra_2.3       
-[58] knitr_1.39           fastmap_1.1.0        utf8_1.2.2          
-[61] latex2exp_0.9.5      stringi_1.7.6        Rcpp_1.0.8.3        
-[64] vctrs_0.4.1          DEoptimR_1.0-11      tidyselect_1.1.2    
-[67] xfun_0.30           </code></pre>
+[19] htmltools_0.5.3      Matrix_1.5-1         plyr_1.8.7          
+[22] pkgconfig_2.0.3      broom_1.0.1          purrr_0.3.4         
+[25] scales_1.2.1         tibble_3.1.8         mgcv_1.8-36         
+[28] generics_0.1.3       farver_2.1.1         cachem_1.0.6        
+[31] withr_2.5.0          cli_3.4.0            proto_1.0.0         
+[34] magrittr_2.0.3       evaluate_0.16        fansi_1.0.3         
+[37] nlme_3.1-152         MASS_7.3-54          compositions_2.0-4  
+[40] lifecycle_1.0.2      stringr_1.4.1        munsell_0.5.0       
+[43] zip_2.2.1            Deriv_4.1.3          compiler_4.1.1      
+[46] jquerylib_0.1.4      rlang_1.0.5          grid_4.1.1          
+[49] rstudioapi_0.14      labeling_0.4.2       rmarkdown_2.16      
+[52] gtable_0.3.1         DBI_1.1.3            R6_2.5.1            
+[55] bayesm_3.1-4         gridExtra_2.3        knitr_1.40          
+[58] fastmap_1.1.0        utf8_1.2.2           latex2exp_0.9.5     
+[61] stringi_1.7.8        Rcpp_1.0.9           vctrs_0.4.1         
+[64] DEoptimR_1.0-11      tidyselect_1.1.2     xfun_0.33           </code></pre>
 <hr />
 <p>RStudio version 1.3.1073.</p>
 </div>
@@ -1629,26 +1633,26 @@ To cite ggplot2 in publications, please use:
 To cite package &#39;readxl&#39; in publications use:
 
   Hadley Wickham and Jennifer Bryan (2022). readxl: Read Excel Files. R
-  package version 1.4.0. https://CRAN.R-project.org/package=readxl
+  package version 1.4.1. https://CRAN.R-project.org/package=readxl
 
 
 To cite package &#39;R.utils&#39; in publications use:
 
-  Henrik Bengtsson (2021). R.utils: Various Programming Utilities. R
-  package version 2.11.0. https://CRAN.R-project.org/package=R.utils
+  Henrik Bengtsson (2022). R.utils: Various Programming Utilities. R
+  package version 2.12.0. https://CRAN.R-project.org/package=R.utils
 
 
 To cite in publications use:
 
-  David James and Kurt Hornik (2020). chron: Chronological Objects
-  which Can Handle Dates and Times. R package version 2.3-56.
+  David James and Kurt Hornik (2022). chron: Chronological Objects
+  which Can Handle Dates and Times. R package version 2.3-57.
 
 
 To cite package &#39;dplyr&#39; in publications use:
 
   Hadley Wickham, Romain François, Lionel Henry and Kirill Müller
   (2022). dplyr: A Grammar of Data Manipulation. R package version
-  1.0.9. https://CRAN.R-project.org/package=dplyr
+  1.0.10. https://CRAN.R-project.org/package=dplyr
 
 
 To cite package &#39;wesanderson&#39; in publications use:
